@@ -152,12 +152,9 @@ export default memo<IProps>(function SQLHistoryPage({ className }) {
                 <div className={styles.databaseName}>
                   {item.ddl}
                 </div>
-                {
-                  currentTab == TabsKey.SAVE && item.connectable &&
-                  <div className={styles.arrows}>
-                    <Iconfont code='&#xe685;'></Iconfont>
-                  </div>
-                }
+                <div className={styles.arrows}>
+                  { currentTab == TabsKey.SAVE && item.connectable && <Iconfont code='&#xe685;'></Iconfont> }
+                </div>
               </div>
             })
           }
