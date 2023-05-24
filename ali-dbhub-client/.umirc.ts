@@ -1,11 +1,36 @@
 import { defineConfig } from 'umi';
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const autoprefixer = require('autoprefixer');
+const path = require('path');
 // const MonacoWebpackPlugin = require('monaco-editor-esm-webpack-plugin');
 const UMI_ENV = process.env.UMI_ENV || 'local'; 
 const assetDir = "static";
 
-const chainWebpack = (config: any, { webpack }: any) => {
+const chainWebpack = (config: any, args:any) => {
+  console.log(config.module.rules.store.forEach(rule => {
+    console.log(rule)
+    if (rule.test.toString() == /\.css$/.toString() || rule.test.toString() == /\.less$/.toString()) {
+      rule.oneOf.forEach(one => {
+        one.use[2].options.plugins = () => [autoprefixer({
+          overrideBrowserslist: args.options.browsers
+        })];
+      });
+      // console.log(rule.oneOf[1].use);
+      rule.oneOf[0].exclude = rule.oneOf[1].include = /(node_modules|\.global\.)/;
+      rule.oneOf[0].use[1].options.localIdentName = '[local]_[hash:base64:5]';
+      if (rule.oneOf[0].use[3] === 'less-loader') {
+        rule.oneOf[0].use.push({
+          loader: path.resolve(__dirname, './tools/CSSVariableExtractPlugin/loader.js'),
+          options: {
+            themes: ['default', 'dark'],
+            rootSelector: 'body, :global(.theme-scope)',
+            useGlobal: true
+          }
+        });
+      }
+    }
+  }))
   config.plugin('monaco-editor').use(MonacoWebpackPlugin, [
     {
       languages: ['mysql', 'pgsql', 'sql'],
