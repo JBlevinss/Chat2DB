@@ -32,10 +32,10 @@
 ## ⏬ 下载安装
 | 描述                   | 下载地址                                                                                                                                                                                                                                       |
 |-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Windows               | [https://oss-chat2db.alibaba.com/release/1.0.6/Chat2DB%20Setup%201.0.6.exe](https://oss-chat2db.alibaba.com/release/1.0.6/Chat2DB%20Setup%201.0.6.exe) |
-| MacOS ARM64 (Apple芯片) | [https://oss-chat2db.alibaba.com/release/1.0.6/Chat2DB-1.0.6-arm64.dmg](https://oss-chat2db.alibaba.com/release/1.0.6/Chat2DB-1.0.6-arm64.dmg) |
-| MacOS X64 (Intel芯片)   | [https://oss-chat2db.alibaba.com/release/1.0.6/Chat2DB-1.0.6.dmg](https://oss-chat2db.alibaba.com/release/1.0.6/Chat2DB-1.0.6.dmg) |       
-| Jar包                  | [https://oss-chat2db.alibaba.com/release/1.0.6/ali-dbhub-server-start.jar](https://oss-chat2db.alibaba.com/release/1.0.6/ali-dbhub-server-start.jar) |                                                                                                                
+| Windows               | [https://oss-chat2db.alibaba.com/release/1.0.7/Chat2DB%20Setup%201.0.7.exe](https://oss-chat2db.alibaba.com/release/1.0.7/Chat2DB%20Setup%201.0.7.exe) |
+| MacOS ARM64 (Apple芯片) | [https://oss-chat2db.alibaba.com/release/1.0.7/Chat2DB-1.0.7-arm64.dmg](https://oss-chat2db.alibaba.com/release/1.0.7/Chat2DB-1.0.7-arm64.dmg) |
+| MacOS X64 (Intel芯片)   | [https://oss-chat2db.alibaba.com/release/1.0.7/Chat2DB-1.0.7.dmg](https://oss-chat2db.alibaba.com/release/1.0.7/Chat2DB-1.0.7.dmg) |       
+| Jar包                  | [https://oss-chat2db.alibaba.com/release/1.0.7/ali-dbhub-server-start.jar](https://oss-chat2db.alibaba.com/release/1.0.7/ali-dbhub-server-start.jar) |                                                                                                                
 
 ## 🌰 使用Demo
 ### 创建数据源
@@ -133,6 +133,7 @@ $ # 注：前端页面完全赖服务，所以前端同学调试也需要把后�
 如果觉得对你有帮助请点个star吧。
 
 <a><img src="https://chat2db.oss-accelerate.aliyuncs.com/static/weichat.PNG" width="40%"/></a>
+<a><img src="https://chat2db.oss-accelerate.aliyuncs.com/static/dingding.PNG" width="40%"/></a>
 
 
 微信：yxccw132  钉钉：9135032392
