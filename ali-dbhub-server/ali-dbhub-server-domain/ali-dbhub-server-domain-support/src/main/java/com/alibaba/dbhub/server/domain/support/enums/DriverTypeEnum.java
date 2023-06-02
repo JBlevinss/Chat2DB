@@ -29,7 +29,7 @@ public enum DriverTypeEnum {
     /**
      * Oracle
      */
-    ORACLE_DRIVER(DbTypeEnum.ORACLE, "oracle.jdbc.driver.OracleDriver", "ojdbc11.jar",""),
+    ORACLE_DRIVER(DbTypeEnum.ORACLE, "oracle.jdbc.driver.OracleDriver", "ojdbc8-19.3.0.0.jar,orai18n-19.3.0.0.jar",""),
 
     /**
      * SQLServer
@@ -70,7 +70,14 @@ public enum DriverTypeEnum {
     /**
      * MMARIADB
      */
-    MARIADB_DRIVER(DbTypeEnum.MARIADB, "org.mariadb.jdbc.Driver", "mariadb-java-client-3.0.8.jar","");
+    MARIADB_DRIVER(DbTypeEnum.MARIADB, "org.mariadb.jdbc.Driver", "mariadb-java-client-3.0.8.jar",""),
+
+
+
+    /**
+     * DM_DRIVER
+     */
+    DM_DRIVER(DbTypeEnum.DM, "dm.jdbc.driver.DmDriver", "DmJdbcDriver18-8.1.2.141.jar","");
 
     final DbTypeEnum dbTypeEnum;
 

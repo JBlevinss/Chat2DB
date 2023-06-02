@@ -8,16 +8,14 @@ import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 
 import com.alibaba.dbhub.server.domain.support.enums.DbTypeEnum;
 import com.alibaba.dbhub.server.domain.support.model.KeyValue;
 import com.alibaba.dbhub.server.domain.support.model.SSHInfo;
 import com.alibaba.dbhub.server.domain.support.model.SSLInfo;
-import com.alibaba.fastjson2.JSON;
 
+import com.jcraft.jsch.Session;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -125,6 +123,26 @@ public class ConnectInfo {
 
     public Connection connection;
 
+    /**
+     * Getter method for property <tt>session</tt>.
+     *
+     * @return property value of session
+     */
+    public Session getSession() {
+        return session;
+    }
+
+    /**
+     * Setter method for property <tt>session</tt>.
+     *
+     * @param session value to be assigned to property session
+     */
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
+    public Session session;
+
 
     /**
      * Getter method for property <tt>extendInfo</tt>.
@@ -145,9 +163,9 @@ public class ConnectInfo {
 
     public void setDatabase(String database) {
         this.databaseName = database;
-        if (!ObjectUtils.isEmpty(this.urlWithOutDatabase) && !ObjectUtils.isEmpty(this.databaseName)) {
-            this.url = this.urlWithOutDatabase + "/" + database;
-        }
+        //if (!ObjectUtils.isEmpty(this.urlWithOutDatabase) && !ObjectUtils.isEmpty(this.databaseName)) {
+        //    this.url = this.urlWithOutDatabase + "/" + database;
+        //}
     }
 
     public String key() {
@@ -156,37 +174,37 @@ public class ConnectInfo {
 
     public void setUrl(String url) {
         this.url = url;
-        if (this.dbType != DbTypeEnum.MYSQL && this.dbType != DbTypeEnum.POSTGRESQL) {
-            return;
-        }
-        if (!ObjectUtils.isEmpty(url)) {
-            //jdbc:postgresql://localhost:5432/postgres
-            String[] array = getUrl().split(":");
-            if (array.length == 4) {
-                String str = array[3];
-                boolean isDigit = true;
-                StringBuffer sb = new StringBuffer();
-                StringBuffer sb1 = new StringBuffer();
-                for (int i = 0; i < str.length(); i++) {
-                    char c = str.charAt(i);
-                    if (isDigit == true) {
-                        if (!Character.isDigit(c)) {
-                            isDigit = false;
-                        } else {
-                            sb1.append(c);
-                        }
-                    } else {
-                        sb.append(c);
-                    }
-                }
-                String s = sb.toString();
-                if (!ObjectUtils.isEmpty(s)) {
-                    this.databaseName = s;
-                }
-                this.port = Integer.parseInt(sb1.toString());
-                this.urlWithOutDatabase = array[0] + ":" + array[1] + ":" + array[2] + ":" + port;
-            }
-        }
+        //if (this.dbType != DbTypeEnum.MYSQL && this.dbType != DbTypeEnum.POSTGRESQL) {
+        //    return;
+        //}
+        //if (!ObjectUtils.isEmpty(url)) {
+        //    //jdbc:postgresql://localhost:5432/postgres
+        //    String[] array = getUrl().split(":");
+        //    if (array.length == 4) {
+        //        String str = array[3];
+        //        boolean isDigit = true;
+        //        StringBuffer sb = new StringBuffer();
+        //        StringBuffer sb1 = new StringBuffer();
+        //        for (int i = 0; i < str.length(); i++) {
+        //            char c = str.charAt(i);
+        //            if (isDigit == true) {
+        //                if (!Character.isDigit(c)) {
+        //                    isDigit = false;
+        //                } else {
+        //                    sb1.append(c);
+        //                }
+        //            } else {
+        //                sb.append(c);
+        //            }
+        //        }
+        //        String s = sb.toString();
+        //        if (!ObjectUtils.isEmpty(s)) {
+        //            this.databaseName = s;
+        //        }
+        //        this.port = Integer.parseInt(sb1.toString());
+        //        this.urlWithOutDatabase = array[0] + ":" + array[1] + ":" + array[2] + ":" + port;
+        //    }
+        //}
     }
 
     @Override

@@ -1,3 +1,21 @@
+# 1.0.9
+* 修复Open Ai 无法连接的问题
+
+* 支持国产达梦数据库 [Issue #148](https://github.com/alibaba/Chat2DB/issues/147)
+* 支持自定义OPEN AI API_HOST [Issue #173](https://github.com/alibaba/Chat2DB/issues/173)
+* 🔥 支持自定义AI接口
+* 支持主题色跟随系统
+
+# 1.0.6
+* 修复Oracle数据库字符集问题 [Issue #205](https://github.com/alibaba/Chat2DB/issues/205) [Issue #181](https://github.com/alibaba/Chat2DB/issues/181) [Issue #182](https://github.com/alibaba/Chat2DB/issues/182)
+* 修复mac安装提示的安全问题
+
+# 1.0.5
+* 🔥 优化Apple芯片的启动速度
+* 修复Windows端数据库连接问题 [Issue #150](https://github.com/alibaba/Chat2DB/issues/150) [Issue #147](https://github.com/alibaba/Chat2DB/issues/147)
+* 修改database不生效 [Issue #141](https://github.com/alibaba/Chat2DB/issues/141)
+* NullPointerException [Issue #136](https://github.com/alibaba/Chat2DB/issues/136)
+
 # 1.0.4
 * 修复ClickHouse jdbc问题 [Issue #135](https://github.com/alibaba/Chat2DB/issues/135)
 * 修复连接池管理的NPE [Issue #136](https://github.com/alibaba/Chat2DB/issues/136)
