@@ -1,0 +1,56 @@
+{
+  "private": true,
+  "author": "fanjin.fjy <fanjin.fjy@alibaba-inc.com>",
+  "main": "src/main/index.js",
+  "scripts": {
+    "build:main": "cross-env NODE_ENV=development webpack --config ./build/webpack.main.config.js",
+    "build:main:prod": "cross-env NODE_ENV=production webpack --config ./build/webpack.main.prod.config.js",
+    "build:web": "umi build",
+    "postinstall": "umi setup",
+    "start": "concurrently \"npm run start:main\" \"npm run start:web\"",
+    "start:main": "cross-env NODE_ENV=development electron-webpack dev",
+    "start:web": "umi dev",
+    "pack": "electron-builder --dir",
+    "test": "electron-webpack dev"
+  },
+  "dependencies": {
+    "umi": "^4.0.70"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/node": "^20.2.5",
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "concurrently": "^8.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^25.0.1",
+    "electron-builder": "^23.6.0",
+    "electron-debug": "^3.2.0",
+    "electron-webpack": "^2.8.2",
+    "electron-webpack-ts": "^4.0.1",
+    "prettier": "^2",
+    "prettier-plugin-organize-imports": "^2",
+    "prettier-plugin-packagejson": "^2",
+    "typescript": "^5.0.3",
+    "webpack": "^4.42.1"
+  },
+  "build": {
+    "appId": "Chat2DB",
+    "files": [
+      "dist/",
+      "node_modules/",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    }
+  },
+  "electronWebpack": {
+    "main": {
+      "sourceDirectory": "main"
+    },
+    "renderer": {
+      "sourceDirectory": null
+    }
+  }
+}
