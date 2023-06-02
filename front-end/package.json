@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "antd": "^5.5.2",
-    "umi": "^4.0.70"
+    "umi": "^4.0.70",
+    "umi-request": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",
