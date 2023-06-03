@@ -18,11 +18,16 @@
   },
   "dependencies": {
     "antd": "^5.5.2",
+<<<<<<< HEAD
     "lodash": "^4.17.21",
     "sql-formatter": "^12.2.1",
     "umi": "^4.0.70",
     "umi-request": "^1.4.0",
     "uuid": "^9.0.0"
+=======
+    "umi": "^4.0.70",
+    "umi-request": "^1.4.0"
+>>>>>>> d036f12318203d0b85c369df82b16d82d9dda990
   },
   "devDependencies": {
     "@types/react": "^18.0.33",

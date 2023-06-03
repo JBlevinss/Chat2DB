@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useLayoutEffect } from 'react';
 import { Link, Outlet } from 'umi';
 import { ConfigProvider, theme } from 'antd';
@@ -31,6 +32,13 @@ const darktheme = {
 }
 
 const lighttheme = {}
+=======
+import { Outlet } from 'umi';
+import { ConfigProvider, theme } from 'antd';
+import styles from './index.less';
+import enUS from 'antd/locale/en_US';
+import zhCN from 'antd/locale/zh_CN';
+>>>>>>> d036f12318203d0b85c369df82b16d82d9dda990
 
 export default function Layout() {
   const [appTheme] = useTheme();
@@ -64,8 +72,21 @@ export default function Layout() {
   }
 
   return (
+<<<<<<< HEAD
     <ConfigProvider theme={appTheme}>
       <div className={styles.app}>
+=======
+    <ConfigProvider
+      locale={enUS}
+      theme={{
+        algorithm: theme.darkAlgorithm,
+        token: {
+          colorPrimary: '#00b96b',
+        },
+      }}
+    >
+      <div className={styles.navs}>
+>>>>>>> d036f12318203d0b85c369df82b16d82d9dda990
         <Outlet />
       </div>
     </ConfigProvider>

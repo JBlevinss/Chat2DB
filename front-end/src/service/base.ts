@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { extend, ResponseError } from 'umi-request';
 import { message } from 'antd';
 
@@ -184,3 +185,8 @@ function delayTimeFn(callback: Function, time: number | true | undefined) {
     callback();
   }
 }
+=======
+import { extend } from 'umi-request';
+
+const request = extend({});
+>>>>>>> d036f12318203d0b85c369df82b16d82d9dda990
