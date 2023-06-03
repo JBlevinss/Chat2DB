@@ -1,0 +1,49 @@
+@import '../theme/dark.less';
+@import '../theme/light.less';
+
+html {
+  height: 100%;
+}
+
+:root {
+  ul,
+  ol,
+  li {
+    padding-left: 0;
+    list-style: none;
+  }
+  overflow: overlay; /*滚动条会覆盖在页面之上*/
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+// 修改账号密码自动回填后input背景变色问题
+input:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-text) !important; // 填充状态下的字体颜色
+  transition: background-color 0s 9999999999s;
+  caret-color: var(--color-text); // 光标的颜色
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-bg);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
