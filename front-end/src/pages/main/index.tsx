@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useEffect, useState, PropsWithChildren } from 'react';
 import i18n from '@/i18n';
 import { Button } from 'antd';
@@ -120,17 +119,6 @@ function Main() {
         }
       </div>
     </div>
-=======
-import React from 'react';
-import { Button, DatePicker } from 'antd';
-
-function Main() {
-  return (
-    <>
-      <Button>点击</Button>
-      <DatePicker />
-    </>
->>>>>>> d036f12318203d0b85c369df82b16d82d9dda990
   );
 }
 
