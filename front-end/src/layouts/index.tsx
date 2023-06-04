@@ -68,7 +68,7 @@ export default function Layout() {
   return (
     <ConfigProvider
       locale={enUS}
-      theme={lighttheme}
+      theme={appTheme === ThemeType.Light ? lighttheme : darktheme}
     >
       <div className={styles.app}>
         <Outlet />
