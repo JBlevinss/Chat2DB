@@ -54,17 +54,17 @@ const colorList = [
 const themeList = [
   {
     code: ThemeType.Dark,
-    name: '暗色',
+    name: i18n('setting.text.dark'),
     img: themeDarkImg
   },
   {
     code: ThemeType.Light,
-    name: '亮色',
+    name: i18n('setting.text.light'),
     img: themeLightImg
   },
   {
     code: ThemeType.FollowOs,
-    name: '自动',
+    name: i18n('setting.text.followOS'),
     img: themeAutoImg
   },
   // {
@@ -73,7 +73,6 @@ const themeList = [
   //   img: 'https://img.alicdn.com/imgextra/i1/O1CN01KGCqY21uJpuFjEQW2_!!6000000006017-2-tps-181-135.png'
   // },
 ];
-
 
 export const colorSchemeListeners: { [key: string]: ((theme: ThemeType) => void) } = {};
 
@@ -85,22 +84,22 @@ export function addColorSchemeListener(callback: (theme: ThemeType) => void) {
 
 const menusList = [
   {
-    label: '基础设置',
+    label: i18n('setting.nav.basic'),
     icon: '\ue795',
     body: <BaseBody />
   },
   {
-    label: '自定义AI',
+    label: i18n('setting.nav.customAi'),
     icon: '\ue646',
     body: <SettingAI />,
   },
   {
-    label: '代理设置',
+    label: i18n('setting.nav.proxy'),
     icon: '\ue63f',
     body: <ProxyBody />
   },
   {
-    label: '关于Chat2DB',
+    label: i18n('setting.nav.aboutUs'),
     icon: '\ue60c',
     body: <AboutUs />
   },
@@ -161,7 +160,7 @@ export default memo<IProps>(function Setting({ className, text }) {
         <div className={styles.modalBox}>
           <div className={styles.menus}>
             <div className={classnames(styles.menusTitle)}>
-              设置
+              {i18n('setting.title.setting')}
             </div>
             {
               menusList.map((t, index) => {
@@ -218,18 +217,18 @@ export function SettingAI() {
       newChatgptConfig.apiHost = newChatgptConfig.apiHost + '/'
     }
     configService.setChatGptSystemConfig(newChatgptConfig).then(res => {
-      message.success('配置成功')
+      message.success(i18n('common.message.successfulConfig'))
     })
   }
 
   return <>
     <div className={styles.aiSqlSource}>
       <div className={styles.aiSqlSourceTitle}>
-        AI来源:
+        {i18n('setting.title.aiSource')}:
       </div>
       <Radio.Group onChange={(e) => { setChatgptConfig({ ...chatgptConfig, aiSqlSource: e.target.value }) }} value={chatgptConfig.aiSqlSource}>
         <Radio value={AiSqlSourceType.OPENAI}>Open Ai</Radio>
-        <Radio value={AiSqlSourceType.RESTAI}>自定义</Radio>
+        <Radio value={AiSqlSourceType.RESTAI}>{i18n('setting.tab.custom')}</Radio>
       </Radio.Group>
     </div>
     {
@@ -238,49 +237,49 @@ export function SettingAI() {
           Api Key
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder='使用OpenAi接口时必填，可前往OpenAI官网查看APIKEY' value={chatgptConfig.apiKey} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, apiKey: e.target.value }) }} />
+          <Input placeholder={i18n('setting.pleasehold.apiKey')} value={chatgptConfig.apiKey} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, apiKey: e.target.value }) }} />
         </div>
         <div className={styles.title}>
           Api Host
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder='非必填，默认值为 https://api.openai.com/' value={chatgptConfig.apiHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, apiHost: e.target.value }) }} />
+          <Input placeholder={i18n('setting.pleasehold.apiHost')} value={chatgptConfig.apiHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, apiHost: e.target.value }) }} />
         </div>
         <div className={styles.title}>
           HTTP Proxy Host
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder='非必填，用于设置请求OPENAI接口时的HTTP代理host' value={chatgptConfig.httpProxyHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyHost: e.target.value }) }} />
+          <Input placeholder={i18n('setting.pleasehold.httpsProxy','host')} value={chatgptConfig.httpProxyHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyHost: e.target.value }) }} />
         </div>
         <div className={styles.title}>
           HTTP Proxy Prot
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder='非必填，用于设置请求OPENAI接口时的HTTP代理port' value={chatgptConfig.httpProxyPort} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyPort: e.target.value }) }} />
+          <Input placeholder={i18n('setting.pleasehold.httpsProxy','port')} value={chatgptConfig.httpProxyPort} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyPort: e.target.value }) }} />
         </div>
       </div>
     }
     {
       chatgptConfig.aiSqlSource === AiSqlSourceType.RESTAI && <div>
         <div className={styles.title}>
-          自定义接口Url
+          {i18n('setting.label.customAiUrl')}
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder='选择自定义AI时必填，用于设置自定义AI的REST接口URL' value={chatgptConfig.restAiUrl} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, restAiUrl: e.target.value }) }} />
+          <Input placeholder={i18n('setting.pleasehold.customUrl')} value={chatgptConfig.restAiUrl} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, restAiUrl: e.target.value }) }} />
         </div>
         <div className={styles.title}>
-          接口是否流式输出
+          {i18n('setting.label.isStreamOutput')}
         </div>
         <div className={classnames(styles.content)}>
           <Radio.Group onChange={(e) => { setChatgptConfig({ ...chatgptConfig, restAiStream: e.target.value }) }} value={chatgptConfig.restAiStream}>
-            <Radio value={true}>是</Radio>
-            <Radio value={false}>否</Radio>
+            <Radio value={true}>{i18n('common.text.is')}</Radio>
+            <Radio value={false}>{i18n('common.text.no')}</Radio>
           </Radio.Group>
         </div>
       </div>
     }
     <div className={styles.bottomButton}>
-      <Button type="primary" onClick={changeChatgptApiKey}>应用</Button>
+    <Button type="primary" onClick={changeChatgptApiKey}>{i18n('setting.button.use')}</Button>
     </div>
   </>
 }
@@ -311,7 +310,7 @@ export function BaseBody() {
 
   return <>
     <div className={styles.title}>
-      {i18n('common.text.background')}
+      {i18n('setting.title.backgroundColor')}
     </div>
     <ul className={styles.backgroundList}>
       {themeList.map(t => {
@@ -324,12 +323,12 @@ export function BaseBody() {
       })}
     </ul>
     <div className={styles.title}>
-      {i18n('common.text.language')}
+      {i18n('setting.title.language')}
     </div>
     <div>
       <Radio.Group onChange={changeLang} value={lang}>
-        <Radio value='zh-cn'>{i18n('common.text.zh-cn')}</Radio>
-        <Radio value='en'>{i18n('common.text.en')}</Radio>
+        <Radio value='zh-cn'>简体中文</Radio>
+        <Radio value='en'>English</Radio>
       </Radio.Group>
     </div>
     {/* <div className={styles.title}>
@@ -361,29 +360,34 @@ export function ProxyBody() {
     if (!apiPrefix) {
       return
     }
-    const xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.open('GET', `${apiPrefix}/api/system/get-version-a`);
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        localStorage.setItem('_BaseURL', apiPrefix);
-        location.reload();
-      } else {
-        message.error('接口测试不通过')
-      }
-    };
-    xhr.send();
+    try{
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      xhr.open('GET', `${apiPrefix}/api/system/get-version-a`);
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          localStorage.setItem('_BaseURL', apiPrefix);
+          location.reload();
+        } else {
+          message.error(i18n('setting.message.urlTestError'))
+        }
+      };
+      xhr.send();
+    }
+    catch{
+      message.error(i18n('setting.message.urlTestError'))
+    }
   }
 
   return <>
     <div className={styles.title}>
-      后台服务地址
+      {i18n('setting.label.serviceAddress')}
     </div>
     <div className={classnames(styles.content, styles.chatGPTKey)}>
       <Input value={apiPrefix} onChange={updateApi} />
     </div>
     <div className={styles.bottomButton}>
-      <Button type="primary" onClick={affirmUpdateApi}>应用</Button>
+    <Button type="primary" onClick={affirmUpdateApi}>{i18n('setting.button.use')}</Button>
     </div>
   </>
 }
@@ -396,13 +400,13 @@ function AboutUs() {
     <div className={styles.brief}>
       <div className={styles.appName}>Chat2DB</div>
       <div className={styles.env}>
-        当前环境:{window._ENV}
+        {i18n('setting.text.currentEnv')}:{window._ENV}
       </div>
       <div className={styles.version}>
-        当前版本:v{__APP_VERSION__} build {__BUILD_TIME__}
+        {i18n('setting.text.currentVersion')}:v{__APP_VERSION__} build {__BUILD_TIME__}
       </div>
       <a target='blank' href='https://github.com/alibaba/Chat2DB/blob/main/CHANGELOG.md' className={styles.log}>
-        查看更新日志
+        {i18n('setting.text.viewingUpdateLogs')}
       </a>
     </div>
   </div>
