@@ -13,7 +13,6 @@ import themeLightImg from '@/assets/images/theme-light.png';
 import themeAutoImg from '@/assets/images/theme-auto.png';
 import { getOsTheme } from '@/utils';
 import { useTheme } from '@/utils/hooks';
-import { v4 as uuidv4 } from 'uuid';
 
 const { Option } = Select;
 
@@ -29,26 +28,26 @@ export enum AiSqlSourceType {
 
 const colorList = [
   {
+    code: 'polar-blue',
+    name: i18n('setting.label.blue'),
+    color: '#1a90ff'
+  },
+  {
     code: 'polar-green',
-    name: '极光绿',
+    name: i18n('setting.label.green'),
     color: '#1d3712'
 
   },
   {
-    code: 'polar-blue',
-    name: '蓝蓬釉',
-    color: '#1a90ff'
-  },
-  {
     code: 'golden-purple',
-    name: '酱紫',
+    name: i18n('setting.label.violet'),
     color: '#301c4d'
   },
-  {
-    code: 'sunset-orange',
-    name: '日暮',
-    color: "#593815"
-  },
+  // {
+  //   code: 'sunset-orange',
+  //   name: '日暮',
+  //   color: "#593815"
+  // },
 ];
 
 const themeList = [
@@ -73,14 +72,6 @@ const themeList = [
   //   img: 'https://img.alicdn.com/imgextra/i1/O1CN01KGCqY21uJpuFjEQW2_!!6000000006017-2-tps-181-135.png'
   // },
 ];
-
-export const colorSchemeListeners: { [key: string]: ((theme: ThemeType) => void) } = {};
-
-export function addColorSchemeListener(callback: (theme: ThemeType) => void) {
-  const uuid = uuidv4();
-  colorSchemeListeners[uuid] = callback;
-  return uuid
-}
 
 const menusList = [
   {
@@ -108,20 +99,7 @@ const menusList = [
 export default memo<IProps>(function Setting({ className, text }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentMenu, setCurrentMenu] = useState(menusList[0]);
-  const [, setAppTheme] = useTheme();
-
-  // 监听系统(OS)主题变化
-  useLayoutEffect(() => {
-    function change(e: any) {
-      setAppTheme(e.matches ? ThemeType.Dark : ThemeType.Light)
-    }
-
-    const themeMedia = window.matchMedia("(prefers-color-scheme: dark)");
-    themeMedia.addListener(change);
-    return () => {
-      themeMedia.removeListener(change)
-    }
-  }, [])
+  const [appTheme, setAppTheme] = useTheme();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -185,7 +163,6 @@ export default memo<IProps>(function Setting({ className, text }) {
 
 // openAI 的设置项
 export function SettingAI() {
-  const [, setAppTheme] = useTheme();
   const [chatgptConfig, setChatgptConfig] = useState<IChatgptConfig>({
     apiKey: '',
     httpProxyHost: '',
@@ -249,13 +226,13 @@ export function SettingAI() {
           HTTP Proxy Host
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder={i18n('setting.pleasehold.httpsProxy','host')} value={chatgptConfig.httpProxyHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyHost: e.target.value }) }} />
+          <Input placeholder={i18n('setting.pleasehold.httpsProxy', 'host')} value={chatgptConfig.httpProxyHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyHost: e.target.value }) }} />
         </div>
         <div className={styles.title}>
           HTTP Proxy Prot
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder={i18n('setting.pleasehold.httpsProxy','port')} value={chatgptConfig.httpProxyPort} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyPort: e.target.value }) }} />
+          <Input placeholder={i18n('setting.pleasehold.httpsProxy', 'port')} value={chatgptConfig.httpProxyPort} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyPort: e.target.value }) }} />
         </div>
       </div>
     }
@@ -279,7 +256,7 @@ export function SettingAI() {
       </div>
     }
     <div className={styles.bottomButton}>
-    <Button type="primary" onClick={changeChatgptApiKey}>{i18n('setting.button.use')}</Button>
+      <Button type="primary" onClick={changeChatgptApiKey}>{i18n('setting.button.use')}</Button>
     </div>
   </>
 }
@@ -296,6 +273,10 @@ export function BaseBody() {
     html.setAttribute('primary-color', item.code);
     localStorage.setItem('primary-color', item.code);
     setCurrentPrimaryColor(item.code)
+    setAppTheme({
+      ...appTheme,
+      primaryColor: item.code
+    });
   };
 
   function changeLang() {
@@ -305,7 +286,11 @@ export function BaseBody() {
   }
 
   function handleChangeTheme(theme: ThemeType) {
-    setAppTheme(theme, () => { setCurrentTheme(theme) });
+    setAppTheme({
+      ...appTheme,
+      backgroundColor: theme
+    });
+    setCurrentTheme(theme)
   }
 
   return <>
@@ -316,8 +301,10 @@ export function BaseBody() {
       {themeList.map(t => {
         return (
           <div key={t.code} className={styles.themeItemBox}>
-            <div className={classnames({ [styles.current]: currentTheme == t.code })} onClick={handleChangeTheme.bind(null, t.code)} style={{ backgroundImage: `url(${t.img})` }} />
-            {t.name}
+            <div className={classnames({ [styles.current]: currentTheme == t.code }, styles.themeImg)} onClick={handleChangeTheme.bind(null, t.code)} style={{ backgroundImage: `url(${t.img})` }} />
+            <div className={styles.themeName}>
+              {t.name}
+            </div>
           </div>
         );
       })}
@@ -325,31 +312,35 @@ export function BaseBody() {
     <div className={styles.title}>
       {i18n('setting.title.language')}
     </div>
-    <div>
+    <div className={styles.langBox}>
       <Radio.Group onChange={changeLang} value={lang}>
         <Radio value='zh-cn'>简体中文</Radio>
         <Radio value='en'>English</Radio>
       </Radio.Group>
     </div>
-    {/* <div className={styles.title}>
-    主题色
-  </div>
-  <ul className={styles.primaryColorList}>
-    {colorList.map((item) => {
-      return (
-        <li key={item.code} onClick={changePrimaryColor.bind(null, item)} style={{ backgroundColor: item.color }}>
-          {currentPrimaryColor == item.code && <Iconfont code="&#xe617;"></Iconfont>}
-        </li>
-      );
-    })}
-  </ul> */}
+    <div className={styles.title}>
+      {i18n('setting.title.themeColor')}
+    </div>
+    <ul className={styles.primaryColorList}>
+      {colorList.map((item) => {
+        return (
+          <div key={item.code} className={styles.themeColorItem}>
+            <div className={styles.colorLump} key={item.code} onClick={changePrimaryColor.bind(null, item)} style={{ backgroundColor: item.color }}>
+              {currentPrimaryColor == item.code && <Iconfont code="&#xe617;"></Iconfont>}
+            </div>
+            <div className={styles.colorName}>
+              {item.name}
+            </div>
+          </div>
+        );
+      })}
+    </ul>
   </>
 }
 
 // 代理设置
 export function ProxyBody() {
   const [apiPrefix, setApiPrefix] = useState(window._BaseURL);
-  const [, setAppTheme] = useTheme();
 
   function updateApi(e: any) {
     console.log(e.target.value)
@@ -360,7 +351,7 @@ export function ProxyBody() {
     if (!apiPrefix) {
       return
     }
-    try{
+    try {
       const xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
       xhr.open('GET', `${apiPrefix}/api/system/get-version-a`);
@@ -374,7 +365,7 @@ export function ProxyBody() {
       };
       xhr.send();
     }
-    catch{
+    catch {
       message.error(i18n('setting.message.urlTestError'))
     }
   }
@@ -387,14 +378,13 @@ export function ProxyBody() {
       <Input value={apiPrefix} onChange={updateApi} />
     </div>
     <div className={styles.bottomButton}>
-    <Button type="primary" onClick={affirmUpdateApi}>{i18n('setting.button.use')}</Button>
+      <Button type="primary" onClick={affirmUpdateApi}>{i18n('setting.button.use')}</Button>
     </div>
   </>
 }
 
 // 关于我们
 function AboutUs() {
-  const [, setAppTheme] = useTheme();
   return <div className={styles.aboutUs}>
     <BrandLogo size={60} className={styles.brandLogo} />
     <div className={styles.brief}>

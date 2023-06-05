@@ -13,18 +13,23 @@
     flex-direction: column;
     align-items: center;
     margin: 0px 7px;
-    div {
+    .themeImg {
       margin-bottom: 6px;
       width: 64px;
       height: 48px;
       overflow: hidden;
-      border-radius: 6px;
+      border-radius: 2px;
       background-size: cover;
       background-repeat: no-repeat;
       cursor: pointer;
     }
+    .themeName {
+      text-align: center;
+      font-size: 12px;
+    }
     .current {
-      border: 1px solid var(--custom-primary-color-active);
+      box-sizing: border-box;
+      border: 2px solid var(--color-primary);
     }
   }
   filter: brightness(var(--filter-brightness));
@@ -42,7 +47,7 @@
   margin-bottom: 10px;
   i {
     margin-left: 10px;
-    color: var(--custom-primary-color);
+    color: var(--color-primary);
   }
 }
 
@@ -50,11 +55,20 @@
   margin-bottom: 15px;
 }
 
+.langBox {
+  margin-bottom: 20px;
+}
+
 .primaryColorList {
   display: flex;
-  margin-bottom: 20px;
-  li {
-    margin-right: 15px;
+  .themeColorItem {
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .colorLump {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -63,10 +77,14 @@
     border: 2px solid transparent;
     border-radius: 50%;
     cursor: pointer;
-    i {
-      color: #fff;
-      font-size: 18px;
-    }
+    border: 1px solid var(--color-bg-hover);
+  }
+  i {
+    color: #fff;
+  }
+  .colorName {
+    margin-top: 6px;
+    font-size: 12px;
   }
 }
 

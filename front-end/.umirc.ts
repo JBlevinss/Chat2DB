@@ -9,6 +9,7 @@ const chainWebpack = (config: any, { webpack }: any) => {
 
 export default defineConfig({
   routes: [
+    { path: "/demo", component: "@/pages/demo" },
     { path: "/", component: "main" },
   ],
   npmClient: "yarn",
