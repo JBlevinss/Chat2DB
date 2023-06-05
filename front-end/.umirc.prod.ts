@@ -1,5 +1,6 @@
-import { defineConfig } from "umi";
+import { defineConfig } from 'umi';
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const UMI_PublicPath = process.env.UMI_PublicPath || '/static/front/';
 
 const chainWebpack = (config: any, { webpack }: any) => {
   config.plugin('monaco-editor').use(MonacoWebpackPlugin, [
@@ -15,17 +16,8 @@ const chainWebpack = (config: any, { webpack }: any) => {
 };
 
 export default defineConfig({
-  title: 'Chat2DB',
-  base: '/',
-  publicPath: '/',
-  routes: [
-    { path: "/demo", component: "@/pages/demo" },
-    { path: "/", component: "main" },
-  ],
-  npmClient: "yarn",
-  dva: {},
-  plugins: ["@umijs/plugins/dist/dva"],
-  chainWebpack,
+  publicPath: UMI_PublicPath,
+  chainWebpack
 });
 
 function formatDate(date:any, fmt = 'yyyy-MM-dd') {

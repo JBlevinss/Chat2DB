@@ -4,9 +4,12 @@ import { Button, Steps } from 'antd'
 import { LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import Setting from '@/components/Setting';
+import LazyLoading from '@/components/Loading/LazyLoading';
+
 
 export default function Demo() {
   return <div className={styles.page}>
+    <LazyLoading></LazyLoading>
     <Setting />
     <div>
       <Steps
