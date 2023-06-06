@@ -3,17 +3,18 @@ import { Link, Outlet } from 'umi';
 import { ConfigProvider } from 'antd';
 import styles from './index.less';
 import { useState } from 'react';
-import { ThemeType } from '@/constants';
+import { PrimaryColorType, ThemeType } from '@/constants';
 import { useTheme } from '@/utils/hooks';
 import { v4 as uuidv4 } from 'uuid';
 import antdDarkTheme from '@/theme/antdTheme/dark';
 import antdLightTheme from '@/theme/antdTheme/light';
 import antdPrimaryColor from '@/theme/antdTheme/primaryColor';
-import enUS from 'antd/locale/en_US';
-import zhCN from 'antd/locale/zh_CN';
+import antdEnUS from 'antd/locale/en_US';
+import antdZhCN from 'antd/locale/zh_CN';
 
 declare global {
   interface Window {
+    _Lang: string;
     _ENV: string;
     _APP_PORT: string;
     _BUILD_TIME: string;
@@ -24,6 +25,7 @@ declare global {
 }
 
 window._ENV = process.env.UMI_ENV! || 'local';
+window._Lang = localStorage.getItem('lang') || 'en-us'
 
 export const colorSchemeListeners: { [key: string]: Function } = {};
 
@@ -42,11 +44,10 @@ export default function Layout() {
 
     antdTheme.token = {
       ...antdTheme.token,
-      ...antdPrimaryColor[appTheme.primaryColor] || {},
+      ...antdPrimaryColor[appTheme.primaryColor as PrimaryColorType] || {},
     }
-    console.log(antdPrimaryColor[appTheme.primaryColor])
-    console.log(antdTheme)
-    setAntdTheme(antdTheme);
+    setAntdTheme({ ...antdTheme });
+    console.log({ ...antdTheme })
   }, [appTheme])
 
   // 监听系统(OS)主题变化
@@ -96,7 +97,7 @@ export default function Layout() {
 
   return (
     <ConfigProvider
-      locale={enUS}
+      locale={window._Lang === 'en-us' ? antdEnUS : antdZhCN}
       theme={antdTheme}
     >
       <div className={styles.app}>

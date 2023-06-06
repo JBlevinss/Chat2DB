@@ -9,7 +9,6 @@ import LazyLoading from '@/components/Loading/LazyLoading';
 
 export default function Demo() {
   return <div className={styles.page}>
-    <LazyLoading></LazyLoading>
     <Setting />
     <div>
       <Steps

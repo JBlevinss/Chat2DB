@@ -1,10 +1,22 @@
-export default {
-  "polar-green": {
+import { PrimaryColorType } from '@/constants';
+
+type IAntdPrimaryColor = {
+  [key in PrimaryColorType]: any;
+}
+
+const antdPrimaryColor: IAntdPrimaryColor =  {
+  [PrimaryColorType.Polar_Green]: {
+    "custom-name": "polar-green",
     "colorPrimary": "#3c8618",
-    "colorPrimaryActive": "#26610d"
   },
-  "golden-purple": {
+  [PrimaryColorType.Golden_Purple]: {
+    "custom-name": "golden-purple",
     "colorPrimary": "#51258f",
-    "colorPrimaryActive": "#361669"
+  },
+  [PrimaryColorType.Polar_Blue]: {
+    "custom-name": "polar-blue",
+    "colorPrimary": "#1677ff",
   }
 }
+
+export default antdPrimaryColor

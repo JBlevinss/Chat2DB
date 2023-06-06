@@ -1,24 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import { addColorSchemeListener, colorSchemeListeners } from '@/layouts';
 import { getOsTheme } from '@/utils';
-import { ThemeType } from '@/constants';
+import { ThemeType, PrimaryColorType } from '@/constants';
+
+interface ITheme {
+  backgroundColor:ThemeType,
+  primaryColor: PrimaryColorType
+}
 
 const initialTheme = (() => {
   let backgroundColor = localStorage.getItem('theme') as ThemeType  || ThemeType.Dark;
-  let primaryColor = localStorage.getItem('primaryColor') || 'polar-blue';
+  let primaryColor = localStorage.getItem('primary-color') || 'polar-blue';
   if (backgroundColor === 'followOs') {
     backgroundColor = getOsTheme();
   }
   return {
     backgroundColor,
     primaryColor
-  }
+  } as ITheme
 })()
-
-interface ITheme {
-  backgroundColor:ThemeType,
-  primaryColor: string
-}
 
 export function useTheme() {
   const [appTheme, setAppTheme] = useState<ITheme>(initialTheme);
