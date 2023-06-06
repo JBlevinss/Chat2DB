@@ -47,7 +47,6 @@ export default function Layout() {
       ...antdPrimaryColor[appTheme.primaryColor as PrimaryColorType] || {},
     }
     setAntdTheme({ ...antdTheme });
-    console.log({ ...antdTheme })
   }, [appTheme])
 
   // 监听系统(OS)主题变化

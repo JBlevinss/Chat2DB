@@ -8,7 +8,7 @@ interface ITheme {
   primaryColor: PrimaryColorType
 }
 
-const initialTheme = (() => {
+const initialTheme = () => {
   let backgroundColor = localStorage.getItem('theme') as ThemeType  || ThemeType.Dark;
   let primaryColor = localStorage.getItem('primary-color') || 'polar-blue';
   if (backgroundColor === 'followOs') {
@@ -18,10 +18,10 @@ const initialTheme = (() => {
     backgroundColor,
     primaryColor
   } as ITheme
-})()
+}
 
 export function useTheme() {
-  const [appTheme, setAppTheme] = useState<ITheme>(initialTheme);
+  const [appTheme, setAppTheme] = useState<ITheme>(initialTheme());
 
   useEffect(() => {
     const uuid = addColorSchemeListener(setAppTheme);

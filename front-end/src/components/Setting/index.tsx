@@ -343,7 +343,6 @@ export function ProxyBody() {
   const [apiPrefix, setApiPrefix] = useState(window._BaseURL);
 
   function updateApi(e: any) {
-    console.log(e.target.value)
     setApiPrefix(e.target.value)
   }
 
