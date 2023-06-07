@@ -6,9 +6,9 @@ interface IProps {
   className?: string;
 }
 
-export default memo<IProps>(function Connect(props) {
+export default memo<IProps>(function Chart(props) {
   const { className } = props
   return <div className={classnames(styles.box, className)}>
-
+    dashboard
   </div>
 })

@@ -7,88 +7,54 @@ import Setting from '@/components/Setting';
 import Iconfont from '@/components/Iconfont';
 import BrandLogo from '@/components/BrandLogo';
 
-import Connect from './connect';
-import Chart from './chart';
+import DataSource from './dataSource';
+import Workspace from './workspace';
+import Dashboard from './dashboard';
 import Chat from './chat';
 
 import styles from './index.less';
-
-interface INavItem {
-  title: string;
-  key: string;
-  icon: string;
-  component?: React.ReactNode;
-  openBrowser?: string;
-}
+import { INavItem } from '@/typings/main';
+import { isElectron } from '@/utils/check';
 
 const navConfig: INavItem[] = [
   {
-    title: i18n('home.nav.database'),
-    key: 'connect',
+    key: 'dataSource',
     icon: '\ue609',
-    component: <Connect />,
+    component: <DataSource />,
   },
   {
-    title: 'chatRobot',
-    key: 'chat',
-    icon: "\ue70e",
-    component: <Chat />
+    key: 'workspace',
+    icon: '\ue70e',
+    component: <Workspace />,
   },
   {
-    title: 'chart',
-    key: 'chart',
-    icon: "\ue70e",
-    component: <Chart />
+    key: 'dashboard',
+    icon: '\ue70e',
+    component: <Dashboard />,
   },
   {
-    title: i18n('home.nav.github'),
     key: 'github',
     icon: '\ue885',
-    openBrowser: 'https://github.com/alibaba/Chat2DB'
-  }
+    openBrowser: 'https://github.com/alibaba/Chat2DB',
+  },
 ];
 
-function Main() {
+function MainPage() {
   const [activeNav, setActiveNav] = useState<INavItem>(navConfig[0]);
 
-  useEffect(() => {
-    // TODO:需要优化
-    // navConfig.map(item => {
-    //   if (window.location.hash.indexOf(item.path) === 1) {
-    //     setActiveNav(item);
-    //   }
-    // })
-    // history.listen((location) => {
-    //   if (location.pathname.indexOf('/database') === 0) {
-    //     setActiveNav(LNKConfig[0])
-    //     return
-    //   }
-    //   LNKConfig.map(item => {
-    //     if (item.path === location.pathname) {
-    //       setActiveNav(item)
-    //     }
-    //   })
-    // })
-  }, []);
-
   function switchingNav(item: INavItem) {
-    // if (item.openBrowser) {
-    //   window.open(item.path);
-    // } else {
-    //   history.push(item.path);
-    //   setActiveNav(item);
-    // }
-  }
-
-  function jumpHome() {
-    history.push('/');
+    if (item.openBrowser) {
+      window.open(item.openBrowser);
+    } else {
+      setActiveNav(item);
+    }
   }
 
   return (
     <div className={styles.page}>
       <div className={styles.layoutLeft}>
-        <div className={styles.dargBox}></div>
-        <BrandLogo onClick={jumpHome} className={styles.brandLogo} />
+        {/* <div className={styles.dargBox}></div> */}
+        <BrandLogo onClick={() => {}} className={styles.brandLogo} />
         <ul className={styles.navList}>
           {navConfig.map((item, index) => {
             return (
@@ -110,16 +76,20 @@ function Main() {
         </div>
       </div>
       <div className={styles.layoutRight}>
-        {
-          navConfig.map(item => {
-            return <div key={item.key} className={styles.componentBox}>
+        {navConfig.map((item) => {
+          return (
+            <div
+              key={item.key}
+              className={styles.componentBox}
+              hidden={activeNav.key !== item.key}
+            >
               {item.component}
             </div>
-          })
-        }
+          );
+        })}
       </div>
     </div>
   );
 }
 
-export default Main;
+export default MainPage;

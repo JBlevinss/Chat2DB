@@ -4,9 +4,8 @@ import classnames from 'classnames';
 import Iconfont from '@/components/Iconfont';
 import { Modal, Radio, Input, message, Select, Tooltip, Button } from 'antd';
 import i18n from '@/i18n';
-import configService, { IChatgptConfig } from '@/service/config';
+import configService, { IChatGPTConfig } from '@/service/config';
 import { ThemeType } from '@/constants'
-import miscService from '@/service/misc';
 import BrandLogo from '@/components/BrandLogo';
 import themeDarkImg from '@/assets/images/theme-dark.png';
 import themeLightImg from '@/assets/images/theme-light.png';
@@ -163,7 +162,7 @@ export default memo<IProps>(function Setting({ className, text }) {
 
 // openAI 的设置项
 export function SettingAI() {
-  const [chatgptConfig, setChatgptConfig] = useState<IChatgptConfig>({
+  const [chatgptConfig, setChatgptConfig] = useState<IChatGPTConfig>({
     apiKey: '',
     httpProxyHost: '',
     httpProxyPort: '',

@@ -10,7 +10,7 @@ const locale = {
 const isEn = localStorage.getItem('lang') === 'en';
 const isZH = localStorage.getItem('lang') === 'zh-cn';
 
-const langSet = locale[isZH ? 'zh-cn' : 'en'];
+const langSet: Record<string, string> = locale[isZH ? 'zh-cn' : 'en'];
 
 function i18n(key: keyof typeof zhCN, ...args: any[]) {
   let result = langSet[key];
