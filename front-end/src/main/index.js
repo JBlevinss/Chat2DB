@@ -15,6 +15,12 @@ function createWindow() {
 
   loadMainResource(mainWindow);
 
+  // 监听打开新窗口事件 用默认浏览器打开
+  mainWindow.webContents.on('new-window', function (event, url) {
+    event.preventDefault();
+    shell.openExternal(url);
+  });
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });

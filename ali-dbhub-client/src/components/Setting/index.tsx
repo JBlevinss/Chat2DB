@@ -6,7 +6,7 @@ import Button from '@/components/Button';
 import { Modal, Radio, Input, message, Select, Tooltip } from 'antd';
 import i18n from '@/i18n';
 import { imghub } from '@/utils/imghub';
-import configService, { IChatgptConfig } from '@/service/config';
+import configService, { IChatGPTConfig } from '@/service/config';
 import miscService from '@/service/misc';
 import BrandLogo from '@/components/BrandLogo';
 import themeDarkImg from '@/assets/theme-dark.png';
@@ -201,7 +201,7 @@ export function addColorSchemeListener(callback: (theme: string) => void) {
 
 // openAI 的设置项
 export function SettingAI() {
-  const [chatgptConfig, setChatgptConfig] = useState<IChatgptConfig>({
+  const [chatgptConfig, setChatgptConfig] = useState<IChatGPTConfig>({
     apiKey: '',
     httpProxyHost: '',
     httpProxyPort: '',

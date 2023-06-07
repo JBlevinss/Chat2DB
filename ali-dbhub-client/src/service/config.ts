@@ -2,7 +2,7 @@ import createRequest from "./base";
 const getSystemConfig = createRequest<{code:string}, {code:string,content:string}>('/api/config/system_config/:code', { errorLevel: false });
 const setSystemConfig = createRequest<{ code: string, content: string }, void>('/api/config/system_config', { errorLevel: 'toast', method: 'post' });
 
-export interface IChatgptConfig {
+export interface IChatGPTConfig {
   apiKey: string;
   httpProxyHost: string;
   httpProxyPort: string;
@@ -11,9 +11,9 @@ export interface IChatgptConfig {
   aiSqlSource: string;
   restAiStream: boolean;
 }
-const getChatGptSystemConfig = createRequest<void, IChatgptConfig>('/api/config/system_config/chatgpt', { errorLevel: false });
+const getChatGptSystemConfig = createRequest<void, IChatGPTConfig>('/api/config/system_config/chatgpt', { errorLevel: false });
 
-const setChatGptSystemConfig = createRequest<IChatgptConfig, void>('/api/config/system_config/chatgpt', { errorLevel: 'toast', method: 'post'  });
+const setChatGptSystemConfig = createRequest<IChatGPTConfig, void>('/api/config/system_config/chatgpt', { errorLevel: 'toast', method: 'post'  });
 
 export default {    
   getSystemConfig,

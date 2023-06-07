@@ -13,7 +13,6 @@
 *.ipr
 
 ### Visual Studio Code ###
-.vscode
 package-lock.json
 yarn.lock
 
