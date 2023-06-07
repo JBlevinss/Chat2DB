@@ -1,6 +1,13 @@
 import { defineConfig } from "umi";
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 const chainWebpack = (config: any, { webpack }: any) => {
+  config.plugin('monaco-editor').use(MonacoWebpackPlugin, [
+    {
+      languages: ['mysql', 'pgsql', 'sql'],
+    },
+  ]);
+
   config.plugin('define').use(require('webpack').DefinePlugin, [{
     __BUILD_TIME__: JSON.stringify(formatDate(new Date(),'yyyyMMddhhmmss')),
     __APP_VERSION__: JSON.stringify(process.env.APP_VERSION || '0.0.0'),
@@ -8,7 +15,11 @@ const chainWebpack = (config: any, { webpack }: any) => {
 };
 
 export default defineConfig({
+  title: 'Chat2DB',
+  base: '/',
+  publicPath: '/',
   routes: [
+    { path: "/demo", component: "@/pages/demo" },
     { path: "/", component: "main" },
   ],
   npmClient: "yarn",
