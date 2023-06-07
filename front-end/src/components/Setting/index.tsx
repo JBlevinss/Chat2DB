@@ -214,25 +214,25 @@ export function SettingAI() {
           Api Key
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder={i18n('setting.pleasehold.apiKey')} value={chatgptConfig.apiKey} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, apiKey: e.target.value }) }} />
+          <Input placeholder={i18n('setting.placeholder.apiKey')} value={chatgptConfig.apiKey} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, apiKey: e.target.value }) }} />
         </div>
         <div className={styles.title}>
           Api Host
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder={i18n('setting.pleasehold.apiHost')} value={chatgptConfig.apiHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, apiHost: e.target.value }) }} />
+          <Input placeholder={i18n('setting.placeholder.apiHost')} value={chatgptConfig.apiHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, apiHost: e.target.value }) }} />
         </div>
         <div className={styles.title}>
           HTTP Proxy Host
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder={i18n('setting.pleasehold.httpsProxy', 'host')} value={chatgptConfig.httpProxyHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyHost: e.target.value }) }} />
+          <Input placeholder={i18n('setting.placeholder.httpsProxy', 'host')} value={chatgptConfig.httpProxyHost} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyHost: e.target.value }) }} />
         </div>
         <div className={styles.title}>
           HTTP Proxy Prot
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder={i18n('setting.pleasehold.httpsProxy', 'port')} value={chatgptConfig.httpProxyPort} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyPort: e.target.value }) }} />
+          <Input placeholder={i18n('setting.placeholder.httpsProxy', 'port')} value={chatgptConfig.httpProxyPort} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, httpProxyPort: e.target.value }) }} />
         </div>
       </div>
     }
@@ -242,7 +242,7 @@ export function SettingAI() {
           {i18n('setting.label.customAiUrl')}
         </div>
         <div className={classnames(styles.content, styles.chatGPTKey)}>
-          <Input placeholder={i18n('setting.pleasehold.customUrl')} value={chatgptConfig.restAiUrl} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, restAiUrl: e.target.value }) }} />
+          <Input placeholder={i18n('setting.placeholder.customUrl')} value={chatgptConfig.restAiUrl} onChange={(e) => { setChatgptConfig({ ...chatgptConfig, restAiUrl: e.target.value }) }} />
         </div>
         <div className={styles.title}>
           {i18n('setting.label.isStreamOutput')}

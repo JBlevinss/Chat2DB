@@ -1,22 +1,19 @@
-import zhCN from './zh';
-import en from './en';
 import React, { Fragment } from 'react';
+import zhCN from './zh-cn';
+import en from './en';
 
 const locale = {
   en,
   'zh-cn': zhCN,
 };
 
-const _isZH = (localStorage.getItem('lang') || '').toLowerCase().indexOf('zh') > -1;
-export function isEN() {
-  return _isZH;
-}
-const langSet:any = locale[_isZH ? 'zh-cn' : 'en'];
+const isEn = localStorage.getItem('lang') === 'en';
+const isZH = localStorage.getItem('lang') === 'zh-cn';
 
-export type I18nKey = keyof typeof zhCN;
-function i18n(key: keyof typeof zhCN, ...args: any[]): string;
-function i18n(key: string, ...args: any[]) {
-  let result: string = langSet[key];
+const langSet = locale[isZH ? 'zh-cn' : 'en'];
+
+function i18n(key: keyof typeof zhCN, ...args: any[]) {
+  let result = langSet[key];
   if (result === undefined) {
     return `[${key}]`;
   } else {
@@ -33,21 +30,28 @@ function i18n(key: string, ...args: any[]) {
   }
 }
 
-function i18nElement(key: keyof typeof zhCN, ...args: React.ReactNode[]): React.ReactNode[];
-function i18nElement(key: string, ...args: React.ReactNode[]) {
-  let str: string = langSet[key];
+function i18nElement(key: keyof typeof zhCN, ...args: React.ReactNode[]) {
+  let str = langSet[key];
   if (str === undefined) {
     return `[${key}]`;
   } else {
     let result: React.ReactNode[] = [];
     str.split(/(\{\d\})/).forEach((item, i) => {
       if (/^\{\d\}$/.test(item)) {
-        result.push(<Fragment key={i}>{args[parseInt(item.substring(1, item.length - 1)) - 1]}</Fragment>);
+        result.push(
+          <Fragment key={i}>
+            {args[parseInt(item.substring(1, item.length - 1)) - 1]}
+          </Fragment>,
+        );
       } else {
-        result.push(<Fragment key={i}>{item.replace(/\{(.+?)\|(.+?)\}/g, (_, singular, plural) => {
-          const n = args[0];
-          return n == 1 ? singular : plural;
-        })}</Fragment>);
+        result.push(
+          <Fragment key={i}>
+            {item.replace(/\{(.+?)\|(.+?)\}/g, (_, singular, plural) => {
+              const n = args[0];
+              return n == 1 ? singular : plural;
+            })}
+          </Fragment>,
+        );
       }
     });
     return result;
@@ -55,4 +59,4 @@ function i18nElement(key: string, ...args: React.ReactNode[]) {
 }
 
 export default i18n;
-export { i18nElement };
+export { i18n, i18nElement, isEn, isZH };

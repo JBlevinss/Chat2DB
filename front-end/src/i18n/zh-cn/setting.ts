@@ -22,10 +22,10 @@ export default {
   'setting.text.viewingUpdateLogs': '查看当前应用',
   'setting.label.isStreamOutput': '接口是否流式输出',
   'setting.label.customAiUrl': '自定义接口Url',
-  'setting.pleasehold.httpsProxy': '非必填，用于设置请求OPENAI接口时的HTTP代理{1}',
-  'setting.pleasehold.apiKey': '使用OpenAi接口时必填，可前往OpenAI官网查看APIKEY',
-  'setting.pleasehold.customUrl': '选择自定义AI时必填，用于设置自定义AI的REST接口URL',
-  'setting.pleasehold.apiHost': '非必填，默认值为 https://api.openai.com/',
+  'setting.placeholder.httpsProxy': '非必填，用于设置请求OPENAI接口时的HTTP代理{1}',
+  'setting.placeholder.apiKey': '使用OpenAi接口时必填，可前往OpenAI官网查看APIKEY',
+  'setting.placeholder.customUrl': '选择自定义AI时必填，用于设置自定义AI的REST接口URL',
+  'setting.placeholder.apiHost': '非必填，默认值为 https://api.openai.com/',
   'setting.message.urlTestError': '接口测试不通过',
 
 }

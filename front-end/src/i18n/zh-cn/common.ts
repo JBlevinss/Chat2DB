@@ -18,6 +18,4 @@ export default {
   'common.button.save': '保存',
   'common.button.execute': '执行',
   'common.message.successfulConfig': '配置成功',
-
-
 }

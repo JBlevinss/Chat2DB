@@ -22,9 +22,9 @@ export default {
   'setting.text.viewingUpdateLogs': 'Viewing Update Logs',
   'setting.label.isStreamOutput': 'Whether the interface streams output',
   'setting.label.customAiUrl': 'User-defined interface Url',
-  'setting.pleasehold.httpsProxy': 'Not required. Set HTTP proxy {1} when requesting OPENAI interface.',
-  'setting.pleasehold.apiKey': 'OpenAI official website to view the APIKEY',
-  'setting.pleasehold.customUrl': 'URL of the REST interface of the AI',
-  'setting.pleasehold.apiHost': 'This parameter is mandatory. The default value is https://api.openai.com/',
+  'setting.placeholder.httpsProxy': 'Not required. Set HTTP proxy {1} when requesting OPENAI interface.',
+  'setting.placeholder.apiKey': 'OpenAI official website to view the APIKEY',
+  'setting.placeholder.customUrl': 'URL of the REST interface of the AI',
+  'setting.placeholder.apiHost': 'This parameter is mandatory. The default value is https://api.openai.com/',
   'setting.message.urlTestError': 'The interface test failed. Procedure',
 }
