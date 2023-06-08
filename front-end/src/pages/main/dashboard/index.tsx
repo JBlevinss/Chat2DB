@@ -1,13 +1,18 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
+import { connect, Dispatch } from 'umi';
 import styles from './index.less';
 import classnames from 'classnames';
 import { IChatData, IChatDataItem } from '@/typings/dashboard';
 import DraggableContainer from '../components/DraggableContainer';
 import Iconfont from '@/components/Iconfont';
 import ChartItem from './chart-item';
+import { Button } from 'antd';
+import { GlobalState } from '@/models/global';
 
 interface IProps {
   className?: string;
+  setting: GlobalState['settings'];
+  dispatch: Dispatch;
 }
 
 const initChartItemData: IChatDataItem = {
@@ -27,7 +32,7 @@ const initDataList: IChatData[] = [
   },
 ];
 
-export default memo<IProps>(function Chart(props) {
+function Chart(props: IProps) {
   const { className } = props;
 
   const [dataList, setDataList] = useState(initDataList);
@@ -37,6 +42,7 @@ export default memo<IProps>(function Chart(props) {
   useEffect(() => {
     // TODO: 获取列表数据
     //
+    console.log('chart', props);
   }, []);
 
   const renderContent = () => {
@@ -115,8 +121,26 @@ export default memo<IProps>(function Chart(props) {
             <div>{i.name}</div>
           </div>
         ))}
+
+        <Button
+          onClick={() => {
+            props.dispatch({
+              type: 'global/updateSettings',
+              payload: {
+                theme: 'dark',
+                language: 'en',
+              },
+            });
+          }}
+        >
+          测试dva
+        </Button>
       </div>
       <div className={styles.box_right}>{renderContent()}</div>
     </DraggableContainer>
   );
-});
+}
+
+export default connect(({ global }: { global: GlobalState }) => ({
+  settings: global.settings,
+}))(Chart);

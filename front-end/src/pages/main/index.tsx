@@ -3,7 +3,7 @@ import i18n from '@/i18n';
 import { Button } from 'antd';
 import { history } from 'umi';
 import classnames from 'classnames';
-import Setting from '@/components/Setting';
+import Setting from '@/blocks/Setting';
 import Iconfont from '@/components/Iconfont';
 import BrandLogo from '@/components/BrandLogo';
 
