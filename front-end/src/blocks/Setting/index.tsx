@@ -12,6 +12,7 @@ import { getOsTheme } from '@/utils';
 import i18n from '@/i18n';
 import { ThemeType } from '@/typings/theme';
 import { useTheme } from '@/hooks';
+import { APP_NAME, GITHUB_URL } from '@/constants/appConfig';
 
 const { Option } = Select;
 
@@ -454,19 +455,15 @@ function AboutUs() {
     <div className={styles.aboutUs}>
       <BrandLogo size={60} className={styles.brandLogo} />
       <div className={styles.brief}>
-        <div className={styles.appName}>Chat2DB</div>
+        <div className={styles.appName}>{APP_NAME}</div>
         <div className={styles.env}>
           {i18n('setting.text.currentEnv')}:{window._ENV}
         </div>
         <div className={styles.version}>
-          {i18n('setting.text.currentVersion')}:v{__APP_VERSION__} build{' '}
+          {i18n('setting.text.currentVersion')}:v{__APP_VERSION__} build
           {__BUILD_TIME__}
         </div>
-        <a
-          target="blank"
-          href="https://github.com/alibaba/Chat2DB/blob/main/CHANGELOG.md"
-          className={styles.log}
-        >
+        <a target="blank" href={GITHUB_URL} className={styles.log}>
           {i18n('setting.text.viewingUpdateLogs')}
         </a>
       </div>

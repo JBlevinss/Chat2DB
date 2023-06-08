@@ -112,7 +112,7 @@ function ChartItem(props: IChartItemProps) {
       <div>
         {
           // test
-          props.index === 0 ? <Line /> : props.index === 1 ? <Pie /> : <Bar />
+          props.index === 0 ? <Pie /> : props.index === 1 ? <Line /> : <Bar />
         }
       </div>
 
