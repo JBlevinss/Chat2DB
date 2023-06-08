@@ -56,12 +56,13 @@ export default memo<IProps>(function Chart(props) {
               {rowData.map((item, index) => (
                 <div className={styles.box_right_content_column}>
                   <ChartItem
+                    index={index}
                     key={`${i}_${index}`}
                     data={item}
                     connections={[]}
                     canAddRowItem={rowData.length < 3}
                     addChartTop={() => {
-                      data.splice(index, 0, [initChartItemData]);
+                      data.splice(index + 1, 0, [initChartItemData]);
                       setDataList([...dataList]);
                     }}
                     addChartBottom={() => {
@@ -75,6 +76,15 @@ export default memo<IProps>(function Chart(props) {
                     addChartRight={() => {
                       rowData.splice(index + 1, 0, initChartItemData);
                       setDataList([...dataList]);
+                    }}
+                    onDelete={() => {
+                      if (rowData.length === 1) {
+                        data.splice(i, 1);
+                        setDataList([...dataList]);
+                      } else {
+                        rowData.splice(i, 1);
+                        setDataList([...dataList]);
+                      }
                     }}
                   />
                 </div>

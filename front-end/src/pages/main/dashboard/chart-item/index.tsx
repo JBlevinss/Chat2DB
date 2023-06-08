@@ -3,8 +3,13 @@ import React, { useState } from 'react';
 import styles from './index.less';
 import addImage from '@/assets/img/add.svg';
 import cs from 'classnames';
+import EchartsTest from '../echart-test';
+import Line from '../chart/line';
+import Pie from '../chart/pie';
+import Bar from '../chart/bar';
 
 interface IChartItemProps {
+  index: number;
   data: IChatDataItem;
   connections: Array<any>;
   canAddRowItem: boolean;
@@ -104,9 +109,14 @@ function ChartItem(props: IChartItemProps) {
         <div>opt</div>
       </div>
 
-      <div>图表区域</div>
+      <div>
+        {
+          // test
+          props.index === 0 ? <Line /> : props.index === 1 ? <Pie /> : <Bar />
+        }
+      </div>
 
-      <div>展开数据</div>
+      <div>数据区块</div>
 
       <div></div>
     </div>
