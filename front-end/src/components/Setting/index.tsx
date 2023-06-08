@@ -7,9 +7,9 @@ import i18n from '@/i18n';
 import configService, { IChatGPTConfig } from '@/service/config';
 import { ThemeType } from '@/constants'
 import BrandLogo from '@/components/BrandLogo';
-import themeDarkImg from '@/assets/images/theme-dark.png';
-import themeLightImg from '@/assets/images/theme-light.png';
-import themeAutoImg from '@/assets/images/theme-auto.png';
+import themeDarkImg from '@/assets/img/theme-dark.png';
+import themeLightImg from '@/assets/img/theme-light.png';
+import themeAutoImg from '@/assets/img/theme-auto.png';
 import { getOsTheme } from '@/utils';
 import { useTheme } from '@/utils/hooks';
 

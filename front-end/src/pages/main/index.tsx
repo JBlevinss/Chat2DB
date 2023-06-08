@@ -18,7 +18,7 @@ import { isElectron } from '@/utils/check';
 
 const navConfig: INavItem[] = [
   {
-    key: 'dataSource',
+    key: 'connections',
     icon: '\ue609',
     component: <DataSource />,
   },
@@ -40,7 +40,7 @@ const navConfig: INavItem[] = [
 ];
 
 function MainPage() {
-  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[0]);
+  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[2]);
 
   function switchingNav(item: INavItem) {
     if (item.openBrowser) {
