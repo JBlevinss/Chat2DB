@@ -1,4 +1,5 @@
-import { PrimaryColorType } from '@/constants';
+import { PrimaryColorType } from "@/typings/theme"
+
 
 type IAntdPrimaryColor = {
   [key in PrimaryColorType]: any;

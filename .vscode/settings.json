@@ -12,6 +12,7 @@
     "OPENAI",
     "packagejson",
     "RESTAI",
-    "truetype"
+    "truetype",
+    "wireframe"
   ]
 }

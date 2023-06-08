@@ -1,3 +1,4 @@
-import isElectronFn from 'is-electron';
+import { getLang } from './localStorage';
 
-export const isElectron = isElectronFn();
+export const isEn = getLang() === 'en-us';
+export const isZH = getLang() === 'zh-cn';

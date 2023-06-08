@@ -1,24 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import { addColorSchemeListener, colorSchemeListeners } from '@/layouts';
 import { getOsTheme } from '@/utils';
-import { ThemeType, PrimaryColorType } from '@/constants';
-
-interface ITheme {
-  backgroundColor: ThemeType;
-  primaryColor: PrimaryColorType;
-}
+import { ITheme, PrimaryColorType, ThemeType } from '@/typings/theme';
+import {
+  getPrimaryColor,
+  getTheme,
+  setPrimaryColor,
+  setTheme,
+} from '@/utils/localStorage';
 
 const initialTheme = () => {
-  let backgroundColor =
-    (localStorage.getItem('theme') as ThemeType) || ThemeType.Dark;
-  let primaryColor = localStorage.getItem('primary-color') || 'polar-blue';
-  if (backgroundColor === 'followOs') {
+  let backgroundColor = getTheme() || ThemeType.Dark;
+
+  let primaryColor = getPrimaryColor() || PrimaryColorType.Golden_Purple;
+
+  if (backgroundColor === ThemeType.FollowOs) {
     backgroundColor = getOsTheme();
   }
   return {
     backgroundColor,
     primaryColor,
-  } as ITheme;
+  };
 };
 
 export function useTheme() {
@@ -31,9 +33,9 @@ export function useTheme() {
     };
   }, []);
 
-  function handelAppThemeChange(theme: {
+  function handleAppThemeChange(theme: {
     backgroundColor: ThemeType;
-    primaryColor: string;
+    primaryColor: PrimaryColorType;
   }) {
     if (theme.backgroundColor === ThemeType.FollowOs) {
       theme.backgroundColor =
@@ -46,11 +48,10 @@ export function useTheme() {
       colorSchemeListeners[t]?.(theme);
     });
     document.documentElement.setAttribute('theme', theme.backgroundColor);
-    localStorage.setItem('theme', theme.backgroundColor);
+    setTheme(theme.backgroundColor);
     document.documentElement.setAttribute('primary-color', theme.primaryColor);
-    localStorage.setItem('primary-color', theme.primaryColor);
-    // callback?.();
+    setPrimaryColor(theme.primaryColor);
   }
 
-  return [appTheme as ITheme, handelAppThemeChange] as any;
+  return [appTheme, handleAppThemeChange] as any;
 }

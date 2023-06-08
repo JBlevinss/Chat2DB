@@ -1,14 +1,12 @@
 import React, { Fragment } from 'react';
 import zhCN from './zh-cn';
 import en from './en';
+import { isZH } from '@/utils/check';
 
 const locale = {
   en,
   'zh-cn': zhCN,
 };
-
-const isEn = localStorage.getItem('lang') === 'en';
-const isZH = localStorage.getItem('lang') === 'zh-cn';
 
 const langSet: Record<string, string> = locale[isZH ? 'zh-cn' : 'en'];
 
@@ -59,4 +57,4 @@ function i18nElement(key: keyof typeof zhCN, ...args: React.ReactNode[]) {
 }
 
 export default i18n;
-export { i18n, i18nElement, isEn, isZH };
+export { i18n, i18nElement };
