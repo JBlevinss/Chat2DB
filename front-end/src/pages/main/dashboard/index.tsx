@@ -3,7 +3,7 @@ import { connect, Dispatch } from 'umi';
 import styles from './index.less';
 import classnames from 'classnames';
 import { IChatData, IChatDataItem } from '@/typings/dashboard';
-import DraggableContainer from '../components/DraggableContainer';
+import DraggableContainer from '@/components/DraggableContainer';
 import Iconfont from '@/components/Iconfont';
 import ChartItem from './chart-item';
 import { Button } from 'antd';

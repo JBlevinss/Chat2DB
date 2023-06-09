@@ -47,18 +47,19 @@ export function addColorSchemeListener(callback: Function) {
 function Layout() {
   const [appTheme, setAppTheme] = useTheme();
   const [antdTheme, setAntdTheme] = useState<any>({});
+  const [initEnd, setInitEnd] = useState(false);
 
   useLayoutEffect(() => {
     const antdTheme =
       appTheme.backgroundColor === ThemeType.Light
         ? antdLightTheme
         : antdDarkTheme;
-
     antdTheme.token = {
       ...antdTheme.token,
       ...(antdPrimaryColor[appTheme.primaryColor as PrimaryColorType] || {}),
     };
     setAntdTheme({ ...antdTheme });
+    console.log({ ...antdTheme })
   }, [appTheme]);
 
   // 监听系统(OS)主题变化
@@ -84,6 +85,7 @@ function Layout() {
   function collectInitApp() {
     initTheme();
     initLang();
+    setInitEnd(true);
   }
 
   function initTheme() {
@@ -93,7 +95,7 @@ function Layout() {
         (window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: dark)').matches
           ? ThemeType.Dark
-          : ThemeType.Light) || ThemeType.Light;
+          : ThemeType.Light) || ThemeType.Dark;
     }
     document.documentElement.setAttribute('theme', theme);
     document.documentElement.setAttribute('primary-color', getPrimaryColor());
@@ -108,9 +110,12 @@ function Layout() {
 
   return (
     <ConfigProvider locale={isEn ? antdEnUS : antdZhCN} theme={antdTheme}>
-      <div className={styles.app}>
-        <Outlet />
-      </div>
+      {
+        initEnd &&
+        <div className={styles.app}>
+          <Outlet />
+        </div>
+      }
     </ConfigProvider>
   );
 }

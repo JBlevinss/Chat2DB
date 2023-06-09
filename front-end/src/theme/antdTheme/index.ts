@@ -1,5 +1,12 @@
-export * as antdDarkTheme from './dark';
-export * as antdLightTheme from './light';
-export * as antdPrimaryColor from './primaryColor';
+import antdDarkTheme from './dark';
+import antdLightTheme from './light';
+import antdPrimaryColor from './primaryColor';
+
+export {
+  antdDarkTheme,
+  antdLightTheme,
+  antdPrimaryColor
+}
+
 
 
