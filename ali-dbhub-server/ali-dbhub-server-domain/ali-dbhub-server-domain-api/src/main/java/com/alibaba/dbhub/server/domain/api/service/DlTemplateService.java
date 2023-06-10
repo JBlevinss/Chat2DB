@@ -1,7 +1,9 @@
 package com.alibaba.dbhub.server.domain.api.service;
 
+import com.alibaba.dbhub.server.domain.api.param.DlCountParam;
 import com.alibaba.dbhub.server.domain.api.param.DlExecuteParam;
 import com.alibaba.dbhub.server.domain.support.model.ExecuteResult;
+import com.alibaba.dbhub.server.tools.base.wrapper.result.DataResult;
 import com.alibaba.dbhub.server.tools.base.wrapper.result.ListResult;
 
 /**
@@ -20,5 +22,13 @@ public interface DlTemplateService {
      * @return
      */
     ListResult<ExecuteResult> execute(DlExecuteParam param);
+
+    /**
+     * 执行统计sql
+     *
+     * @param param
+     * @return
+     */
+    DataResult<Long> count(DlCountParam param);
 
 }

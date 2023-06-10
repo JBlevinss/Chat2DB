@@ -2,22 +2,35 @@ package com.alibaba.dbhub.server.domain.core.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import com.alibaba.dbhub.server.domain.api.param.DlCountParam;
 import com.alibaba.dbhub.server.domain.api.param.DlExecuteParam;
-import com.alibaba.dbhub.server.domain.api.service.DlTemplateService;
-import com.alibaba.dbhub.server.domain.support.model.ExecuteResult;
 import com.alibaba.dbhub.server.domain.api.param.SqlAnalyseParam;
+import com.alibaba.dbhub.server.domain.api.service.DlTemplateService;
+import com.alibaba.dbhub.server.domain.support.enums.SqlTypeEnum;
+import com.alibaba.dbhub.server.domain.support.model.ExecuteResult;
 import com.alibaba.dbhub.server.domain.support.sql.DbhubContext;
 import com.alibaba.dbhub.server.domain.support.sql.SQLExecutor;
 import com.alibaba.dbhub.server.domain.support.util.JdbcUtils;
+import com.alibaba.dbhub.server.tools.base.constant.EasyToolsConstant;
 import com.alibaba.dbhub.server.tools.base.excption.BusinessException;
 import com.alibaba.dbhub.server.tools.base.excption.DatasourceErrorEnum;
+import com.alibaba.dbhub.server.tools.base.wrapper.result.DataResult;
 import com.alibaba.dbhub.server.tools.base.wrapper.result.ListResult;
-import com.alibaba.druid.sql.parser.DbhubSQLParserUtils;
+import com.alibaba.dbhub.server.tools.common.util.EasyCollectionUtils;
+import com.alibaba.druid.DbType;
+import com.alibaba.druid.sql.PagerUtils;
+import com.alibaba.druid.sql.SQLUtils;
+import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.alibaba.druid.sql.parser.SQLParserUtils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +43,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DlTemplateServiceImpl implements DlTemplateService {
 
-
     @Override
     public ListResult<ExecuteResult> execute(DlExecuteParam param) {
         if (StringUtils.isBlank(param.getSql())) {
@@ -40,19 +52,47 @@ public class DlTemplateServiceImpl implements DlTemplateService {
         SqlAnalyseParam sqlAnalyseParam = new SqlAnalyseParam();
         sqlAnalyseParam.setDataSourceId(param.getDataSourceId());
         sqlAnalyseParam.setSql(param.getSql());
-        List<String> sqlList = DbhubSQLParserUtils.splitAndRemoveComment(param.getSql(),
-            JdbcUtils.parse2DruidDbType(DbhubContext.getConnectInfo().getDbType()));
+        DbType dbType =
+            JdbcUtils.parse2DruidDbType(DbhubContext.getConnectInfo().getDbType());
+        List<String> sqlList = SQLParserUtils.splitAndRemoveComment(param.getSql(), dbType);
         if (CollectionUtils.isEmpty(sqlList)) {
             throw new BusinessException(DatasourceErrorEnum.SQL_ANALYSIS_ERROR);
         }
 
         List<ExecuteResult> result = new ArrayList<>();
-        ListResult listResult = ListResult.of(result);
+        ListResult<ExecuteResult> listResult = ListResult.of(result);
         // 执行sql
         for (String sql : sqlList) {
-            ExecuteResult executeResult = execute(sql,500);
+            int pageNo = Optional.ofNullable(param.getPageNo()).orElse(1);
+            int pageSize = Optional.ofNullable(param.getPageSize()).orElse(EasyToolsConstant.MAX_PAGE_SIZE);
+            int offset = (pageNo - 1) * pageSize + 1;
+            String sqlType = SqlTypeEnum.UNKNOWN.getCode();
+
+            // 解析sql分页
+            SQLStatement sqlStatement = SQLUtils.parseSingleStatement(sql, dbType);
+            if (sqlStatement instanceof SQLSelectStatement) {
+                // 在不查询全部的情况下需要分页
+                if (BooleanUtils.isNotTrue(param.getPageSizeAll())) {
+                    sql = PagerUtils.limit(sql, dbType, offset, pageSize);
+                }
+                sqlType = SqlTypeEnum.SELECT.getCode();
+            }
+
+            ExecuteResult executeResult = execute(sql);
+            executeResult.setSqlType(sqlType);
+            // 查询全部
+            if (BooleanUtils.isTrue(param.getPageSizeAll())) {
+                executeResult.setPageNo(1);
+                executeResult.setPageSize(CollectionUtils.size(executeResult.getDataList()));
+                executeResult.setHasNextPage(Boolean.FALSE);
+            } else {
+                executeResult.setPageNo(pageNo);
+                executeResult.setPageSize(pageSize);
+                executeResult.setHasNextPage(
+                    CollectionUtils.size(executeResult.getDataList()) >= executeResult.getPageSize());
+            }
             result.add(executeResult);
-            if(!executeResult.getSuccess()){
+            if (!executeResult.getSuccess()) {
                 listResult.setSuccess(false);
                 listResult.errorCode(executeResult.getDescription());
                 listResult.setErrorMessage(executeResult.getMessage());
@@ -61,10 +101,39 @@ public class DlTemplateServiceImpl implements DlTemplateService {
         return listResult;
     }
 
-    private ExecuteResult execute(String sql,int size) {
+    @Override
+    public DataResult<Long> count(DlCountParam param) {
+        if (StringUtils.isBlank(param.getSql())) {
+            return DataResult.of(0L);
+        }
+        DbType dbType =
+            JdbcUtils.parse2DruidDbType(DbhubContext.getConnectInfo().getDbType());
+        String sql = param.getSql();
+        // 解析sql分页
+        SQLStatement sqlStatement = SQLUtils.parseSingleStatement(sql, dbType);
+        if (!(sqlStatement instanceof SQLSelectStatement)) {
+            throw new BusinessException("当前sql不是查询语句");
+        }
+        sql = PagerUtils.count(sql, dbType);
+        ExecuteResult executeResult = execute(sql);
+
+        List<List<String>> dataList = executeResult.getDataList();
+        if (CollectionUtils.isEmpty(dataList)) {
+            return DataResult.of(0L);
+        }
+        String count = EasyCollectionUtils.stream(executeResult.getDataList())
+            .findFirst()
+            .orElse(Collections.emptyList())
+            .stream()
+            .findFirst()
+            .orElse("0");
+        return DataResult.of(Long.valueOf(count));
+    }
+
+    private ExecuteResult execute(String sql) {
         ExecuteResult executeResult;
         try {
-            executeResult = SQLExecutor.getInstance().execute(sql, size);
+            executeResult = SQLExecutor.getInstance().execute(sql);
         } catch (SQLException e) {
             log.warn("执行sql:{}异常", sql, e);
             executeResult = ExecuteResult.builder()
@@ -75,6 +144,5 @@ public class DlTemplateServiceImpl implements DlTemplateService {
         }
         return executeResult;
     }
-
 
 }

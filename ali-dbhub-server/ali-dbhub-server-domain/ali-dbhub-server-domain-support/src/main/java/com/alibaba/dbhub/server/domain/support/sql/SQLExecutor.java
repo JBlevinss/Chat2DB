@@ -20,7 +20,6 @@ import com.alibaba.dbhub.server.domain.support.model.Table;
 import com.alibaba.dbhub.server.domain.support.model.TableColumn;
 import com.alibaba.dbhub.server.domain.support.model.TableIndex;
 import com.alibaba.dbhub.server.domain.support.model.TableIndexColumn;
-import com.alibaba.dbhub.server.tools.base.constant.EasyToolsConstant;
 
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -109,11 +108,10 @@ public class SQLExecutor {
      * 执行sql
      *
      * @param sql
-     * @param pageSize
      * @return
      * @throws SQLException
      */
-    public ExecuteResult execute(final String sql, Integer pageSize, Connection connection) throws SQLException {
+    public ExecuteResult execute(final String sql, Connection connection) throws SQLException {
         Assert.notNull(sql, "SQL must not be null");
         log.info("execute:{}", sql);
 
@@ -147,23 +145,11 @@ public class SQLExecutor {
                     List<List<String>> dataList = Lists.newArrayList();
                     executeResult.setDataList(dataList);
 
-                    // 分页大小
-                    executeResult.setHasNextPage(Boolean.FALSE);
-                    if (pageSize == null) {
-                        pageSize = EasyToolsConstant.MAX_PAGE_SIZE;
-                    }
-                    int rsSize = 0;
                     while (rs.next()) {
                         List<String> row = Lists.newArrayListWithExpectedSize(col);
                         dataList.add(row);
                         for (int i = 1; i <= col; i++) {
                             row.add(com.alibaba.dbhub.server.domain.support.util.JdbcUtils.getResultSetValue(rs, i));
-                        }
-                        rsSize++;
-                        // 到达下一页了
-                        if (rsSize >= pageSize) {
-                            executeResult.setHasNextPage(Boolean.TRUE);
-                            break;
                         }
                     }
                     return executeResult;
@@ -184,12 +170,11 @@ public class SQLExecutor {
      * 执行sql
      *
      * @param sql
-     * @param pageSize
      * @return
      * @throws SQLException
      */
-    public ExecuteResult execute(final String sql, Integer pageSize) throws SQLException {
-        return execute(sql, pageSize, getConnection());
+    public ExecuteResult execute(final String sql) throws SQLException {
+        return execute(sql, getConnection());
     }
 
     public void connectDatabase(String database) {
@@ -200,14 +185,14 @@ public class SQLExecutor {
         switch (info.getDbType()) {
             case MYSQL -> {
                 try {
-                    execute("use `" + database + "`;", null);
+                    execute("use `" + database + "`;");
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
             case SQLSERVER -> {
                 try {
-                    execute("use " + database + ";", null);
+                    execute("use " + database + ";");
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }

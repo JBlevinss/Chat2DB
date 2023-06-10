@@ -2,6 +2,8 @@ package com.alibaba.dbhub.server.domain.support.model;
 
 import java.util.List;
 
+import com.alibaba.dbhub.server.domain.support.enums.SqlTypeEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,6 +55,13 @@ public class ExecuteResult {
      * 数据的列表
      */
     private List<List<String>> dataList;
+
+    /**
+     * sql 类型
+     *
+     * @see SqlTypeEnum
+     */
+    private String sqlType;
 
     /**
      * 是否存在下一页

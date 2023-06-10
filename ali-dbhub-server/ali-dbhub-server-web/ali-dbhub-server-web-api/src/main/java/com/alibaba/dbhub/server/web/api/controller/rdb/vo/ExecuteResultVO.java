@@ -2,6 +2,8 @@ package com.alibaba.dbhub.server.web.api.controller.rdb.vo;
 
 import java.util.List;
 
+import com.alibaba.dbhub.server.domain.support.enums.SqlTypeEnum;
+
 import lombok.Data;
 
 /**
@@ -41,4 +43,29 @@ public class ExecuteResultVO {
      * 数据的列表
      */
     private List<List<String>> dataList;
+
+    /**
+     * sql 类型
+     *
+     * @see SqlTypeEnum
+     */
+    private String sqlType;
+
+    /**
+     * 是否存在下一页
+     * 只有select语句才有
+     */
+    private Boolean hasNextPage;
+
+    /**
+     * 分页编码
+     * 只有select语句才有
+     */
+    private Integer pageNo;
+
+    /**
+     * 分页大小
+     * 只有select语句才有
+     */
+    private Integer pageSize;
 }

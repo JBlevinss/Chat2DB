@@ -155,7 +155,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
-                <version>1.2.15</version>
+                <version>1.2.18</version>
             </dependency>
 
             <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->

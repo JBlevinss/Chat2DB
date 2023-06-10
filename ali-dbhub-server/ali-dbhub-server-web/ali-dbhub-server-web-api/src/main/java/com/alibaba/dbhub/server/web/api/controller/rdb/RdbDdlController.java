@@ -3,7 +3,6 @@ package com.alibaba.dbhub.server.web.api.controller.rdb;
 import java.util.List;
 
 import com.alibaba.dbhub.server.domain.api.param.DatabaseOperationParam;
-import com.alibaba.dbhub.server.domain.api.param.DlExecuteParam;
 import com.alibaba.dbhub.server.domain.api.param.DropParam;
 import com.alibaba.dbhub.server.domain.api.param.SchemaOperationParam;
 import com.alibaba.dbhub.server.domain.api.param.SchemaQueryParam;
@@ -28,7 +27,6 @@ import com.alibaba.dbhub.server.web.api.aspect.ConnectionInfoAspect;
 import com.alibaba.dbhub.server.web.api.controller.data.source.request.DataSourceBaseRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.converter.RdbWebConverter;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.DdlExportRequest;
-import com.alibaba.dbhub.server.web.api.controller.rdb.request.DdlRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.TableBriefQueryRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.TableCreateDdlQueryRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.TableDeleteRequest;
@@ -38,7 +36,6 @@ import com.alibaba.dbhub.server.web.api.controller.rdb.request.TableUpdateDdlQue
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.UpdateDatabaseRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.UpdateSchemaRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.vo.ColumnVO;
-import com.alibaba.dbhub.server.web.api.controller.rdb.vo.ExecuteResultVO;
 import com.alibaba.dbhub.server.web.api.controller.rdb.vo.IndexVO;
 import com.alibaba.dbhub.server.web.api.controller.rdb.vo.SchemaVO;
 import com.alibaba.dbhub.server.web.api.controller.rdb.vo.SqlVO;
@@ -50,7 +47,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -187,7 +183,6 @@ public class RdbDdlController {
         return databaseService.modifySchema(param);
     }
 
-
     /**
      * 查询当前DB下的表columns
      * d
@@ -292,18 +287,6 @@ public class RdbDdlController {
                 rdbWebConverter.tableRequest2param(request.getOldTable()),
                 rdbWebConverter.tableRequest2param(request.getNewTable()))
             .map(rdbWebConverter::dto2vo);
-    }
-
-    /**
-     * 增删改等表运维
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/execute",method = {RequestMethod.POST, RequestMethod.PUT})
-    public ListResult<ExecuteResultVO> manage(@RequestBody DdlRequest request) {
-        DlExecuteParam param = rdbWebConverter.tableManageRequest2param(request);
-        return dlTemplateService.execute(param).map(rdbWebConverter::dto2vo);
     }
 
     /**

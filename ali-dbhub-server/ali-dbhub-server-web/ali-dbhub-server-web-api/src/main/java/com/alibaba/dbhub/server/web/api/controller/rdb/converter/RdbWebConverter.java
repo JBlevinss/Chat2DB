@@ -2,6 +2,7 @@ package com.alibaba.dbhub.server.web.api.controller.rdb.converter;
 
 import java.util.List;
 
+import com.alibaba.dbhub.server.domain.api.param.DlCountParam;
 import com.alibaba.dbhub.server.domain.api.param.DlExecuteParam;
 import com.alibaba.dbhub.server.domain.api.param.DropParam;
 import com.alibaba.dbhub.server.domain.api.param.ShowCreateTableParam;
@@ -13,6 +14,7 @@ import com.alibaba.dbhub.server.domain.support.model.Sql;
 import com.alibaba.dbhub.server.domain.support.model.Table;
 import com.alibaba.dbhub.server.domain.support.model.TableColumn;
 import com.alibaba.dbhub.server.domain.support.model.TableIndex;
+import com.alibaba.dbhub.server.web.api.controller.rdb.request.DdlCountRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.DdlExportRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.DdlRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.DmlRequest;
@@ -54,6 +56,15 @@ public abstract class RdbWebConverter {
      * @return
      */
     public abstract DlExecuteParam tableManageRequest2param(DdlRequest request);
+
+
+    /**
+     * 参数转换
+     *
+     * @param request
+     * @return
+     */
+    public abstract DlCountParam request2param(DdlCountRequest request);
 
     /**
      * 参数转换
