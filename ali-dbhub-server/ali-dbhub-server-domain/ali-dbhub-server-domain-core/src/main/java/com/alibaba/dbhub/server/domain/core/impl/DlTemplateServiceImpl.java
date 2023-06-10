@@ -63,16 +63,22 @@ public class DlTemplateServiceImpl implements DlTemplateService {
         ListResult<ExecuteResult> listResult = ListResult.of(result);
         // 执行sql
         for (String sql : sqlList) {
-            int pageNo = Optional.ofNullable(param.getPageNo()).orElse(1);
-            int pageSize = Optional.ofNullable(param.getPageSize()).orElse(EasyToolsConstant.MAX_PAGE_SIZE);
-            int offset = (pageNo - 1) * pageSize + 1;
+            int pageNo = 0;
+            int pageSize = 0;
             String sqlType = SqlTypeEnum.UNKNOWN.getCode();
 
             // 解析sql分页
             SQLStatement sqlStatement = SQLUtils.parseSingleStatement(sql, dbType);
+            // 是否需要代码帮忙分页
+            boolean autoLimit = false;
             if (sqlStatement instanceof SQLSelectStatement) {
-                // 在不查询全部的情况下需要分页
-                if (BooleanUtils.isNotTrue(param.getPageSizeAll())) {
+                //  不是查询全部数据 而且 用户自己没有传分页
+                autoLimit = BooleanUtils.isNotTrue(param.getPageSizeAll()) && SQLUtils.getLimit(sqlStatement, dbType)
+                    == null;
+                if (autoLimit) {
+                    pageNo = Optional.ofNullable(param.getPageNo()).orElse(1);
+                    pageSize = Optional.ofNullable(param.getPageSize()).orElse(EasyToolsConstant.MAX_PAGE_SIZE);
+                    int offset = (pageNo - 1) * pageSize + 1;
                     sql = PagerUtils.limit(sql, dbType, offset, pageSize);
                 }
                 sqlType = SqlTypeEnum.SELECT.getCode();
@@ -80,16 +86,16 @@ public class DlTemplateServiceImpl implements DlTemplateService {
 
             ExecuteResult executeResult = execute(sql);
             executeResult.setSqlType(sqlType);
-            // 查询全部
-            if (BooleanUtils.isTrue(param.getPageSizeAll())) {
-                executeResult.setPageNo(1);
-                executeResult.setPageSize(CollectionUtils.size(executeResult.getDataList()));
-                executeResult.setHasNextPage(Boolean.FALSE);
-            } else {
+            // 自动分页
+            if (autoLimit) {
                 executeResult.setPageNo(pageNo);
                 executeResult.setPageSize(pageSize);
                 executeResult.setHasNextPage(
                     CollectionUtils.size(executeResult.getDataList()) >= executeResult.getPageSize());
+            } else {
+                executeResult.setPageNo(1);
+                executeResult.setPageSize(CollectionUtils.size(executeResult.getDataList()));
+                executeResult.setHasNextPage(Boolean.FALSE);
             }
             result.add(executeResult);
             if (!executeResult.getSuccess()) {
