@@ -1,5 +1,7 @@
+import { IPageResponse } from '@/typings/common';
+import { IConnectionBase } from '@/typings/connection';
 import createRequest from './base';
-import { IPageResponse, IConnectionBase, IDB } from '@/types';
+// import { IPageResponse, IConnectionBase, IDB } from '@/types';
 
 export interface IGetConnectionParams {
   searchKey?: string;
@@ -7,6 +9,9 @@ export interface IGetConnectionParams {
   pageSize: number;
 }
 
+/**
+ * 查询连接池列表
+ */
 const getList = createRequest<
   IGetConnectionParams,
   IPageResponse<IConnectionBase>
@@ -19,7 +24,7 @@ const getDetails = createRequest<{ id: string }, IConnectionBase>(
 
 const save = createRequest<IConnectionBase, string>(
   '/api/connection/datasource/create',
-  { method: 'post',  delayTime: true},
+  { method: 'post', delayTime: true },
 );
 
 const close = createRequest<IConnectionBase, void>(
@@ -29,12 +34,12 @@ const close = createRequest<IConnectionBase, void>(
 
 const test = createRequest<IConnectionBase, boolean>(
   '/api/connection/datasource/pre_connect',
-  {method: 'post', delayTime: true},
+  { method: 'post', delayTime: true },
 );
-const testSSH = createRequest<any, boolean>(
-  '/api/connection/ssh/pre_connect',
-  {method: 'post', delayTime: true},
-);
+const testSSH = createRequest<any, boolean>('/api/connection/ssh/pre_connect', {
+  method: 'post',
+  delayTime: true,
+});
 
 const update = createRequest<IConnectionBase, void>(
   '/api/connection/datasource/update',
@@ -66,5 +71,5 @@ export default {
   clone,
   getDBList,
   close,
-  testSSH
+  testSSH,
 };
