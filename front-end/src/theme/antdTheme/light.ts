@@ -1,7 +1,9 @@
 import { theme } from 'antd';
-export default {
+const antdLightTheme = {
   token: {
     "wireframe": true,
     "borderRadius": 4,
   }
 }
+
+export default antdLightTheme

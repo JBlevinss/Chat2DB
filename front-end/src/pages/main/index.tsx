@@ -3,7 +3,7 @@ import i18n from '@/i18n';
 import { Button } from 'antd';
 import { history } from 'umi';
 import classnames from 'classnames';
-import Setting from '@/components/Setting';
+import Setting from '@/blocks/Setting';
 import Iconfont from '@/components/Iconfont';
 import BrandLogo from '@/components/BrandLogo';
 
@@ -18,7 +18,7 @@ import { isElectron } from '@/utils/check';
 
 const navConfig: INavItem[] = [
   {
-    key: 'dataSource',
+    key: 'connections',
     icon: '\ue609',
     component: <DataSource />,
   },
@@ -40,7 +40,7 @@ const navConfig: INavItem[] = [
 ];
 
 function MainPage() {
-  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[0]);
+  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[2]);
 
   function switchingNav(item: INavItem) {
     if (item.openBrowser) {

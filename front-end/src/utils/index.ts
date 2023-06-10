@@ -1,4 +1,4 @@
-import { ThemeType } from '@/constants';
+import { ThemeType } from '@/typings/theme';
 
 export function getOsTheme() {
   return window.matchMedia &&
