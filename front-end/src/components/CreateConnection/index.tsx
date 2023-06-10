@@ -9,6 +9,9 @@ import { IDataSourceForm, IFormItem, ISelect } from '@/config/types';
 // import { DatabaseContext } from '@/context/database';
 import { InputType } from '@/config/enum';
 import { deepClone } from '@/utils';
+import type { CollapseProps } from 'antd';
+import { CaretRightOutlined } from '@ant-design/icons';
+import type { CSSProperties } from 'react';
 import {
   Select,
   Modal,
@@ -18,7 +21,8 @@ import {
   Table,
   Radio,
   Button,
-  Tabs
+  Collapse,
+  theme
   // Menu,
 } from 'antd';
 import Iconfont from '@/components/Iconfont';
@@ -68,7 +72,7 @@ const formItemLayout = {
   },
 };
 
-function VisiblyCreateConnection(props: IProps) {
+export default function CreateConnection(props: IProps) {
   const { className } = props;
   // const { model, setEditDataSourceData, setRefreshTreeNum, setModel } = useContext(DatabaseContext);
   // const editDataSourceData: IEditDataSourceData = model.editDataSourceData as IEditDataSourceData
@@ -86,6 +90,30 @@ function VisiblyCreateConnection(props: IProps) {
     confirmButton: false,
     testButton: false,
   });
+
+  const getItems = (panelStyle: any) => [
+    {
+      key: '2',
+      label: 'This is panel header 2',
+      children: <div className={styles.sshBox}>
+        <RenderForm backfillData={backfillData} form={sshForm} tab='ssh' dataSourceType={dataSourceType} dataSourceId={dataSourceId} ></RenderForm>
+        <div className={styles.testSSHConnect}>
+          <div onClick={testSSH} className={styles.testSSHConnectText}>
+            测试ssh连接
+        </div>
+        </div>
+      </div>,
+      style: panelStyle,
+    },
+    {
+      key: '3',
+      label: 'This is panel header 3',
+      children: <div className={styles.extendInfoBox}>
+        <RenderExtendTable backfillData={backfillData} dataSourceType={dataSourceType}></RenderExtendTable>
+      </div>,
+      style: panelStyle,
+    },
+  ];
 
   useEffect(() => {
     if (dataSourceId) {
@@ -166,25 +194,30 @@ function VisiblyCreateConnection(props: IProps) {
     })
   }
 
+
+  const { token } = theme.useToken();
+
+  const panelStyle = {
+    marginBottom: 24,
+    background: token.colorFillAlter,
+    borderRadius: token.borderRadiusLG,
+    border: 'none',
+  };
+
   return <div className={classnames(styles.box, className)}>
     <div className={styles.title}>
       {dataSourceId ? i18n('connection.title.editConnection') : i18n('connection.title.createConnection')}
     </div>
     {/* <Tabs className={styles.tabsBox} tabs={tabsConfig} onChange={changeTabs}></Tabs> */}
-    <div className={classnames(styles.baseInfoBox, { [styles.showFormBox]: currentTab.key === 'baseInfo' })}>
+    <div className={styles.baseInfoBox}>
       <RenderForm backfillData={backfillData} form={baseInfoForm} tab='baseInfo' dataSourceType={dataSourceType} dataSourceId={dataSourceId} ></RenderForm>
     </div>
-    <div className={classnames(styles.sshBox, { [styles.showFormBox]: currentTab.key === 'ssh' })}>
-      <RenderForm backfillData={backfillData} form={sshForm} tab='ssh' dataSourceType={dataSourceType} dataSourceId={dataSourceId} ></RenderForm>
-      <div className={styles.testSSHConnect}>
-        <div onClick={testSSH} className={styles.testSSHConnectText}>
-          测试ssh连接
-          </div>
-      </div>
-    </div>
-    <div className={classnames(styles.extendInfoBox, { [styles.showFormBox]: currentTab.key === 'extendInfo' })}>
-      <RenderExtendTable backfillData={backfillData} dataSourceType={dataSourceType}></RenderExtendTable>
-    </div>
+    <Collapse
+      // bordered={false}
+      // expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+      // style={{ background: token.colorBgContainer }}
+      items={getItems(panelStyle)}
+    />
     <div className={styles.formFooter}>
       <div className={styles.test}>
         {
@@ -212,15 +245,6 @@ function VisiblyCreateConnection(props: IProps) {
         </Button>
       </div>
     </div>
-    {/* <Modal
-      title={dataSourceId ? "修改数据源" : "连接数据源"}
-      open={!!editDataSourceData}
-      onCancel={onCancel}
-      footer={false}
-      width={560}
-      maskClosable={false}
-    >
-    </Modal> */}
   </div >
 }
 
@@ -361,7 +385,6 @@ function RenderForm(props: IRenderFormProps) {
 
   function renderFormItem(t: IFormItem): React.ReactNode {
     const label = isEn ? t.labelNameEN : t.labelNameCN;
-    console.log(isEn)
     const name = t.name;
     const FormItemTypes: { [key in InputType]: () => React.ReactNode } = {
       [InputType.INPUT]: () => <Form.Item
@@ -411,7 +434,6 @@ function RenderForm(props: IRenderFormProps) {
     labelAlign='left'
     onFieldsChange={onFieldsChange}
     {...formItemLayout}
-
   >
     {dataSourceFormConfig[tab]!.items.map((t => renderFormItem(t)))}
   </Form>
@@ -426,7 +448,6 @@ let extendTableData: any = []
 
 function RenderExtendTable(props: IRenderExtendTableProps) {
   const { dataSourceType, backfillData } = props;
-
   const dataSourceFormConfigMemo = useMemo<IDataSourceForm>(() => {
     return deepClone(dataSourceFormConfigs).find((t: IDataSourceForm) => {
       return t.type === dataSourceType
@@ -542,9 +563,3 @@ function RenderExtendTable(props: IRenderExtendTableProps) {
     />
   </div>
 }
-
-export default function CreateConnection() {
-  return <VisiblyCreateConnection />
-}
-
-
