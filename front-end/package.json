@@ -17,6 +17,7 @@
     "start:web": "umi dev"
   },
   "dependencies": {
+    "ahooks": "^3.7.7",
     "antd": "^5.5.2",
     "echarts": "^5.4.2",
     "echarts-for-react": "^3.0.2",

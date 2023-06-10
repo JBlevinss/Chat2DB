@@ -13,18 +13,20 @@ public enum YesOrNoEnum implements BaseEnum<String> {
     /**
      * 是
      */
-    YES("是", true),
+    YES("Y", "是", true),
     /**
      * 未读
      */
-    NO("否", false),
+    NO("N", "否", false),
 
     ;
 
+    final String letter;
     final String description;
     final boolean booleanValue;
 
-    YesOrNoEnum(String description, boolean booleanValue) {
+    YesOrNoEnum(String letter, String description, boolean booleanValue) {
+        this.letter = letter;
         this.description = description;
         this.booleanValue = booleanValue;
     }

@@ -29,4 +29,10 @@ export default defineConfig({
   dva: {},
   plugins: ['@umijs/plugins/dist/dva'],
   chainWebpack,
+  proxy: {
+    '/api': {
+      'target': 'http://127.0.0.1:10821',
+      'changeOrigin': true,
+    }
+  },
 });

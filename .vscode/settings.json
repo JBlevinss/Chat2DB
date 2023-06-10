@@ -1,17 +1,24 @@
 {
   "liveServer.settings.port": 5501,
   "cSpell.words": [
+    "ahooks",
     "asar",
     "chatgpt",
+    "CLICKHOUSE",
+    "datasource",
     "Dserver",
     "Dspring",
     "echart",
     "icns",
     "iconfont",
+    "MARIADB",
     "monaco",
     "OPENAI",
     "packagejson",
+    "POSTGRESQL",
     "RESTAI",
+    "SQLITE",
+    "SQLSERVER",
     "truetype",
     "wireframe"
   ]
