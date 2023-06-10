@@ -1,6 +1,6 @@
 import { theme } from 'antd';
 const antDarkTheme = {
-  algorithm: theme.darkAlgorithm,
+  algorithm: [theme.darkAlgorithm,theme.compactAlgorithm],
   token: {
     "custom-name": "golden-blue",
     "wireframe": true,

@@ -13,15 +13,13 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.alibaba.dbhub.server.domain.support.enums.CellTypeEnum;
-import com.alibaba.dbhub.server.domain.support.model.Cell;
 import com.alibaba.dbhub.server.domain.support.model.ExecuteResult;
+import com.alibaba.dbhub.server.domain.support.model.Header;
 import com.alibaba.dbhub.server.domain.support.model.Procedure;
 import com.alibaba.dbhub.server.domain.support.model.Table;
 import com.alibaba.dbhub.server.domain.support.model.TableColumn;
 import com.alibaba.dbhub.server.domain.support.model.TableIndex;
 import com.alibaba.dbhub.server.domain.support.model.TableIndexColumn;
-import com.alibaba.dbhub.server.tools.base.constant.EasyToolsConstant;
 
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +47,8 @@ public class SQLExecutor {
      */
     private static final SQLExecutor INSTANCE = new SQLExecutor();
 
-    private SQLExecutor() {}
+    private SQLExecutor() {
+    }
 
     public static SQLExecutor getInstance() {
         return INSTANCE;
@@ -109,11 +108,10 @@ public class SQLExecutor {
      * 执行sql
      *
      * @param sql
-     * @param pageSize
      * @return
      * @throws SQLException
      */
-    public ExecuteResult execute(final String sql, Integer pageSize, Connection connection) throws SQLException {
+    public ExecuteResult execute(final String sql, Connection connection) throws SQLException {
         Assert.notNull(sql, "SQL must not be null");
         log.info("execute:{}", sql);
 
@@ -133,34 +131,25 @@ public class SQLExecutor {
                     int col = resultSetMetaData.getColumnCount();
 
                     // 获取header信息
-                    List<Cell> headerList = Lists.newArrayListWithExpectedSize(col);
+                    List<Header> headerList = Lists.newArrayListWithExpectedSize(col);
                     executeResult.setHeaderList(headerList);
                     for (int i = 1; i <= col; i++) {
-                        headerList.add(Cell.builder().type(CellTypeEnum.STRING.getCode())
-                            .stringValue(resultSetMetaData.getColumnName(i)).build());
+                        headerList.add(Header.builder()
+                            .dataType(com.alibaba.dbhub.server.domain.support.util.JdbcUtils.resolveDataType(
+                                resultSetMetaData.getColumnTypeName(i), resultSetMetaData.getColumnType(i)).getCode())
+                            .name(resultSetMetaData.getColumnName(i))
+                            .build());
                     }
 
                     // 获取数据信息
-                    List<List<Cell>> dataList = Lists.newArrayList();
+                    List<List<String>> dataList = Lists.newArrayList();
                     executeResult.setDataList(dataList);
 
-                    // 分页大小
-                    executeResult.setHasNextPage(Boolean.FALSE);
-                    if (pageSize == null) {
-                        pageSize = EasyToolsConstant.MAX_PAGE_SIZE;
-                    }
-                    int rsSize = 0;
                     while (rs.next()) {
-                        List<Cell> row = Lists.newArrayListWithExpectedSize(col);
+                        List<String> row = Lists.newArrayListWithExpectedSize(col);
                         dataList.add(row);
                         for (int i = 1; i <= col; i++) {
                             row.add(com.alibaba.dbhub.server.domain.support.util.JdbcUtils.getResultSetValue(rs, i));
-                        }
-                        rsSize++;
-                        // 到达下一页了
-                        if (rsSize >= pageSize) {
-                            executeResult.setHasNextPage(Boolean.TRUE);
-                            break;
                         }
                     }
                     return executeResult;
@@ -181,12 +170,11 @@ public class SQLExecutor {
      * 执行sql
      *
      * @param sql
-     * @param pageSize
      * @return
      * @throws SQLException
      */
-    public ExecuteResult execute(final String sql, Integer pageSize) throws SQLException {
-        return execute(sql, pageSize, getConnection());
+    public ExecuteResult execute(final String sql) throws SQLException {
+        return execute(sql, getConnection());
     }
 
     public void connectDatabase(String database) {
@@ -197,14 +185,14 @@ public class SQLExecutor {
         switch (info.getDbType()) {
             case MYSQL -> {
                 try {
-                    execute("use `" + database + "`;", null);
+                    execute("use `" + database + "`;");
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
             case SQLSERVER -> {
                 try {
-                    execute("use " + database + ";", null);
+                    execute("use " + database + ";");
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }

@@ -9,12 +9,15 @@ import themeDarkImg from '@/assets/img/theme-dark.png';
 import themeLightImg from '@/assets/img/theme-light.png';
 import themeAutoImg from '@/assets/img/theme-auto.png';
 import { getOsTheme } from '@/utils';
-import i18n from '@/i18n';
-import { ThemeType } from '@/typings/theme';
+import i18n, { currentLang } from '@/i18n';
+import { ThemeType } from '@/constants/common';
+import { LangType } from '@/constants/common';
 import { useTheme } from '@/hooks';
 import { APP_NAME, GITHUB_URL } from '@/constants/appConfig';
+import { setLang as setLangLocalStorage } from '@/utils/localStorage'
 
 const { Option } = Select;
+
 
 interface IProps {
   className?: string;
@@ -122,8 +125,8 @@ export default memo<IProps>(function Setting({ className, text }) {
         {text ? (
           <span className={styles.setText}>{text}</span>
         ) : (
-          <Iconfont code="&#xe795;"></Iconfont>
-        )}
+            <Iconfont code="&#xe795;"></Iconfont>
+          )}
       </div>
       <Modal
         open={isModalVisible}
@@ -317,7 +320,7 @@ export function SettingAI() {
 
 // baseBody 基础设置
 export function BaseBody() {
-  const [lang, setLang] = useState(localStorage.getItem('lang'));
+  const [lang, setLang] = useState(currentLang);
   const [currentTheme, setCurrentTheme] = useState(
     localStorage.getItem('theme'),
   );
@@ -337,9 +340,8 @@ export function BaseBody() {
     });
   };
 
-  function changeLang() {
-    const lang = localStorage.getItem('lang') === 'en' ? 'zh-cn' : 'en';
-    localStorage.setItem('lang', lang);
+  function changeLang(e: any) {
+    setLangLocalStorage(e.target.value)
     location.reload();
   }
 
@@ -376,8 +378,8 @@ export function BaseBody() {
       <div className={styles.title}>{i18n('setting.title.language')}</div>
       <div className={styles.langBox}>
         <Radio.Group onChange={changeLang} value={lang}>
-          <Radio value="zh-cn">简体中文</Radio>
-          <Radio value="en">English</Radio>
+          <Radio value={LangType.ZH_CN}>简体中文</Radio>
+          <Radio value={LangType.EN_US}>English</Radio>
         </Radio.Group>
       </div>
       <div className={styles.title}>{i18n('setting.title.themeColor')}</div>

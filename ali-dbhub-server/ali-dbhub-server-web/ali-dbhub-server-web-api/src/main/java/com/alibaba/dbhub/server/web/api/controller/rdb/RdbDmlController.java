@@ -6,11 +6,13 @@ import com.alibaba.dbhub.server.domain.api.param.DlExecuteParam;
 import com.alibaba.dbhub.server.domain.api.service.DlTemplateService;
 import com.alibaba.dbhub.server.domain.support.model.ExecuteResult;
 import com.alibaba.dbhub.server.tools.base.wrapper.result.ActionResult;
+import com.alibaba.dbhub.server.tools.base.wrapper.result.DataResult;
 import com.alibaba.dbhub.server.tools.base.wrapper.result.ListResult;
 import com.alibaba.dbhub.server.web.api.aspect.BusinessExceptionAspect;
 import com.alibaba.dbhub.server.web.api.aspect.ConnectionInfoAspect;
 import com.alibaba.dbhub.server.web.api.controller.rdb.converter.RdbWebConverter;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.DataExportRequest;
+import com.alibaba.dbhub.server.web.api.controller.rdb.request.DdlCountRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.request.DmlRequest;
 import com.alibaba.dbhub.server.web.api.controller.rdb.vo.ExecuteResultVO;
 
@@ -85,6 +87,17 @@ public class RdbDmlController {
         ListResult<ExecuteResult> resultDTOListResult = dlTemplateService.execute(param);
         List<ExecuteResultVO> resultVOS = rdbWebConverter.dto2vo(resultDTOListResult.getData());
         return ListResult.of(resultVOS);
+    }
+
+    /**
+     * 统计行的数量
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/count", method = {RequestMethod.POST, RequestMethod.PUT})
+    public DataResult<Long> count(@RequestBody DdlCountRequest request) {
+        return dlTemplateService.count(rdbWebConverter.request2param(request));
     }
 
 }

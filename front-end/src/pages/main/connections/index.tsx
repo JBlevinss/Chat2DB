@@ -1,7 +1,13 @@
-import React, { memo, useRef, useState } from 'react';
-import styles from './index.less';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
+import i18n from '@/i18n';
+import { IConnectionBase } from '@/typings/connection';
+import ConnectionsServer from '@/service/connection';
+import ConnectionLogo from '@/assets/img/connection.svg';
+
+import styles from './index.less';
 import DraggableContainer from '@/components/DraggableContainer';
+import CreateConnection from '@/components/CreateConnection';
 import type { MenuProps } from 'antd';
 import { Button, Menu } from 'antd';
 import {
@@ -32,58 +38,45 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] =  Array.from({length:100}).map((t,i)=>{
+const items: MenuItem[] = Array.from({ length: 100 }).map((t, i) => {
   return getItem(`Connections ${i}`, i, <PieChartOutlined />)
 })
 
 interface IProps {
-  className?: string;
 }
 
 export default memo<IProps>(function Connect(props) {
-  const { className } = props;
   const volatileRef = useRef<any>();
-  const [collapsed, setCollapsed] = useState(false);
 
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
+  return <div className={classnames(styles.box)}>
+    <div ref={volatileRef} className={styles.layoutLeft}>
+      <div className={styles.pageTitle}>
+        Connections
+        </div>
+      <div className={styles.menuBox}>
+        <Menu
+          className={styles.menu}
+          mode="inline"
+          items={items}
+        />
+      </div>
+    </div>
+    <div className={styles.layoutRight}>
+      {/* <div className={styles.dataBaseList}>
+          {
+            Array.from({length:8}).map(t=>{
+              return <div className={styles.databaseItem}>
+                database
+              </div>
+            })
 
-  return (
-    <DraggableContainer
-      volatileDom={{
-        volatileRef,
-        volatileIndex: 0,
-      }}
-      className={classnames(styles.box, className)}
-    >
-      <div ref={volatileRef} className={styles.layoutLeft}>
-        <div className={styles.pageTitle}>
-          Connections
-        </div>
-        <div className={styles.menuBox}>
-          <Menu
-            className={styles.menu}
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            mode="inline"
-            inlineCollapsed={collapsed}
-            items={items}
-          />
-        </div>
+          }
+          <div className={styles.databaseItem}></div>
+          <div className={styles.databaseItem}></div>
+        </div> */}
+      <div className={styles.createConnections}>
+        <CreateConnection></CreateConnection>
       </div>
-      <div className={styles.layoutRight}>
-        {
-          Array.from({length:8}).map(t=>{
-            return <div className={styles.databaseItem}>
-              database
-            </div>
-          })
-         
-        }
-         <div className={styles.databaseItem}></div>
-         <div className={styles.databaseItem}></div>
-      </div>
-    </DraggableContainer>
-  );
+    </div>
+  </div>
 });

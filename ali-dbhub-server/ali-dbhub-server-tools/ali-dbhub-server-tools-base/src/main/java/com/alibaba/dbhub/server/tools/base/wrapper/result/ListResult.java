@@ -1,5 +1,6 @@
 package com.alibaba.dbhub.server.tools.base.wrapper.result;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +27,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 public class ListResult<T> implements Serializable, Result<T> {
+    @Serial
     private static final long serialVersionUID = EasyToolsConstant.SERIAL_VERSION_UID;
     /**
      * 是否成功

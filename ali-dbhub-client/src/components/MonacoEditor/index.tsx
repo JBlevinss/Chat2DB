@@ -194,7 +194,7 @@ export function setEditorHint(hintData: IHintData) {
     }));
   };
 
-  // 编辑器提示的提示实力
+  // 编辑器提示的提示实例
   const editorHintExamples = monaco.languages.registerCompletionItemProvider(
     'sql',
     {

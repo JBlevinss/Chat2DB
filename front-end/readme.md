@@ -8,6 +8,24 @@
 
 目录结构 tree ./ -L 2 -I node_modules
 
+
+## 如何使用国际化 
+
+所有 key 参考格式为 `模块名称.文案类型.文案描述`。若文案包含可变部分，可使用 `{1}`、`{2}`、`{3}` 代替。
+
+`src/i18n/index.ts` 中默认导出 `i18n` 转换方法，可以将 key 转换为对应的实际文案。文案中的 `{1}` 将被替换为第二个入参，以此类推。例如：
+
+```tsx
+// 'home.tip.welcome': '欢迎您，{1}！'
+i18n('home.tip.welcome', user.name); // => '欢迎您，张三！'
+```
+
+也可以使用 `src/i18n/index.ts` 中导出的 `i18nElement` 方法，可以将文案中的占位符替换为 JSX 元素。例如：
+
+```tsx
+i18nElement('home.tip.welcome', <b>{user.name}</b>); // => <>欢迎您，<b>张三</b>！</>'
+```
+
 ```code
 ├── dist
 │   ├── index.html

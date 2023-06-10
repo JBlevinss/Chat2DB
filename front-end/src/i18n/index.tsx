@@ -1,14 +1,21 @@
 import React, { Fragment } from 'react';
+import { getLang } from '@/utils/localStorage';
+import { LangType } from '@/constants/common';
 import zhCN from './zh-cn';
-import en from './en';
-import { isZH } from '@/utils/check';
+import enUS from './en-us';
 
 const locale = {
-  en,
+  'en-us': enUS,
   'zh-cn': zhCN,
 };
 
-const langSet: Record<string, string> = locale[isZH ? 'zh-cn' : 'en'];
+export const currentLang: LangType = getLang() || LangType.EN_US;
+
+export const isEn = currentLang === LangType.EN_US;
+
+export const isZH = currentLang === LangType.ZH_CN;
+
+const langSet: Record<string, string> = locale[currentLang];
 
 function i18n(key: keyof typeof zhCN, ...args: any[]) {
   let result = langSet[key];

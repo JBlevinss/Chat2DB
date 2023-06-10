@@ -1,6 +1,6 @@
 import createRequest from "./base";
-import { IPageResponse, ITable,IPageParams } from '@/types';
-import { DatabaseTypeCode } from '@/utils/constants';
+import { IPageResponse, ITable, IPageParams } from '@/types';
+import { DatabaseTypeCode } from '@/typings';
 
 export interface IGetListParams extends IPageParams  {
   dataSourceId: number;

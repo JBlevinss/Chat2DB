@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { addColorSchemeListener, colorSchemeListeners } from '@/layouts';
 import { getOsTheme } from '@/utils';
-import { ITheme, PrimaryColorType, ThemeType } from '@/typings/theme';
+import { ITheme } from '@/typings/theme';
+import { ThemeType, PrimaryColorType } from '@/constants/common';
 import {
   getPrimaryColor,
   getTheme,
@@ -23,6 +24,7 @@ const initialTheme = () => {
   };
 };
 
+// 
 export function useTheme() {
   const [appTheme, setAppTheme] = useState<ITheme>(initialTheme());
 
@@ -40,7 +42,7 @@ export function useTheme() {
     if (theme.backgroundColor === ThemeType.FollowOs) {
       theme.backgroundColor =
         window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
+          window.matchMedia('(prefers-color-scheme: dark)').matches
           ? ThemeType.Dark
           : ThemeType.Light;
     }

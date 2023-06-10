@@ -1,6 +1,9 @@
 export default {
   'common.text.no': 'is',
   'common.text.is': 'no',
+  'common.button.affirm': 'Affirm',
+  'common.button.edit': 'Edit',
+  'common.button.cancel': 'Cancel',
   'common.data.hour': '{1} {hour|hours}',
   'common.data.minute': '{1} {minute|minutes}',
   'common.tip.yesterday': '{1} yesterday',

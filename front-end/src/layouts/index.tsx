@@ -13,7 +13,7 @@ import antdEnUS from 'antd/locale/en_US';
 import antdZhCN from 'antd/locale/zh_CN';
 import { useTheme } from '@/hooks';
 import { isEn } from '@/utils/check';
-import { PrimaryColorType, ThemeType } from '@/typings/theme';
+import { ThemeType, PrimaryColorType } from '@/constants/common';
 import styles from './index.less';
 import {
   getLang,
@@ -93,7 +93,7 @@ function Layout() {
     if (theme === ThemeType.FollowOs) {
       theme =
         (window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
+          window.matchMedia('(prefers-color-scheme: dark)').matches
           ? ThemeType.Dark
           : ThemeType.Light) || ThemeType.Dark;
     }

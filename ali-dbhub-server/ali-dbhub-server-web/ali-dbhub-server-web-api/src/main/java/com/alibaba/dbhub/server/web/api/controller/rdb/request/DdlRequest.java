@@ -26,4 +26,22 @@ public class DdlRequest extends DataSourceBaseRequest implements DataSourceConso
      */
     @NotNull
     private Long consoleId;
+
+    /**
+     * 分页编码
+     * 只有select语句才有
+     */
+    private Integer pageNo;
+
+    /**
+     * 分页大小
+     * 只有select语句才有
+     */
+    private Integer pageSize;
+
+    /**
+     * 返回全部数据
+     * 只有select语句才有
+     */
+    private Boolean pageSizeAll;
 }

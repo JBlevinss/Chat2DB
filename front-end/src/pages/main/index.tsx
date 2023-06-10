@@ -14,7 +14,6 @@ import Chat from './chat';
 
 import styles from './index.less';
 import { INavItem } from '@/typings/main';
-import { isElectron } from '@/utils/check';
 
 const navConfig: INavItem[] = [
   {
@@ -40,7 +39,7 @@ const navConfig: INavItem[] = [
 ];
 
 function MainPage() {
-  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[2]);
+  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[0]);
 
   function switchingNav(item: INavItem) {
     if (item.openBrowser) {
@@ -54,7 +53,7 @@ function MainPage() {
     <div className={styles.page}>
       <div className={styles.layoutLeft}>
         {/* <div className={styles.dargBox}></div> */}
-        <BrandLogo onClick={() => {}} className={styles.brandLogo} />
+        <BrandLogo onClick={() => { }} className={styles.brandLogo} />
         <ul className={styles.navList}>
           {navConfig.map((item, index) => {
             return (

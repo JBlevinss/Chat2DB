@@ -1,6 +1,9 @@
 export default {
   'common.text.no': '否',
   'common.text.is': '是',
+  'common.button.affirm': '确认',
+  'common.button.edit': '修改',
+  'common.button.cancel': '取消',
   'common.data.hour': '{1}小时',
   'common.data.minute': '{1}分钟',
   'common.tip.yesterday': '昨天{1}',

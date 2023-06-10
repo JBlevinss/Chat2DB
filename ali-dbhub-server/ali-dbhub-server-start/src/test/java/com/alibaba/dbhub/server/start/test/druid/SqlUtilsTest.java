@@ -6,6 +6,7 @@ import com.alibaba.druid.DbType;
 import com.alibaba.druid.sql.PagerUtils;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLDataTypeImpl;
+import com.alibaba.druid.sql.ast.SQLLimit;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.statement.SQLColumnDefinition;
 import com.alibaba.druid.sql.ast.statement.SQLNotNullConstraint;
@@ -227,6 +228,15 @@ public class SqlUtilsTest {
                 + "\t    index data_ops_table_test_1673096155228_idx_number_string (number, date) comment '联合索引'\n"
                 + "\t) COMMENT ='测试表';", DbType.mysql);
         log.info("解析sql:{}", sqlStatementList);
+    }
+
+
+    @Test
+    public void testlimit2() {
+        SQLLimit sqlLimit= SQLUtils.getLimit("select * from t_orderdetail limit 0,1",DbType.mysql);
+        log.info("解析sql:{}", sqlLimit);
+        sqlLimit= SQLUtils.getLimit("select * from t_orderdetail",DbType.mysql);
+        log.info("解析sql:{}", sqlLimit);
     }
 
 }

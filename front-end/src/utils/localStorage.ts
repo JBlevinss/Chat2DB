@@ -1,6 +1,5 @@
-import { PrimaryColorType, ThemeType } from '@/typings/theme';
-
-type LangType = 'zh-cn' | 'en-us';
+import { ThemeType, PrimaryColorType } from '@/constants/common';
+import { LangType } from '@/constants/common';
 
 export function getLang(): LangType {
   return localStorage.getItem('lang') as LangType;

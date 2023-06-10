@@ -166,6 +166,14 @@ export default function DatabaseQuery(props: IProps) {
         myEditorHintData[item.name] = [];
       });
       monacoHint.current = setEditorHint(myEditorHintData);
+
+
+      const timer = setTimeout(() => {
+        
+      }, 1000);
+
+      clearInterval(timer)
+      
     } catch {}
   };
 
