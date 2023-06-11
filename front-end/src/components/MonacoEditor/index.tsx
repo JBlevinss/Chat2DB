@@ -75,6 +75,8 @@ function MonacoEditor(props: IProps) {
 
     // monacoSqlAutocomplete(monaco, editorIns);
     handleRegisterTigger();
+
+    createAction(editorIns);
     return () => {
       if (props.needDestroy) editorRef.current && editorRef.current.dispose();
     };
@@ -192,6 +194,33 @@ function MonacoEditor(props: IProps) {
         return {
           suggestions,
         };
+      },
+    });
+  };
+
+  const createAction = (editor: IEditorIns) => {
+    // 用于控制切换该菜单键的显示
+    const shouldShowSqlRunnerAction = editor.createContextKey(
+      'shouldShowSqlRunnerAction',
+      true,
+    );
+
+    // 前面已经定义了 editor
+    // 添加 action
+    editor.addAction({
+      // id
+      id: 'sql-runner',
+      // 该菜单键显示文本
+      label: '运行选中SQL语句',
+      // 控制该菜单键显示
+      precondition: 'shouldShowSqlRunnerAction',
+      // 该菜单键位置
+      contextMenuGroupId: 'navigation',
+      contextMenuOrder: 1.5,
+      // 点击该菜单键后运行
+      run: (event) => {
+        // 光标位置
+        alert(event.getPosition());
       },
     });
   };
