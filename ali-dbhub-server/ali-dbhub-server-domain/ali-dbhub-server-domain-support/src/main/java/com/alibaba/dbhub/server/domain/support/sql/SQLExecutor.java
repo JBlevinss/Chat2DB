@@ -21,6 +21,7 @@ import com.alibaba.dbhub.server.domain.support.model.TableColumn;
 import com.alibaba.dbhub.server.domain.support.model.TableIndex;
 import com.alibaba.dbhub.server.domain.support.model.TableIndexColumn;
 
+import cn.hutool.core.date.TimeInterval;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.support.JdbcUtils;
@@ -118,6 +119,7 @@ public class SQLExecutor {
         ExecuteResult executeResult = ExecuteResult.builder().sql(sql).success(Boolean.TRUE).build();
         Statement stmt = null;
         try {
+            TimeInterval timeInterval=new TimeInterval();
             stmt = connection.createStatement();
             boolean query = stmt.execute(sql.replaceFirst(";", ""));
             executeResult.setDescription("执行成功");
@@ -152,6 +154,7 @@ public class SQLExecutor {
                             row.add(com.alibaba.dbhub.server.domain.support.util.JdbcUtils.getResultSetValue(rs, i));
                         }
                     }
+                    executeResult.setDuration(timeInterval.interval());
                     return executeResult;
                 } finally {
                     JdbcUtils.closeResultSet(rs);
