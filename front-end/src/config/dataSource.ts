@@ -14,7 +14,6 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Name',
           name: 'alias',
           required: true,
-          width: 100,
         },
         {
           defaultValue: 'localhost',
@@ -23,7 +22,9 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Host',
           name: 'host',
           required: true,
-          width: 70,
+          styles: {
+            width: '70%',
+          }
         },
         {
           defaultValue: '3306',
@@ -33,7 +34,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           name: 'port',
           labelTextAlign: 'right',
           required: true,
-          width: 30,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: AuthenticationType.USERANDPASSWORD,
@@ -52,7 +58,6 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'User',
                   name: 'user',
                   required: true,
-                  width: 100,
                 },
                 {
                   defaultValue: '',
@@ -61,7 +66,6 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'Password',
                   name: 'password',
                   required: true,
-                  width: 100,
                 },
               ],
               label: 'User&Password',
@@ -72,7 +76,9 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: AuthenticationType.NONE,
             },
           ],
-          width: 50,
+          styles: {
+            width: '50%',
+          }
         },
         {
           defaultValue: '',
@@ -81,7 +87,6 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Database',
           name: 'database',
           required: false,
-          width: 100,
         },
         {
           defaultValue: 'jdbc:mysql://localhost:3306',
@@ -90,7 +95,6 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'URL',
           name: 'url',
           required: true,
-          width: 100,
         },
         {
           defaultValue: '8.0',
@@ -107,7 +111,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: '5.0',
             },
           ],
-          width: 100,
+
         }
       ],
       pattern: /jdbc:mysql:\/\/(.*):(\d+)(\/(\w+))?/,
@@ -130,7 +134,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'true',
             },
           ],
-          width: 100,
+
         },
         {
           defaultValue: '',
@@ -139,7 +143,9 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'SSH Hostname',
           name: 'hostName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+          }
         },
         {
           defaultValue: '',
@@ -148,7 +154,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Port',
           name: 'port',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -157,7 +168,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'SSH UserName',
           name: 'userName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -166,7 +180,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'LocalPort',
           name: 'localPort',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -175,7 +192,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Password',
           name: 'password',
           required: true,
-          width: 100,
+
         },
       ]
     },
@@ -185,7 +202,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
         "value": "convertToNull"
       }
     ],
-    type: DatabaseTypeCode.MYSQL
+    type: DatabaseTypeCode.MYSQL,
   },
   // POSTGRESQL
   {
@@ -199,7 +216,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Name',
           name: 'alias',
           required: true,
-          width: 100,
+
         },
         {
           defaultValue: 'localhost',
@@ -208,7 +225,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Host',
           name: 'host',
           required: true,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '5432',
@@ -218,7 +238,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           name: 'port',
           labelTextAlign: 'right',
           required: true,
-          width: 30,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: AuthenticationType.USERANDPASSWORD,
@@ -237,7 +262,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'User',
                   name: 'user',
                   required: true,
-                  width: 100,
+        
                 },
                 {
                   defaultValue: '',
@@ -246,7 +271,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'Password',
                   name: 'password',
                   required: true,
-                  width: 100,
+        
                 },
               ],
               label: 'User&Password',
@@ -258,7 +283,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: AuthenticationType.NONE,
             },
           ],
-          width: 50,
+          styles: {
+            width: '50%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -267,7 +295,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Database',
           name: 'database',
           required: false,
-          width: 100,
+
         },
         {
           defaultValue: 'jdbc:postgresql://localhost:5432',
@@ -276,7 +304,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'URL',
           name: 'url',
           required: true,
-          width: 100,
+
         },
       ],
       pattern: /jdbc:postgresql:\/\/(.*):(\d+)(\/(\w+))?/,
@@ -299,7 +327,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'true',
             },
           ],
-          width: 100,
+
         },
         {
           defaultValue: '',
@@ -308,7 +336,9 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'host',
           name: 'host',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+          }
         },
         {
           defaultValue: '',
@@ -317,7 +347,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Port',
           name: 'port',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -326,7 +361,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'userName',
           name: 'userName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -335,7 +373,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'LocalPort',
           name: 'localPort',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -344,7 +385,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Password',
           name: 'password',
           required: true,
-          width: 100,
+
         },
       ]
     },
@@ -361,7 +402,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Name',
           name: 'alias',
           required: true,
-          width: 100,
+
         },
         {
           defaultValue: 'localhost',
@@ -370,7 +411,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Host',
           name: 'host',
           required: true,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '1521',
@@ -380,7 +424,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           name: 'port',
           labelTextAlign: 'right',
           required: true,
-          width: 30,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: 'XE',
@@ -389,7 +438,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'SID',
           name: 'sid',
           required: true,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: 'thin',
@@ -412,7 +464,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'oci8',
             },
           ],
-          width: 30,
+          styles: {
+            width: '30%',
+            
+          }
         },
         {
           defaultValue: AuthenticationType.USERANDPASSWORD,
@@ -431,7 +486,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'User',
                   name: 'user',
                   required: true,
-                  width: 100,
+        
                 },
                 {
                   defaultValue: '',
@@ -440,7 +495,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'Password',
                   name: 'password',
                   required: true,
-                  width: 100,
+        
                 },
               ],
               label: 'User&Password',
@@ -452,7 +507,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: AuthenticationType.NONE,
             },
           ],
-          width: 50,
+          styles: {
+            width: '50%',
+            
+          }
         },
         {
           defaultValue: 'jdbc:oracle:thin:@localhost:1521:XE',
@@ -461,7 +519,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'URL',
           name: 'url',
           required: true,
-          width: 100,
+
         },
       ],
       pattern: /jdbc:oracle:(.*):@(.*):(\d+):(.*)/,
@@ -484,7 +542,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'true',
             },
           ],
-          width: 100,
+
         },
         {
           defaultValue: '',
@@ -493,7 +551,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'host',
           name: 'host',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -502,7 +563,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Port',
           name: 'port',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -511,7 +577,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'userName',
           name: 'userName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -520,7 +589,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'LocalPort',
           name: 'localPort',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -529,7 +601,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Password',
           name: 'password',
           required: true,
-          width: 100,
+
         },
       ]
     },
@@ -546,7 +618,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Name',
           name: 'alias',
           required: true,
-          width: 100,
+
         },
         {
           defaultValue: 'localhost',
@@ -555,7 +627,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Host',
           name: 'host',
           required: true,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '9092',
@@ -565,7 +640,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           name: 'port',
           labelTextAlign: 'right',
           required: true,
-          width: 30,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: AuthenticationType.USERANDPASSWORD,
@@ -584,7 +664,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'User',
                   name: 'user',
                   required: true,
-                  width: 100,
+        
                 },
                 {
                   defaultValue: '',
@@ -593,7 +673,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'Password',
                   name: 'password',
                   required: true,
-                  width: 100,
+        
                 },
               ],
 
@@ -606,7 +686,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: AuthenticationType.NONE,
             },
           ],
-          width: 50,
+          styles: {
+            width: '50%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -615,7 +698,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Database',
           name: 'database',
           required: false,
-          width: 100,
+
         },
         {
           defaultValue: 'jdbc:h2:tcp://localhost:9092',
@@ -624,7 +707,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'URL',
           name: 'url',
           required: true,
-          width: 100,
+
         },
       ],
       pattern: /jdbc:h2:tcp:\/\/(.*):(\d+)(\/(\w+))?/,
@@ -647,7 +730,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'true',
             },
           ],
-          width: 100,
+
         },
         {
           defaultValue: '',
@@ -656,7 +739,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'host',
           name: 'host',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -665,7 +751,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Port',
           name: 'port',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -674,7 +765,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'userName',
           name: 'userName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -683,7 +777,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'LocalPort',
           name: 'localPort',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -692,7 +789,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Password',
           name: 'password',
           required: true,
-          width: 100,
+
         },
       ]
     },
@@ -727,7 +824,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Name',
           name: 'alias',
           required: true,
-          width: 100,
+
         },
         {
           defaultValue: 'localhost',
@@ -736,7 +833,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Host',
           name: 'host',
           required: true,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '1433',
@@ -746,7 +846,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           name: 'port',
           labelTextAlign: 'right',
           required: true,
-          width: 30,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -755,7 +860,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Instance',
           name: 'instance',
           required: false,
-          width: 100,
+
         },
         {
           defaultValue: AuthenticationType.USERANDPASSWORD,
@@ -774,7 +879,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'User',
                   name: 'user',
                   required: true,
-                  width: 100,
+        
                 },
                 {
                   defaultValue: '',
@@ -783,7 +888,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'Password',
                   name: 'password',
                   required: true,
-                  width: 100,
+        
                 },
               ],
 
@@ -796,7 +901,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: AuthenticationType.NONE,
             },
           ],
-          width: 50,
+          styles: {
+            width: '50%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -805,7 +913,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Database',
           name: 'database',
           required: false,
-          width: 100,
+
         },
         {
           defaultValue: 'jdbc:sqlserver://localhost:1433',
@@ -814,7 +922,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'URL',
           name: 'url',
           required: true,
-          width: 100,
+
         },
       ],
       pattern: /jdbc:sqlserver:\/\/(.*):(\d+)(\/(\w+))?/,
@@ -837,7 +945,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'true',
             },
           ],
-          width: 100,
+
         },
         {
           defaultValue: '',
@@ -846,7 +954,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'host',
           name: 'host',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -855,7 +966,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Port',
           name: 'port',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -864,7 +980,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'userName',
           name: 'userName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -873,7 +992,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'LocalPort',
           name: 'localPort',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -882,7 +1004,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Password',
           name: 'password',
           required: true,
-          width: 100,
+
         },
       ]
     },
@@ -899,7 +1021,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Name',
           name: 'alias',
           required: true,
-          width: 100,
+
         },
         {
           defaultValue: 'identifier.sqlite',
@@ -908,7 +1030,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'File',
           name: 'file',
           required: true,
-          width: 100,
+
         },
         {
           defaultValue: 'jdbc:sqlite:identifier.sqlite',
@@ -917,7 +1039,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'URL',
           name: 'url',
           required: true,
-          width: 100,
+
         },
       ],
       pattern: /jdbc:sqlite/,
@@ -940,7 +1062,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'true',
             },
           ],
-          width: 100,
+
         },
         {
           defaultValue: '',
@@ -949,7 +1071,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'host',
           name: 'host',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -958,7 +1083,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Port',
           name: 'port',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -967,7 +1097,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'userName',
           name: 'userName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -976,7 +1109,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'LocalPort',
           name: 'localPort',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -985,7 +1121,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Password',
           name: 'password',
           required: true,
-          width: 100,
+
         },
       ]
     },
@@ -1002,7 +1138,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Name',
           name: 'alias',
           required: true,
-          width: 100,
+
         },
         {
           defaultValue: 'localhost',
@@ -1011,7 +1147,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Host',
           name: 'host',
           required: true,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '3306',
@@ -1021,7 +1160,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           name: 'port',
           labelTextAlign: 'right',
           required: true,
-          width: 30,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: AuthenticationType.USERANDPASSWORD,
@@ -1040,7 +1184,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'User',
                   name: 'user',
                   required: true,
-                  width: 100,
+        
                 },
                 {
                   defaultValue: '',
@@ -1049,7 +1193,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'Password',
                   name: 'password',
                   required: true,
-                  width: 100,
+        
                 },
               ],
 
@@ -1062,7 +1206,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: AuthenticationType.NONE,
             },
           ],
-          width: 50,
+          styles: {
+            width: '50%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1071,7 +1218,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Database',
           name: 'database',
           required: false,
-          width: 100,
+
         },
         {
           defaultValue: 'jdbc:mariadb://localhost:3306',
@@ -1080,7 +1227,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'URL',
           name: 'url',
           required: true,
-          width: 100,
+
         },
       ],
       pattern: /jdbc:mariadb:\/\/(.*):(\d+)(\/(\w+))?/,
@@ -1103,7 +1250,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'true',
             },
           ],
-          width: 100,
+
         },
         {
           defaultValue: '',
@@ -1112,7 +1259,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'host',
           name: 'host',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1121,7 +1271,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Port',
           name: 'port',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -1130,7 +1285,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'userName',
           name: 'userName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1139,7 +1297,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'LocalPort',
           name: 'localPort',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -1148,7 +1309,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Password',
           name: 'password',
           required: true,
-          width: 100,
+
         },
       ]
     },
@@ -1165,7 +1326,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Name',
           name: 'alias',
           required: true,
-          width: 100,
+
         },
         {
           defaultValue: 'localhost',
@@ -1174,7 +1335,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Host',
           name: 'host',
           required: true,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '8123',
@@ -1184,7 +1348,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           name: 'port',
           labelTextAlign: 'right',
           required: true,
-          width: 30,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: AuthenticationType.USERANDPASSWORD,
@@ -1203,7 +1372,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'User',
                   name: 'user',
                   required: true,
-                  width: 100,
+        
                 },
                 {
                   defaultValue: '',
@@ -1212,7 +1381,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'Password',
                   name: 'password',
                   required: true,
-                  width: 100,
+        
                 },
               ],
 
@@ -1225,7 +1394,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: AuthenticationType.NONE,
             },
           ],
-          width: 50,
+          styles: {
+            width: '50%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1234,7 +1406,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Database',
           name: 'database',
           required: false,
-          width: 100,
+
         },
         {
           defaultValue: 'jdbc:clickhouse://localhost:8123',
@@ -1243,7 +1415,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'URL',
           name: 'url',
           required: true,
-          width: 100,
+
         },
       ],
       pattern: /jdbc:clickhouse:\/\/(.*):(\d+)(\/(\w+))?/,
@@ -1267,7 +1439,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'true',
             },
           ],
-          width: 100,
+
         },
         {
           defaultValue: '',
@@ -1276,7 +1448,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'USE SSH',
           name: 'use',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1285,7 +1460,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'SSH Hostname',
           name: 'hostName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1294,7 +1472,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Port',
           name: 'port',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -1303,7 +1486,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'SSH UserName',
           name: 'userName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1312,7 +1498,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'LocalPort',
           name: 'localPort',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -1321,7 +1510,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Password',
           name: 'password',
           required: true,
-          width: 100,
+
         },
       ]
     }
@@ -1337,7 +1526,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Name',
           name: 'alias',
           required: true,
-          width: 100,
+
         },
         {
           defaultValue: 'localhost',
@@ -1346,7 +1535,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Host',
           name: 'host',
           required: true,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '5236',
@@ -1356,7 +1548,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           name: 'port',
           labelTextAlign: 'right',
           required: true,
-          width: 30,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: AuthenticationType.USERANDPASSWORD,
@@ -1375,7 +1572,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'User',
                   name: 'user',
                   required: true,
-                  width: 100,
+        
                 },
                 {
                   defaultValue: '',
@@ -1384,7 +1581,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
                   labelNameEN: 'Password',
                   name: 'password',
                   required: true,
-                  width: 100,
+        
                 },
               ],
               label: 'User&Password',
@@ -1395,7 +1592,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: AuthenticationType.NONE,
             },
           ],
-          width: 50,
+          styles: {
+            width: '50%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1404,7 +1604,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Database',
           name: 'database',
           required: false,
-          width: 100,
+
         },
         {
           defaultValue: 'jdbc:dm://localhost:5236',
@@ -1413,7 +1613,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'URL',
           name: 'url',
           required: true,
-          width: 100,
+
         },
       ],
       pattern: /jdbc:dm:\/\/(.*):(\d+)(\/(\w+))?/,
@@ -1436,7 +1636,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
               value: 'true',
             },
           ],
-          width: 100,
+
         },
         {
           defaultValue: '',
@@ -1445,7 +1645,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'SSH Hostname',
           name: 'hostName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1454,7 +1657,12 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Port',
           name: 'port',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelWidthEN: '40px',
+            labelWidthCN: '40px',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -1463,7 +1671,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'SSH UserName',
           name: 'userName',
           required: false,
-          width: 70,
+          styles: {
+            width: '70%',
+            
+          }
         },
         {
           defaultValue: '',
@@ -1472,7 +1683,10 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'LocalPort',
           name: 'localPort',
           required: false,
-          width: 28,
+          styles: {
+            width: '30%',
+            labelAlign: 'right'
+          }
         },
         {
           defaultValue: '',
@@ -1481,7 +1695,7 @@ export const dataSourceFormConfigs: IDataSourceForm[] = [
           labelNameEN: 'Password',
           name: 'password',
           required: true,
-          width: 100,
+
         },
       ]
     },

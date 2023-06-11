@@ -14,19 +14,17 @@ import { CaretRightOutlined } from '@ant-design/icons';
 import type { CSSProperties } from 'react';
 import {
   Select,
-  Modal,
   Form,
   Input,
   message,
   Table,
-  Radio,
   Button,
   Collapse,
-  theme
   // Menu,
 } from 'antd';
 import Iconfont from '@/components/Iconfont';
 import { useUpdateEffect } from '@/hooks';
+import { useTheme } from '@/hooks/useTheme'
 
 const { Option } = Select;
 
@@ -45,35 +43,12 @@ export interface IEditDataSourceData {
 
 interface IProps {
   className?: string;
+  closeCreateConnection: () => void;
   // submitCallback?: (data: ITreeNode) => void;
 }
 
-const tabsConfig = [
-  {
-    label: '常规',
-    key: 'baseInfo'
-  },
-  {
-    label: 'SSH',
-    key: 'ssh'
-  },
-  {
-    label: '高级',
-    key: 'extendInfo'
-  },
-]
-
-const formItemLayout = {
-  labelCol: {
-    sm: 4,
-  },
-  wrapperCol: {
-    sm: 20,
-  },
-};
-
 export default function CreateConnection(props: IProps) {
-  const { className } = props;
+  const { className, closeCreateConnection } = props;
   // const { model, setEditDataSourceData, setRefreshTreeNum, setModel } = useContext(DatabaseContext);
   // const editDataSourceData: IEditDataSourceData = model.editDataSourceData as IEditDataSourceData
   const editDataSourceData: IEditDataSourceData = {
@@ -84,34 +59,31 @@ export default function CreateConnection(props: IProps) {
   const dataSourceType = editDataSourceData.dataType;
   const [baseInfoForm] = Form.useForm();
   const [sshForm] = Form.useForm();
-  const [currentTab, setCurrentTab] = useState(tabsConfig[0]);
   const [backfillData, setBackfillData] = useState({});
   const [loadings, setLoading] = useState({
     confirmButton: false,
     testButton: false,
   });
 
-  const getItems = (panelStyle: any) => [
+  const getItems = () => [
     {
-      key: '2',
-      label: 'This is panel header 2',
+      key: 'ssh',
+      label: 'SSH Configuration',
       children: <div className={styles.sshBox}>
         <RenderForm backfillData={backfillData} form={sshForm} tab='ssh' dataSourceType={dataSourceType} dataSourceId={dataSourceId} ></RenderForm>
         <div className={styles.testSSHConnect}>
           <div onClick={testSSH} className={styles.testSSHConnectText}>
             测试ssh连接
+          </div>
         </div>
-        </div>
-      </div>,
-      style: panelStyle,
+      </div>
     },
     {
-      key: '3',
-      label: 'This is panel header 3',
+      key: 'extendInfo',
+      label: 'Advanced Configuration',
       children: <div className={styles.extendInfoBox}>
         <RenderExtendTable backfillData={backfillData} dataSourceType={dataSourceType}></RenderExtendTable>
-      </div>,
-      style: panelStyle,
+      </div>
     },
   ];
 
@@ -180,11 +152,8 @@ export default function CreateConnection(props: IProps) {
   }
 
   function onCancel() {
+    closeCreateConnection()
     // setEditDataSourceData(false)
-  }
-
-  function changeTabs(key: string, index: number) {
-    setCurrentTab(tabsConfig[index])
   }
 
   function testSSH() {
@@ -193,16 +162,6 @@ export default function CreateConnection(props: IProps) {
       message.success('测试连接成功')
     })
   }
-
-
-  const { token } = theme.useToken();
-
-  const panelStyle = {
-    marginBottom: 24,
-    background: token.colorFillAlter,
-    borderRadius: token.borderRadiusLG,
-    border: 'none',
-  };
 
   return <div className={classnames(styles.box, className)}>
     <div className={styles.title}>
@@ -216,7 +175,7 @@ export default function CreateConnection(props: IProps) {
       // bordered={false}
       // expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
       // style={{ background: token.colorBgContainer }}
-      items={getItems(panelStyle)}
+      items={getItems()}
     />
     <div className={styles.formFooter}>
       <div className={styles.test}>
@@ -226,13 +185,13 @@ export default function CreateConnection(props: IProps) {
             onClick={saveConnection.bind(null, submitType.TEST)}
             className={styles.test}>
             测试连接
-            </Button>
+          </Button>
         }
       </div>
       <div className={styles.rightButton}>
         <Button onClick={onCancel} className={styles.cancel}>
           取消
-          </Button>
+        </Button>
         <Button
           className={styles.save}
           type="primary"
@@ -386,10 +345,16 @@ function RenderForm(props: IRenderFormProps) {
   function renderFormItem(t: IFormItem): React.ReactNode {
     const label = isEn ? t.labelNameEN : t.labelNameCN;
     const name = t.name;
+    const width = t?.styles?.width || '100%';
+    const labelWidth = isEn ? (t?.styles?.labelWidthEN || '100px') : (t?.styles?.labelWidthCN || '70px');
+    const labelAlign = t?.styles?.labelAlign || 'left';
+
     const FormItemTypes: { [key in InputType]: () => React.ReactNode } = {
       [InputType.INPUT]: () => <Form.Item
         label={label}
         name={name}
+        style={{ '--form-label-width': labelWidth } as any}
+        labelAlign={labelAlign}
       >
         <Input />
       </Form.Item >,
@@ -397,8 +362,10 @@ function RenderForm(props: IRenderFormProps) {
       [InputType.SELECT]: () => <Form.Item
         label={label}
         name={name}
+        style={{ '--form-label-width': labelWidth } as any}
+        labelAlign={labelAlign}
       >
-        <Select value={t.defaultValue} onChange={(e) => { selectChange({ name: t.name, value: e }) }}>
+        <Select value={t.defaultValue} onChange={(e) => { selectChange({ name: name, value: e }) }}>
           {t.selects?.map((t: ISelect) => <Option key={t.value} value={t.value}>{t.label}</Option>)}
         </Select>
       </Form.Item>,
@@ -406,13 +373,15 @@ function RenderForm(props: IRenderFormProps) {
       [InputType.PASSWORD]: () => <Form.Item
         label={label}
         name={name}
+        style={{ '--form-label-width': labelWidth } as any}
+        labelAlign={labelAlign}
       >
         <Input.Password />
       </Form.Item>
     }
 
     return <Fragment key={t.name}>
-      <div key={t.name} className={classnames({ [styles.labelTextAlign]: t.labelTextAlign })} style={{ width: `${t.width}%` }}>
+      <div key={t.name} className={classnames({ [styles.labelTextAlign]: t.labelTextAlign })} style={{ width: width }}>
         {FormItemTypes[t.inputType]()}
       </div>
       {
@@ -426,6 +395,7 @@ function RenderForm(props: IRenderFormProps) {
   }
 
   return <Form
+    colon={false}
     name={tab}
     form={form}
     initialValues={initialValues}
@@ -433,7 +403,6 @@ function RenderForm(props: IRenderFormProps) {
     autoComplete='off'
     labelAlign='left'
     onFieldsChange={onFieldsChange}
-    {...formItemLayout}
   >
     {dataSourceFormConfig[tab]!.items.map((t => renderFormItem(t)))}
   </Form>

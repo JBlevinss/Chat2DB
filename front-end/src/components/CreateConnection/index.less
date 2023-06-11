@@ -1,12 +1,16 @@
 @import '../../styles/var.less';
 
-.box{
-  margin: 0 auto;
+.box {
+  margin: 0px auto 60px;
   width: 600px;
   min-width: 60%;
 }
 
-.title{
+.title {
+  // position: sticky;
+  // top: 0;
+  // z-index: 1;
+  background-color: var(--color-bg);
   font-size: 26px;
   text-align: center;
   margin: 15% 0px 30px 0px;
@@ -17,11 +21,8 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    .custom-form-item {
-      > div > div:nth-of-type(1) {
-        width: 70px;
-        text-align: left;
-      }
+    .ant-form-item-label{
+      width: var(--form-label-width);
     }
   }
 }

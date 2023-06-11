@@ -9,4 +9,6 @@ export default {
   'connection.label.JDBCDrive': 'JDBC驱动',
   'connection.label.port': '端口',
   'connection.button.testConnection': '测试链接',
+  'connection.label.advancedConfiguration': '高级配置',
+  'connection.label.sshConfiguration': 'SSH',
 }
