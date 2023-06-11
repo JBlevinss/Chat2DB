@@ -24,7 +24,7 @@ export enum DatabaseTypeCode {
   DM = "DM",
 }
 
-export const databaseType: {
+export const databaseMap: {
   [keys: string]: IDatabase;
 } = {
   [DatabaseTypeCode.MYSQL]: {
@@ -92,6 +92,6 @@ export const databaseType: {
   },
 };
 
-export const databaseTypeList = Object.keys(databaseType).map((keys) => {
-  return databaseType[keys];
+export const databaseTypeList = Object.keys(databaseMap).map((keys) => {
+  return databaseMap[keys];
 });

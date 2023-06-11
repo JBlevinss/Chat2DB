@@ -1,5 +1,5 @@
 import { InputType, AuthenticationType, SSHAuthenticationType } from './enum';
-import { DatabaseTypeCode } from '@/typings';
+import { DatabaseTypeCode } from '@/constants/database';
 import { OperationColumn } from '@/components/Tree/treeConfig';
 
 export type ISelect = {

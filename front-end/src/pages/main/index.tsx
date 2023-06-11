@@ -39,7 +39,7 @@ const navConfig: INavItem[] = [
 ];
 
 function MainPage() {
-  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[0]);
+  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[1]);
 
   function switchingNav(item: INavItem) {
     if (item.openBrowser) {

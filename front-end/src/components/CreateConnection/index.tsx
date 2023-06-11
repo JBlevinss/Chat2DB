@@ -2,7 +2,7 @@ import React, { memo, useEffect, useMemo, useState, Fragment, useContext, useCal
 import { i18n, isEn } from '@/i18n'
 import styles from './index.less';
 import classnames from 'classnames';
-import { DatabaseTypeCode, ConnectionEnvType } from '@/typings';
+import { DatabaseTypeCode, ConnectionEnvType } from '@/constants/database';
 import connectionServer from '@/service/connection'
 import { dataSourceFormConfigs } from '@/config/dataSource';
 import { IDataSourceForm, IFormItem, ISelect } from '@/config/types';

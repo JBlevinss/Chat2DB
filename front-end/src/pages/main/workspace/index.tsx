@@ -22,8 +22,11 @@ export default memo<IProps>(function Chart(props) {
     >
       <div ref={volatileRef} className={styles.box_left}>
         <div className={styles.box_left_title}>Dashboard</div>
+        
       </div>
-      <div></div>
+      <div>
+
+      </div>
     </DraggableContainer>
   );
 });

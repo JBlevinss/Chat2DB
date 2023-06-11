@@ -1,4 +1,4 @@
-import { DatabaseTypeCode } from '@/typings';
+import { DatabaseTypeCode } from '@/constants/database';
 import { IDataSourceForm } from './types';
 import { InputType, AuthenticationType, SSHAuthenticationType, OperationColumn } from './enum';
 
