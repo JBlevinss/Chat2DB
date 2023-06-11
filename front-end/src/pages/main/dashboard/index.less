@@ -1,19 +1,16 @@
 .box {
-  background-color: var(--color-bg);
   display: flex;
+  background-color: var(--color-bg);
   height: 100%;
   width: 100%;
 }
 
 .box_left {
   min-width: 260px;
-  /* 设置左侧区块的最小宽度 */
   max-width: 400px;
-  /* 设置左侧区块的最大宽度 */
   height: 100%;
-  padding-top: 24px;
-
-
+  padding-top: 20px;
+  background-color: var(--color-bg-medium);
 }
 
 .box_left_title {
@@ -54,9 +51,7 @@
   margin-bottom: 24px;
 }
 
-.box_right_content {
-
-}
+.box_right_content {}
 
 .box_right_content_row {
 
@@ -66,7 +61,8 @@
 .box_right_content_column {
   flex: 1;
   margin-right: 20px;
-  &:last-child{
+
+  &:last-child {
     margin-right: 0px;
   }
 }
