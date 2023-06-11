@@ -1,11 +1,5 @@
 package com.alibaba.dbhub.server.domain.core.impl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import com.alibaba.dbhub.server.domain.api.param.DlCountParam;
 import com.alibaba.dbhub.server.domain.api.param.DlExecuteParam;
 import com.alibaba.dbhub.server.domain.api.param.SqlAnalyseParam;
@@ -27,12 +21,17 @@ import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.parser.SQLParserUtils;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author moji
@@ -78,7 +77,7 @@ public class DlTemplateServiceImpl implements DlTemplateService {
                 if (autoLimit) {
                     pageNo = Optional.ofNullable(param.getPageNo()).orElse(1);
                     pageSize = Optional.ofNullable(param.getPageSize()).orElse(EasyToolsConstant.MAX_PAGE_SIZE);
-                    int offset = (pageNo - 1) * pageSize + 1;
+                    int offset = (pageNo - 1) * pageSize;
                     sql = PagerUtils.limit(sql, dbType, offset, pageSize);
                 }
                 sqlType = SqlTypeEnum.SELECT.getCode();
