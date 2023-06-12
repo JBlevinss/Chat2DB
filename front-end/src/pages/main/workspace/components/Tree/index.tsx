@@ -8,7 +8,7 @@ import { callVar, approximateTreeNode } from '@/utils';
 import { TreeNodeType } from '@/constants/tree';
 import StateIndicator from '@/components/StateIndicator';
 import LoadingContent from '@/components/Loading/LoadingContent';
-import { useUpdateEffect } from '@/hooks/common';
+import { useUpdateEffect } from '@/hooks/useUpdateEffect';
 import connectionService from '@/service/connection';
 import TreeNodeRightClick from './TreeNodeRightClick';
 import { treeConfig, switchIcon, ITreeConfigItem } from './treeConfig';

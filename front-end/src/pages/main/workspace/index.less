@@ -1,8 +1,44 @@
+@import '../../../styles/var.less';
+
 .box {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  display: flex;
+  background-color: var(--color-bg);
+  width: 100%;
+  height: 100%;
+}
+
+.box_left {
+  min-width: 260px;
+  max-width: 400px;
+  height: 100%;
+  padding-top: 20px;
+  background-color: var(--color-bg-medium);
+}
+
+
+
+.box_left_db {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.box_left_save {}
+
+.box_left_connection {}
+
+.box_right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   background-color: var(--color-bg);
 }
+
+.box_right_console {
+
+  min-height: 400px;
+}
+
+
+.box_right_result {}

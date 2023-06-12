@@ -24,8 +24,10 @@ const initialTheme = () => {
   };
 };
 
-// 
-export function useTheme() {
+export function useTheme<T = ITheme>(): [
+  T,
+  React.Dispatch<React.SetStateAction<ITheme>>,
+] {
   const [appTheme, setAppTheme] = useState<ITheme>(initialTheme());
 
   useEffect(() => {
