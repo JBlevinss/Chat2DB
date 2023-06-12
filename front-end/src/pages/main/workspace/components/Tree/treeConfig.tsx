@@ -1,5 +1,5 @@
-import { ITreeNode } from '@/types';
-import { TreeNodeType } from '@/utils/constants';
+import { ITreeNode } from '@/typings/tree';
+import { TreeNodeType } from '@/constants/tree';
 import connectionService from '@/service/connection';
 import mysqlServer from '@/service/mysql';
 
@@ -36,21 +36,6 @@ export const switchIcon: Partial<{ [key in TreeNodeType]: { icon: string } }> = 
   [TreeNodeType.INDEX]: {
     icon: '\ue65b'
   },
-  // [TreeNodeType.SEARCH]: {
-  //   icon: '\uec4c'
-  // },
-  // [TreeNodeType.LINE]: {
-  //   icon: '\ue611'
-  // },
-  // [TreeNodeType.LINETOTAL]: {
-  //   icon: '\ue611'
-  // },
-  // [TreeNodeType.SAVE]: {
-  //   icon: '\ue936'
-  // },
-  // [TreeNodeType.INDEXESTOTAL]: {
-  //   icon: '\ue648'
-  // }
 }
 
 export enum OperationColumn {
@@ -396,20 +381,5 @@ export const treeConfig: { [key in TreeNodeType]: ITreeConfigItem } = {
   },
   [TreeNodeType.INDEX]: {
     icon: '\ue65b'
-  },
-  // [TreeNodeType.SEARCH]: {
-  //   icon: '\uec4c'
-  // },
-  // [TreeNodeType.LINE]: {
-  //   icon: '\ue611'
-  // },
-  // [TreeNodeType.LINETOTAL]: {
-  //   icon: '\ue611'
-  // },
-  // [TreeNodeType.SAVE]: {
-  //   icon: '\ue936'
-  // },
-  // [TreeNodeType.INDEXESTOTAL]: {
-  //   icon: '\ue648'
-  // }
+  }
 }

@@ -42,6 +42,9 @@
 
 .navList {
   flex: 1;
+  width: 100px;
+  padding: 0px 20px;
+  box-sizing: border-box;
   li {
     display: flex;
     flex-direction: column;
@@ -49,8 +52,8 @@
     margin-bottom: 10px;
     font-size: 12px;
     padding: 5px;
-    border-radius: 10px;
-    color: var(--color-text-75);
+    border-radius: 3px;
+    color: var(--color-text);
     cursor: pointer;
 
     .icon {
@@ -67,7 +70,7 @@
   }
 
   .activeNav {
-    color: var(--custom-primary-color-hover);
+    color: var(--color-primary);
   }
 }
 

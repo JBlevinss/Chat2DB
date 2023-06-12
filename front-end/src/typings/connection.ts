@@ -1,7 +1,12 @@
 import { DatabaseTypeCode } from '@/constants/database';
 import { ConnectionEnv } from '@/constants/environment';
 
-export interface IConnectionBase {
+export interface IConnectionExtendInfoItem {
+  key: string;
+  value: string;
+}
+
+export interface IConnectionDetails {
   id?: number;
   alias: string;
   url: string;
@@ -10,4 +15,7 @@ export interface IConnectionBase {
   type: DatabaseTypeCode;
   tabOpened: 'y' | 'n';
   EnvType: ConnectionEnv;
+  extendInfo: IConnectionExtendInfoItem[];
+  ssh: any;
+  [key: string]: any;
 }

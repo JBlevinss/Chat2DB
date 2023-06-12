@@ -27,7 +27,7 @@ export interface IFormItem {
 }
 
 // 配置链接数据源表单 Json
-export type IDataSourceForm = {
+export type IConnectionConfig = {
   type: DatabaseTypeCode;
   baseInfo: {
     items: IFormItem[];

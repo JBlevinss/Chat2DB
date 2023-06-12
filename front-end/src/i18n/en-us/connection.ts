@@ -11,4 +11,5 @@ export default {
   'connection.button.testConnection': 'Test',
   'connection.label.advancedConfiguration': 'Advanced Configuration',
   'connection.label.sshConfiguration': 'SSH Configuration',
+  'connection.button.addConnection': 'ADD Connection',
 };

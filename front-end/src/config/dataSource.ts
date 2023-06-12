@@ -1,8 +1,8 @@
 import { DatabaseTypeCode } from '@/constants/database';
-import { IDataSourceForm } from './types';
+import { IConnectionConfig } from './types';
 import { InputType, AuthenticationType, SSHAuthenticationType, OperationColumn } from './enum';
 
-export const dataSourceFormConfigs: IDataSourceForm[] = [
+export const dataSourceFormConfigs: IConnectionConfig[] = [
   // MYSQL
   {
     baseInfo: {

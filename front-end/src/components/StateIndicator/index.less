@@ -5,12 +5,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 .empty {
   width: 200px;
   height: 200px;
-  background-image: url('../../assets/no-data.png');
+  // background-image: url('../../assets/no-data.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -23,14 +28,14 @@
 .error {
   width: 200px;
   height: 200px;
-  background-image: url('../../assets/error.png');
+  // background-image: url('../../assets/error.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .errorText {
   font-size: 14px;
-  color: var(--custom-error-color);
+  color: var(--error-color);
   text-align: center;
   transform: translateY(-20px);
 }
@@ -52,7 +57,7 @@
 
   .successText {
     font-size: 14px;
-    color: var(--custom-success-color);
+    color: var(--success-color);
     text-align: center;
     transform: translateY(-20px);
   }

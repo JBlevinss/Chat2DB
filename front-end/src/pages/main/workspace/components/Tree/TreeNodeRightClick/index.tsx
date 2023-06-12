@@ -15,7 +15,7 @@ import connectionServer from '@/service/connection';
 import mysqlServer from '@/service/mysql';
 import { OperationColumn } from '../treeConfig';
 import { dataSourceFormConfigs } from '@/config/dataSource';
-import { IDataSourceForm } from '@/config/types';
+import { IConnectionConfig } from '@/config/types';
 
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -40,7 +40,7 @@ function TreeNodeRightClick(props: IProps) {
   const [verifyTableName, setVerifyTableName] = useState<string>('');
   const treeNodeConfig: ITreeConfigItem = treeConfig[data.nodeType]
   const { getChildren, operationColumn } = treeNodeConfig;
-  const dataSourceFormConfig = dataSourceFormConfigs.find((t: IDataSourceForm) => {
+  const dataSourceFormConfig = dataSourceFormConfigs.find((t: IConnectionConfig) => {
     return t.type === data.dataType
   })!
   const OperationColumnConfig: { [key in OperationColumn]: (data: ITreeNode) => IOperationColumnConfigItem } = {

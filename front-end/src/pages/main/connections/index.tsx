@@ -1,17 +1,19 @@
 import React, { Fragment, memo, useEffect, useMemo, useRef, useState } from 'react';
 import classnames from 'classnames';
 import i18n from '@/i18n';
+
 import CreateConnection from '@/components/CreateConnection';
-import { DatabaseTypeCode } from '@/constants/database'
-import type { MenuProps } from 'antd';
-import { Button, Menu, Dropdown } from 'antd';
-import {
-  PieChartOutlined,
-} from '@ant-design/icons';
+import Iconfont from '@/components/Iconfont';
+
+import connectionService from '@/service/connection';
+import { DatabaseTypeCode, databaseMap } from '@/constants/database';
 import { databaseTypeList } from '@/constants/database';
 import { IDatabase } from '@/typings/database';
+import { IConnectionDetails } from '@/typings/connection';
+
+import type { MenuProps } from 'antd';
+import { Button, Menu, Dropdown } from 'antd';
 import styles from './index.less';
-import Iconfont from '@/components/Iconfont';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -36,59 +38,94 @@ interface IProps {
 
 export default memo<IProps>(function Connections(props) {
   const volatileRef = useRef<any>();
-  const [createType, setCreateType] = useState<DatabaseTypeCode | null>();
+  const [createConnectionType, setCreateConnectionType] = useState<DatabaseTypeCode>();
+  const [connectionList, setConnectionList] = useState<IConnectionDetails[]>();
+  const [checkedConnection, setCheckedConnection] = useState();
 
-  function handleCreateConnections(database: IDatabase) {
-    setCreateType(database.code);
+  useEffect(() => {
+    getDataSource();
+  }, [])
+
+  function getDataSource() {
+    let p = {
+      pageNo: 1,
+      pageSize: 999
+    }
+    connectionService.getList(p).then(res => {
+      setConnectionList(res.data);
+    })
   }
 
-  const menuItems: any = useMemo(() => Array.from({ length: 100 }).map((t, i) => {
-    return getItem(`connection1${i}`, i)
-  }), [])
+  function handleCreateConnections(database: IDatabase) {
+    setCreateConnectionType(database.code);
+  }
+
+  function changeMenu(e: any) {
+    setCheckedConnection(e.key);
+  }
+
+  const menuItems: any = useMemo(() => connectionList?.map((t, i) => {
+    return getItem(t.alias, t.id!, <Iconfont code={databaseMap[t.type].icon} />)
+  }), [connectionList]);
 
   return <div className={classnames(styles.box)}>
     <div ref={volatileRef} className={styles.layoutLeft}>
       <div className={styles.pageTitle}>
-        Connections
+        {i18n('connection.title.connections')}
       </div>
       <div className={styles.menuBox}>
         <Menu
           className={styles.menu}
           mode="inline"
           items={menuItems}
+          onClick={changeMenu}
+          selectedKeys={[checkedConnection!]}
         />
       </div>
+      {
+        <Button
+          type="primary"
+          className={styles.addConnection}
+          onClick={() => { setCheckedConnection(undefined); setCreateConnectionType(undefined) }}
+        >
+          {i18n('connection.button.addConnection')}
+        </Button>
+      }
     </div>
     <div className={styles.layoutRight}>
       {
-        !createType &&
-        <div className={styles.dataBaseList}>
-          {
-            databaseTypeList.map(t => {
-              return <div key={t.code} className={styles.databaseItem} onClick={handleCreateConnections.bind(null, t)}>
-                <div className={styles.databaseItemMain}>
-                  <div className={styles.databaseItemLeft}>
-                    <div className={styles.logoBox}>
-                      <Iconfont code={t.icon} />
+        (createConnectionType || checkedConnection) ?
+          <div className={classnames(styles.createConnections, { [styles.showCreateConnections]: (createConnectionType || checkedConnection) })}>
+            <CreateConnection
+              createType={createConnectionType}
+              editId={checkedConnection}
+              closeCreateConnection={() => { setCreateConnectionType(undefined) }}
+              submitCallback={getDataSource}
+            />
+          </div>
+          :
+          <div className={styles.dataBaseList}>
+            {
+              databaseTypeList.map(t => {
+                return <div key={t.code} className={styles.databaseItem} onClick={handleCreateConnections.bind(null, t)}>
+                  <div className={styles.databaseItemMain}>
+                    <div className={styles.databaseItemLeft}>
+                      <div className={styles.logoBox}>
+                        <Iconfont code={t.icon} />
+                      </div>
+                      {t.name}
                     </div>
-                    {t.name}
-                  </div>
-                  <div className={styles.databaseItemRight}>
-                    <Iconfont code="&#xe631;" />
+                    <div className={styles.databaseItemRight}>
+                      <Iconfont code="&#xe631;" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            })
-          }
-          <div className={styles.databaseItemSpacer}></div>
-          <div className={styles.databaseItemSpacer}></div>
-        </div>
+              })
+            }
+            <div className={styles.databaseItemSpacer}></div>
+            <div className={styles.databaseItemSpacer}></div>
+          </div>
       }
-      <div className={classnames(styles.createConnections, { [styles.showCreateConnections]: createType })}>
-        <CreateConnection
-          closeCreateConnection={() => { setCreateType(null) }}
-        ></CreateConnection>
-      </div>
     </div>
   </div>
 });

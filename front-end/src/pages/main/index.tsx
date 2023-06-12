@@ -17,31 +17,35 @@ import { INavItem } from '@/typings/main';
 
 const navConfig: INavItem[] = [
   {
-    key: 'connections',
-    icon: '\ue609',
-    component: <DataSource />,
-  },
-  {
     key: 'workspace',
-    icon: '\ue70e',
+    icon: '\ue614',
     component: <Workspace />,
   },
   {
     key: 'dashboard',
-    icon: '\ue70e',
+    icon: '\ue612',
     component: <Dashboard />,
   },
   {
-    key: 'github',
-    icon: '\ue885',
-    openBrowser: 'https://github.com/alibaba/Chat2DB',
+    key: 'connections',
+    icon: '\ue744',
+    component: <DataSource />,
   },
+  // {
+  //   key: 'github',
+  //   icon: '\ue885',
+  //   openBrowser: 'https://github.com/alibaba/Chat2DB',
+  // },
 ];
 
-function MainPage() {
-  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[1]);
+const initPageIndex = navConfig.findIndex(t => `/${t.key}` === window.location.pathname) || 0;
 
+function MainPage() {
+  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[initPageIndex]);
   function switchingNav(item: INavItem) {
+    // change url，but no page refresh
+    window.history.pushState({}, "", item.key);
+
     if (item.openBrowser) {
       window.open(item.openBrowser);
     } else {
@@ -52,7 +56,6 @@ function MainPage() {
   return (
     <div className={styles.page}>
       <div className={styles.layoutLeft}>
-        {/* <div className={styles.dargBox}></div> */}
         <BrandLogo onClick={() => { }} className={styles.brandLogo} />
         <ul className={styles.navList}>
           {navConfig.map((item, index) => {

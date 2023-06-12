@@ -11,8 +11,8 @@ import LoadingContent from '@/components/Loading/LoadingContent';
 import { useUpdateEffect } from '@/hooks/common';
 import connectionService from '@/service/connection';
 import TreeNodeRightClick from './TreeNodeRightClick';
-import { treeConfig, switchIcon, ITreeConfigItem } from './treeConfig'
-import { databaseMap } from '@/constants/database'
+import { treeConfig, switchIcon, ITreeConfigItem } from './treeConfig';
+import { databaseMap } from '@/constants/database';
 // import { DatabaseContext } from '@/context/database';
 
 interface IProps {

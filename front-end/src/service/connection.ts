@@ -1,7 +1,7 @@
 import { IPageResponse } from '@/typings/common';
-import { IConnectionBase } from '@/typings/connection';
+import { IConnectionDetails } from '@/typings/connection';
 import createRequest from './base';
-// import { IPageResponse, IConnectionBase, IDB } from '@/types';
+// import { IPageResponse, IConnectionDetails, IDB } from '@/types';
 
 export interface IGetConnectionParams {
   searchKey?: string;
@@ -14,25 +14,25 @@ export interface IGetConnectionParams {
  */
 const getList = createRequest<
   IGetConnectionParams,
-  IPageResponse<IConnectionBase>
+  IPageResponse<IConnectionDetails>
 >('/api/connection/datasource/list', {});
 
-const getDetails = createRequest<{ id: string }, IConnectionBase>(
+const getDetails = createRequest<{ id: number }, IConnectionDetails>(
   '/api/connection/datasource/:id',
   {},
 );
 
-const save = createRequest<IConnectionBase, string>(
+const save = createRequest<IConnectionDetails, string>(
   '/api/connection/datasource/create',
   { method: 'post', delayTime: true },
 );
 
-const close = createRequest<IConnectionBase, void>(
+const close = createRequest<IConnectionDetails, void>(
   '/api/connection/datasource/close',
   { method: 'post' },
 );
 
-const test = createRequest<IConnectionBase, boolean>(
+const test = createRequest<IConnectionDetails, boolean>(
   '/api/connection/datasource/pre_connect',
   { method: 'post', delayTime: true },
 );
@@ -41,7 +41,7 @@ const testSSH = createRequest<any, boolean>('/api/connection/ssh/pre_connect', {
   delayTime: true,
 });
 
-const update = createRequest<IConnectionBase, void>(
+const update = createRequest<IConnectionDetails, void>(
   '/api/connection/datasource/update',
   { method: 'post' },
 );

@@ -1,4 +1,4 @@
-import React, { memo, PropsWithChildren } from 'react';
+import React, { memo, PropsWithChildren, Fragment } from 'react';
 import styles from './index.less';
 import classnames from 'classnames';
 import StateIndicator from '@/components/StateIndicator';
@@ -6,7 +6,7 @@ import StateIndicator from '@/components/StateIndicator';
 interface IProps<T> {
   className?: string;
   data: T | null | undefined;
-  empty?: React.ReactChild;
+  empty?: React.ReactNode;
   handleEmpty?: boolean;
 }
 
@@ -28,6 +28,6 @@ export default function LoadingContent<T>(props: PropsWithChildren<IProps<T>>) {
   };
 
   return (
-    <div className={classnames(className, styles.box)}>{renderContent()}</div>
+    <div className={classnames(styles.box, className)}>{renderContent()}</div>
   );
 }

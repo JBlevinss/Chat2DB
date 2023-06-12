@@ -157,7 +157,7 @@ export default function createRequest<P = void, R = {}>(
           }, delayTime)
           return
         }
-        // 有些loding效果添加强制延时效果可能会更好看, 可行性待商榷
+        // 有些loading效果添加强制延时效果可能会更好看, 可行性待商榷
         delayTimeFn(() => {
           resolve(data);
         }, delayTime)
