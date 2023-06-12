@@ -2,31 +2,28 @@ import React, { memo, useEffect, useMemo, useState, Fragment, useContext, useCal
 import { i18n, isEn } from '@/i18n'
 import styles from './index.less';
 import classnames from 'classnames';
-import { DatabaseTypeCode, ConnectionEnvType } from '@/typings';
-import connectionServer from '@/service/connection'
+
+import connectionService from '@/service/connection';
+
+import { DatabaseTypeCode, ConnectionEnvType, databaseMap } from '@/constants/database';
 import { dataSourceFormConfigs } from '@/config/dataSource';
-import { IDataSourceForm, IFormItem, ISelect } from '@/config/types';
-// import { DatabaseContext } from '@/context/database';
+import { IConnectionConfig, IFormItem, ISelect } from '@/config/types';
+import { IConnectionDetails } from '@/typings/connection'
 import { InputType } from '@/config/enum';
 import { deepClone } from '@/utils';
-import type { CollapseProps } from 'antd';
-import { CaretRightOutlined } from '@ant-design/icons';
-import type { CSSProperties } from 'react';
 import {
   Select,
-  Modal,
   Form,
   Input,
   message,
   Table,
-  Radio,
   Button,
   Collapse,
-  theme
-  // Menu,
 } from 'antd';
 import Iconfont from '@/components/Iconfont';
+import LoadingContent from '@/components/Loading/LoadingContent';
 import { useUpdateEffect } from '@/hooks';
+import { useTheme } from '@/hooks/useTheme'
 
 const { Option } = Select;
 
@@ -37,96 +34,73 @@ export enum submitType {
   SAVE = 'save',
   TEST = 'test'
 }
-
 export interface IEditDataSourceData {
   dataType: DatabaseTypeCode,
   id?: number
 }
-
 interface IProps {
   className?: string;
-  // submitCallback?: (data: ITreeNode) => void;
+  closeCreateConnection: () => void;
+  createType?: DatabaseTypeCode;
+  editId?: number;
+  submitCallback?: Function;
 }
 
-const tabsConfig = [
-  {
-    label: '常规',
-    key: 'baseInfo'
-  },
-  {
-    label: 'SSH',
-    key: 'ssh'
-  },
-  {
-    label: '高级',
-    key: 'extendInfo'
-  },
-]
-
-const formItemLayout = {
-  labelCol: {
-    sm: 4,
-  },
-  wrapperCol: {
-    sm: 20,
-  },
-};
-
 export default function CreateConnection(props: IProps) {
-  const { className } = props;
-  // const { model, setEditDataSourceData, setRefreshTreeNum, setModel } = useContext(DatabaseContext);
-  // const editDataSourceData: IEditDataSourceData = model.editDataSourceData as IEditDataSourceData
-  const editDataSourceData: IEditDataSourceData = {
-    id: 1,
-    dataType: DatabaseTypeCode.MYSQL
-  }
-  const dataSourceId = editDataSourceData.id;
-  const dataSourceType = editDataSourceData.dataType;
+  const { className, closeCreateConnection, createType, editId, submitCallback } = props;
   const [baseInfoForm] = Form.useForm();
   const [sshForm] = Form.useForm();
-  const [currentTab, setCurrentTab] = useState(tabsConfig[0]);
-  const [backfillData, setBackfillData] = useState({});
+  const [backfillData, setBackfillData] = useState<IConnectionDetails>();
   const [loadings, setLoading] = useState({
     confirmButton: false,
     testButton: false,
   });
 
-  const getItems = (panelStyle: any) => [
+  const [currentType, setCurrentType] = useState<DatabaseTypeCode>(createType || DatabaseTypeCode.MYSQL);
+
+  useEffect(() => {
+    if (editId) {
+      getConnectionDetails(editId);
+    }
+  }, [editId])
+
+  function getConnectionDetails(id: number) {
+    setBackfillData(undefined);
+    connectionService.getDetails({ id }).then((res) => {
+      if (res.user) {
+        res.authentication = 1;
+      } else {
+        res.authentication = 2;
+      }
+      setTimeout(() => {
+        setBackfillData(res);
+      }, 300);
+      setCurrentType(res.type);
+    })
+  }
+
+
+  const getItems = () => [
     {
-      key: '2',
-      label: 'This is panel header 2',
+      key: 'ssh',
+      label: 'SSH Configuration',
       children: <div className={styles.sshBox}>
-        <RenderForm backfillData={backfillData} form={sshForm} tab='ssh' dataSourceType={dataSourceType} dataSourceId={dataSourceId} ></RenderForm>
+        <RenderForm backfillData={backfillData!} form={sshForm} tab='ssh' databaseType={currentType} editId={editId} />
         <div className={styles.testSSHConnect}>
           <div onClick={testSSH} className={styles.testSSHConnectText}>
             测试ssh连接
+          </div>
         </div>
-        </div>
-      </div>,
-      style: panelStyle,
+      </div>
     },
     {
-      key: '3',
-      label: 'This is panel header 3',
+      key: 'extendInfo',
+      label: 'Advanced Configuration',
       children: <div className={styles.extendInfoBox}>
-        <RenderExtendTable backfillData={backfillData} dataSourceType={dataSourceType}></RenderExtendTable>
-      </div>,
-      style: panelStyle,
+        <RenderExtendTable backfillData={backfillData!} databaseType={currentType}></RenderExtendTable>
+      </div>
     },
   ];
-
-  useEffect(() => {
-    if (dataSourceId) {
-      connectionServer.getDetails({ id: dataSourceId + '' }).then((res: any) => {
-        if (res.user) {
-          res.authentication = 1
-        } else {
-          res.authentication = 2
-        }
-        setBackfillData(res)
-      })
-    }
-  }, [])
 
   // 测试、保存、修改连接
   function saveConnection(type: submitType) {
@@ -141,7 +115,7 @@ export default function CreateConnection(props: IProps) {
           value: t.value
         })
       }
-    })
+    });
 
     let p: any = {
       ssh,
@@ -149,27 +123,26 @@ export default function CreateConnection(props: IProps) {
       extendInfo,
       // ...values,
       ConnectionEnvType: ConnectionEnvType.DAILY,
-      type: dataSourceType!
+      type: createType!
     }
 
-    if (type === submitType.UPDATE) {
-      p.id = dataSourceId;
+    if (type !== submitType.SAVE) {
+      p.id = editId;
     }
 
-    const api: any = connectionServer[type](p);
+    const api: any = connectionService[type](p);
+
     setLoading({
       ...loadings,
       [loadingsButton]: true
     })
+
     api.then((res: any) => {
       if (type === submitType.TEST) {
         message.success(res === false ? '测试连接失败' : '测试连接成功');
       } else {
-        // setModel({
-        //   ...model,
-        //   editDataSourceData: false,
-        //   refreshTreeNum: new Date().getTime(),
-        // })
+        submitCallback?.();
+        message.success(type === submitType.UPDATE ? '修改成功' : '添加成功')
       }
     }).finally(() => {
       setLoading({
@@ -180,94 +153,81 @@ export default function CreateConnection(props: IProps) {
   }
 
   function onCancel() {
+    closeCreateConnection()
     // setEditDataSourceData(false)
-  }
-
-  function changeTabs(key: string, index: number) {
-    setCurrentTab(tabsConfig[index])
   }
 
   function testSSH() {
     let p = sshForm.getFieldsValue();
-    connectionServer.testSSH(p).then(res => {
+    connectionService.testSSH(p).then(res => {
       message.success('测试连接成功')
     })
   }
 
-
-  const { token } = theme.useToken();
-
-  const panelStyle = {
-    marginBottom: 24,
-    background: token.colorFillAlter,
-    borderRadius: token.borderRadiusLG,
-    border: 'none',
-  };
-
   return <div className={classnames(styles.box, className)}>
-    <div className={styles.title}>
-      {dataSourceId ? i18n('connection.title.editConnection') : i18n('connection.title.createConnection')}
-    </div>
-    {/* <Tabs className={styles.tabsBox} tabs={tabsConfig} onChange={changeTabs}></Tabs> */}
-    <div className={styles.baseInfoBox}>
-      <RenderForm backfillData={backfillData} form={baseInfoForm} tab='baseInfo' dataSourceType={dataSourceType} dataSourceId={dataSourceId} ></RenderForm>
-    </div>
-    <Collapse
-      // bordered={false}
-      // expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-      // style={{ background: token.colorBgContainer }}
-      items={getItems(panelStyle)}
-    />
-    <div className={styles.formFooter}>
-      <div className={styles.test}>
-        {
-          <Button
-            loading={loadings.testButton}
-            onClick={saveConnection.bind(null, submitType.TEST)}
-            className={styles.test}>
-            测试连接
-            </Button>
-        }
+    <LoadingContent className={styles.loadingContent} data={backfillData || createType}>
+      <div className={styles.title}>
+        <Iconfont code={databaseMap[currentType]?.icon}></Iconfont>
+        <div>
+          {`${editId ? i18n('connection.title.editConnection') : i18n('connection.title.createConnection')} ${databaseMap[currentType]?.name}`}
+        </div>
       </div>
-      <div className={styles.rightButton}>
-        <Button onClick={onCancel} className={styles.cancel}>
-          取消
-          </Button>
-        <Button
-          className={styles.save}
-          type="primary"
-          loading={loadings.confirmButton}
-          onClick={saveConnection.bind(null, dataSourceId ? submitType.UPDATE : submitType.SAVE)}
-        >
+      {/* <Tabs className={styles.tabsBox} tabs={tabsConfig} onChange={changeTabs}></Tabs> */}
+      <div className={styles.baseInfoBox}>
+        <RenderForm backfillData={backfillData!} form={baseInfoForm} tab='baseInfo' databaseType={currentType} editId={editId} />
+      </div>
+      <Collapse items={getItems()} />
+      <div className={styles.formFooter}>
+        <div className={styles.test}>
           {
-            dataSourceId ? '修改' : '连接'
+            <Button
+              loading={loadings.testButton}
+              onClick={saveConnection.bind(null, submitType.TEST)}
+              className={styles.test}>
+              测试连接
+            </Button>
           }
-        </Button>
+        </div>
+        <div className={styles.rightButton}>
+          <Button onClick={onCancel} className={styles.cancel}>
+            取消
+          </Button>
+          <Button
+            className={styles.save}
+            type="primary"
+            loading={loadings.confirmButton}
+            onClick={saveConnection.bind(null, editId ? submitType.UPDATE : submitType.SAVE)}
+          >
+            {
+              editId ? '修改' : '连接'
+            }
+          </Button>
+        </div>
       </div>
-    </div>
+    </LoadingContent>
   </div >
 }
 
 interface IRenderFormProps {
-  dataSourceId: number | undefined,
-  dataSourceType: string,
+  editId: number | undefined,
+  databaseType: DatabaseTypeCode,
   tab: ITabsType;
   form: any;
-  backfillData: any;
+  backfillData: IConnectionDetails;
 }
 
 function RenderForm(props: IRenderFormProps) {
-  const { dataSourceId, dataSourceType, tab, form, backfillData } = props;
+  const { editId, databaseType, tab, form, backfillData } = props;
 
   let aliasChanged = false;
 
-  const dataSourceFormConfigMemo = useMemo<IDataSourceForm>(() => {
-    return deepClone(dataSourceFormConfigs).find((t: IDataSourceForm) => {
-      return t.type === dataSourceType
+  const dataSourceFormConfigMemo = useMemo<IConnectionConfig>(() => {
+    return deepClone(dataSourceFormConfigs).find((t: IConnectionConfig) => {
+      return t.type === databaseType
     })
   }, [])
 
-  const [dataSourceFormConfig, setDataSourceFormConfig] = useState<IDataSourceForm>(dataSourceFormConfigMemo);
+  const [dataSourceFormConfig, setDataSourceFormConfig] = useState<IConnectionConfig>(dataSourceFormConfigMemo);
 
   const initialValuesMemo = useMemo(() => {
     return initialFormData(dataSourceFormConfigMemo[tab].items)
@@ -277,8 +237,8 @@ function RenderForm(props: IRenderFormProps) {
 
   useUpdateEffect(() => {
     if (tab === 'baseInfo') {
-      selectChange({ name: 'authentication', value: backfillData.user ? 1 : 2 });
-      regEXFormatting({ url: backfillData.url }, backfillData)
+      selectChange({ name: 'authentication', value: backfillData?.user ? 1 : 2 });
+      regEXFormatting({ url: backfillData?.url }, backfillData)
     }
 
     if (tab === 'ssh') {
@@ -386,10 +346,16 @@ function RenderForm(props: IRenderFormProps) {
   function renderFormItem(t: IFormItem): React.ReactNode {
     const label = isEn ? t.labelNameEN : t.labelNameCN;
     const name = t.name;
+    const width = t?.styles?.width || '100%';
+    const labelWidth = isEn ? (t?.styles?.labelWidthEN || '100px') : (t?.styles?.labelWidthCN || '70px');
+    const labelAlign = t?.styles?.labelAlign || 'left';
+
     const FormItemTypes: { [key in InputType]: () => React.ReactNode } = {
       [InputType.INPUT]: () => <Form.Item
         label={label}
         name={name}
+        style={{ '--form-label-width': labelWidth } as any}
+        labelAlign={labelAlign}
       >
         <Input />
       </Form.Item >,
@@ -397,8 +363,10 @@ function RenderForm(props: IRenderFormProps) {
       [InputType.SELECT]: () => <Form.Item
         label={label}
         name={name}
+        style={{ '--form-label-width': labelWidth } as any}
+        labelAlign={labelAlign}
       >
-        <Select value={t.defaultValue} onChange={(e) => { selectChange({ name: t.name, value: e }) }}>
+        <Select value={t.defaultValue} onChange={(e) => { selectChange({ name: name, value: e }) }}>
           {t.selects?.map((t: ISelect) => <Option key={t.value} value={t.value}>{t.label}</Option>)}
         </Select>
       </Form.Item>,
@@ -406,13 +374,15 @@ function RenderForm(props: IRenderFormProps) {
       [InputType.PASSWORD]: () => <Form.Item
         label={label}
         name={name}
+        style={{ '--form-label-width': labelWidth } as any}
+        labelAlign={labelAlign}
       >
         <Input.Password />
       </Form.Item>
     }
 
     return <Fragment key={t.name}>
-      <div key={t.name} className={classnames({ [styles.labelTextAlign]: t.labelTextAlign })} style={{ width: `${t.width}%` }}>
+      <div key={t.name} className={classnames({ [styles.labelTextAlign]: t.labelTextAlign })} style={{ width: width }}>
         {FormItemTypes[t.inputType]()}
       </div>
       {
@@ -426,6 +396,7 @@ function RenderForm(props: IRenderFormProps) {
   }
 
   return <Form
+    colon={false}
     name={tab}
     form={form}
     initialValues={initialValues}
@@ -433,24 +404,23 @@ function RenderForm(props: IRenderFormProps) {
     autoComplete='off'
     labelAlign='left'
     onFieldsChange={onFieldsChange}
-    {...formItemLayout}
   >
     {dataSourceFormConfig[tab]!.items.map((t => renderFormItem(t)))}
   </Form>
 }
 
 interface IRenderExtendTableProps {
-  dataSourceType: string;
-  backfillData: any;
+  databaseType: DatabaseTypeCode;
+  backfillData: IConnectionDetails;
 }
 
 let extendTableData: any = []
 
 function RenderExtendTable(props: IRenderExtendTableProps) {
-  const { dataSourceType, backfillData } = props;
-  const dataSourceFormConfigMemo = useMemo<IDataSourceForm>(() => {
-    return deepClone(dataSourceFormConfigs).find((t: IDataSourceForm) => {
-      return t.type === dataSourceType
+  const { databaseType, backfillData } = props;
+  const dataSourceFormConfigMemo = useMemo<IConnectionConfig>(() => {
+    return deepClone(dataSourceFormConfigs).find((t: IConnectionConfig) => {
+      return t.type === databaseType
     })
   }, [])
 
@@ -464,16 +434,13 @@ function RenderExtendTable(props: IRenderExtendTableProps) {
   const [data, setData] = useState([...extendInfo, { label: '', value: '' }])
 
   useEffect(() => {
-    const list = Object.keys(backfillData.extendInfo || {})
-    if (list.length) {
-      const backfillDataExtendInfo = list.map(t => {
-        return {
-          label: backfillData.extendInfo?.[t]?.key,
-          value: backfillData.extendInfo?.[t]?.value
-        }
-      })
-      setData([...backfillDataExtendInfo, { label: '', value: '' }])
-    }
+    const backfillDataExtendInfo = backfillData.extendInfo.map(t => {
+      return {
+        label: t.key,
+        value: t.value
+      }
+    })
+    setData([...backfillDataExtendInfo, { label: '', value: '' }])
   }, [backfillData])
 
   useEffect(() => {

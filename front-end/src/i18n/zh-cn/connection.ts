@@ -1,5 +1,5 @@
 export default {
-  'connection.title.connection': '连接池',
+  'connection.title.connections': '连接池',
   'connection.title.createConnection': '创建数据源',
   'connection.title.editConnection': '修改数据源',
   'connection.label.name': '名称',
@@ -9,4 +9,7 @@ export default {
   'connection.label.JDBCDrive': 'JDBC驱动',
   'connection.label.port': '端口',
   'connection.button.testConnection': '测试链接',
+  'connection.label.advancedConfiguration': '高级配置',
+  'connection.label.sshConfiguration': 'SSH',
+  'connection.button.addConnection': '新增连接',
 }

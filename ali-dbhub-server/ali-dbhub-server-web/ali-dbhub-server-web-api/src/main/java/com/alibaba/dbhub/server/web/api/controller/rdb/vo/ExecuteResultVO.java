@@ -68,4 +68,9 @@ public class ExecuteResultVO {
      * 只有select语句才有
      */
     private Integer pageSize;
+
+    /**
+     * 执行持续时间
+     */
+    private Long duration;
 }

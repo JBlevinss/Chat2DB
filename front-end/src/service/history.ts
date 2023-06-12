@@ -1,5 +1,5 @@
 import createRequest from "./base";
-import { IPageResponse, IConnectionBase,IPageParams,IHistoryRecord, IWindowTab, ISavedConsole } from '@/types';
+import { IPageResponse,IPageParams,IHistoryRecord, IWindowTab, ISavedConsole } from '@/types';
 import { DatabaseTypeCode, ConsoleStatus, TabOpened } from '@/utils/constants'
 
 export interface IGetHistoryListParams extends IPageParams  {

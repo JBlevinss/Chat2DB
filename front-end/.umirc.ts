@@ -23,6 +23,10 @@ export default defineConfig({
   publicPath: '/',
   routes: [
     { path: '/demo', component: '@/pages/demo' },
+    { path: '/connections', component: 'main' },
+    { path: '/workspace', component: 'main' },
+    { path: '/dashboard', component: 'main' },
+    { path: '/test', component: '@/pages/test' },
     { path: '/', component: 'main' },
   ],
   npmClient: 'yarn',
@@ -31,8 +35,8 @@ export default defineConfig({
   chainWebpack,
   proxy: {
     '/api': {
-      'target': 'http://127.0.0.1:10821',
-      'changeOrigin': true,
-    }
+      target: 'http://127.0.0.1:10821',
+      changeOrigin: true,
+    },
   },
 });

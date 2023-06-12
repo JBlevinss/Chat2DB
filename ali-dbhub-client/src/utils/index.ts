@@ -175,7 +175,7 @@ export function getLastPosition(){
   return localStorage.getItem('lastPosition')
 }
 
-// 获取
+// 获取var变量的值
 export const callVar = (css: string) => {
   return getComputedStyle(document.documentElement)
     .getPropertyValue(css)

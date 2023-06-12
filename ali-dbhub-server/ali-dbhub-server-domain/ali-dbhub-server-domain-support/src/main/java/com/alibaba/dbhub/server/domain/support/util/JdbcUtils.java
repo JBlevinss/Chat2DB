@@ -1,20 +1,6 @@
 package com.alibaba.dbhub.server.domain.support.util;
 
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.Map;
-
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.dbhub.server.domain.support.enums.DataTypeEnum;
 import com.alibaba.dbhub.server.domain.support.enums.DbTypeEnum;
 import com.alibaba.dbhub.server.domain.support.enums.DriverTypeEnum;
@@ -23,12 +9,17 @@ import com.alibaba.dbhub.server.domain.support.model.SSHInfo;
 import com.alibaba.dbhub.server.domain.support.sql.IDriverManager;
 import com.alibaba.dbhub.server.domain.support.sql.SSHManager;
 import com.alibaba.druid.DbType;
-
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.date.LocalDateTimeUtil;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import lombok.extern.slf4j.Slf4j;
+
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * jdbc工具类
@@ -188,10 +179,10 @@ public class JdbcUtils {
             return DateUtil.format(date, DEFAULT_DATETIME_FORMAT);
         }
         if (obj instanceof LocalDateTime localDateTime) {
-            return LocalDateTimeUtil.format(localDateTime, DEFAULT_DATETIME_PATTERN);
+            return localDateTime.toString();
         }
         if (obj instanceof LocalDate localDate) {
-            return LocalDateTimeUtil.format(localDate, DEFAULT_DATE_FORMAT);
+            return localDate.toString();
         }
         if (obj instanceof Number) {
             return obj.toString();
