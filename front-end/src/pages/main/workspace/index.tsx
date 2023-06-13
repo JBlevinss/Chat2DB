@@ -48,6 +48,7 @@ const options: Option[] = [
     ],
   },
 ];
+
 export default memo<IProps>(function Chart(props) {
   const { className } = props;
   const volatileRef = useRef<any>();
@@ -86,29 +87,26 @@ export default memo<IProps>(function Chart(props) {
 
   const renderBoxRight = () => {
     return (
-      <DraggableContainer
-        volatileDom={{
-          resultRef,
-          volatileIndex: 1,
-        }}
-      >
-        <div className={styles.box_right_console}>
+      <DraggableContainer layout="column" className={styles.box_right_center}>
+        <div ref={resultRef} className={styles.box_right_console}>
           <Console canAi2Lang={false} />
         </div>
-        <div ref={resultRef} className={styles.box_right_result}>
-          Result
+        <div className={styles.box_right_result}>
+          <p>Result</p>
+          <p>Result</p>
+          <p>Result</p>
+          <p>Result</p>
+          <p>Result</p>
+          <p>Result</p>
+          <p>Result</p>
+          <p>Result</p>
+          <p>Result</p>
         </div>
       </DraggableContainer>
     );
   };
   return (
-    <DraggableContainer
-      volatileDom={{
-        volatileRef,
-        volatileIndex: 0,
-      }}
-      className={classnames(styles.box, className)}
-    >
+    <DraggableContainer className={styles.box}>
       <div ref={volatileRef} className={styles.box_left}>
         {renderBoxLeft()}
       </div>

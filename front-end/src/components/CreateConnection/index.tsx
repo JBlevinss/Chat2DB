@@ -22,7 +22,6 @@ import {
 } from 'antd';
 import Iconfont from '@/components/Iconfont';
 import LoadingContent from '@/components/Loading/LoadingContent';
-import { useUpdateEffect } from '@/hooks';
 import { useTheme } from '@/hooks/useTheme'
 
 const { Option } = Select;
@@ -34,10 +33,7 @@ export enum submitType {
   SAVE = 'save',
   TEST = 'test'
 }
-export interface IEditDataSourceData {
-  dataType: DatabaseTypeCode,
-  id?: number
-}
+
 interface IProps {
   className?: string;
   closeCreateConnection: () => void;
@@ -88,7 +84,7 @@ export default function CreateConnection(props: IProps) {
         <RenderForm backfillData={backfillData!} form={sshForm} tab='ssh' databaseType={currentType} editId={editId} />
         <div className={styles.testSSHConnect}>
           <div onClick={testSSH} className={styles.testSSHConnectText}>
-            测试ssh连接
+            {i18n('connection.message.testSshConnection')}
           </div>
         </div>
       </div>
@@ -139,10 +135,10 @@ export default function CreateConnection(props: IProps) {
 
     api.then((res: any) => {
       if (type === submitType.TEST) {
-        message.success(res === false ? '测试连接失败' : '测试连接成功');
+        message.success(res === false ? i18n('connection.message.testConnectResult', i18n('common.text.failure')) : i18n('connection.message.testConnectResult', i18n('common.text.successful')));
       } else {
         submitCallback?.();
-        message.success(type === submitType.UPDATE ? '修改成功' : '添加成功')
+        message.success(type === submitType.UPDATE ? i18n('common.message.modifySuccessfully') : i18n('common.message.addedSuccessfully'))
       }
     }).finally(() => {
       setLoading({
@@ -160,48 +156,49 @@ export default function CreateConnection(props: IProps) {
   function testSSH() {
     let p = sshForm.getFieldsValue();
     connectionService.testSSH(p).then(res => {
-      message.success('测试连接成功')
+      message.success(i18n('connection.message.testConnectResult', i18n('common.text.successful')))
     })
   }
 
   return <div className={classnames(styles.box, className)}>
     <LoadingContent className={styles.loadingContent} data={backfillData || createType}>
-      <div className={styles.title}>
-        <Iconfont code={databaseMap[currentType]?.icon}></Iconfont>
-        <div>
-          {`${editId ? i18n('connection.title.editConnection') : i18n('connection.title.createConnection')} ${databaseMap[currentType]?.name}`}
+      <div className={styles.connectionBox}>
+        <div className={styles.title}>
+          <Iconfont code={databaseMap[currentType]?.icon}></Iconfont>
+          <div>
+            {`${editId ? i18n('connection.title.editConnection') : i18n('connection.title.createConnection')} ${databaseMap[currentType]?.name}`}
+          </div>
         </div>
-      </div>
-      {/* <Tabs className={styles.tabsBox} tabs={tabsConfig} onChange={changeTabs}></Tabs> */}
-      <div className={styles.baseInfoBox}>
-        <RenderForm backfillData={backfillData!} form={baseInfoForm} tab='baseInfo' databaseType={currentType} editId={editId} />
-      </div>
-      <Collapse items={getItems()} />
-      <div className={styles.formFooter}>
-        <div className={styles.test}>
-          {
-            <Button
-              loading={loadings.testButton}
-              onClick={saveConnection.bind(null, submitType.TEST)}
-              className={styles.test}>
-              测试连接
-            </Button>
-          }
+        <div className={styles.baseInfoBox}>
+          <RenderForm backfillData={backfillData!} form={baseInfoForm} tab='baseInfo' databaseType={currentType} editId={editId} />
         </div>
-        <div className={styles.rightButton}>
-          <Button onClick={onCancel} className={styles.cancel}>
-            取消
-          </Button>
-          <Button
-            className={styles.save}
-            type="primary"
-            loading={loadings.confirmButton}
-            onClick={saveConnection.bind(null, editId ? submitType.UPDATE : submitType.SAVE)}
-          >
+        <Collapse items={getItems()} />
+        <div className={styles.formFooter}>
+          <div className={styles.test}>
             {
-              editId ? '修改' : '连接'
+              <Button
+                loading={loadings.testButton}
+                onClick={saveConnection.bind(null, submitType.TEST)}
+                className={styles.test}>
+                {i18n('connection.button.testConnection')}
+              </Button>
             }
-          </Button>
+          </div>
+          <div className={styles.rightButton}>
+            <Button onClick={onCancel} className={styles.cancel}>
+              {i18n('common.button.cancel')}
+            </Button>
+            <Button
+              className={styles.save}
+              type="primary"
+              loading={loadings.confirmButton}
+              onClick={saveConnection.bind(null, editId ? submitType.UPDATE : submitType.SAVE)}
+            >
+              {
+                editId ? i18n('common.button.edit') : i18n('connection.button.connect')
+              }
+            </Button>
+          </div>
         </div>
       </div>
     </LoadingContent>
@@ -235,10 +232,13 @@ function RenderForm(props: IRenderFormProps) {
 
   const [initialValues] = useState(initialValuesMemo);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
+    if (!backfillData) {
+      return
+    }
     if (tab === 'baseInfo') {
-      selectChange({ name: 'authentication', value: backfillData?.user ? 1 : 2 });
-      regEXFormatting({ url: backfillData?.url }, backfillData)
+      selectChange({ name: 'authentication', value: backfillData.user ? 1 : 2 });
+      regEXFormatting({ url: backfillData.url }, backfillData)
     }
 
     if (tab === 'ssh') {
@@ -337,6 +337,10 @@ function RenderForm(props: IRenderFormProps) {
     if (keyName === 'host' && !aliasChanged) {
       newData.alias = '@' + keyValue
     }
+    console.log({
+      ...dataObj,
+      ...newData,
+    })
     form.setFieldsValue({
       ...dataObj,
       ...newData,
@@ -424,23 +428,25 @@ function RenderExtendTable(props: IRenderExtendTableProps) {
     })
   }, [])
 
-  const extendInfo = dataSourceFormConfigMemo.extendInfo?.map(t => {
+  const extendInfo = dataSourceFormConfigMemo.extendInfo?.map((t, i) => {
     return {
+      key: i,
       label: t.key,
       value: t.value
     }
   }) || []
 
-  const [data, setData] = useState([...extendInfo, { label: '', value: '' }])
+  const [data, setData] = useState([...extendInfo, { key: extendInfo.length, label: '', value: '' }])
 
   useEffect(() => {
-    const backfillDataExtendInfo = backfillData.extendInfo.map(t => {
+    const backfillDataExtendInfo = backfillData?.extendInfo.map((t, i) => {
       return {
+        key: i,
         label: t.key,
         value: t.value
       }
-    })
-    setData([...backfillDataExtendInfo, { label: '', value: '' }])
+    }) || []
+    setData([...backfillDataExtendInfo, { key: extendInfo.length, label: '', value: '' }])
   }, [backfillData])
 
   useEffect(() => {
@@ -449,7 +455,7 @@ function RenderExtendTable(props: IRenderExtendTableProps) {
 
   const columns: any = [
     {
-      title: '名称',
+      title: i18n('connection.tableHeader.name'),
       dataIndex: 'label',
       width: '60%',
       render: (value: any, row: any, index: number) => {
@@ -464,6 +470,7 @@ function RenderExtendTable(props: IRenderExtendTableProps) {
         function change(e: any) {
           const newData = [...data]
           newData[index] = {
+            key: index,
             label: e.target.value,
             value: ''
           }
@@ -479,28 +486,30 @@ function RenderExtendTable(props: IRenderExtendTableProps) {
           })
           if (index === data.length - 1 && row.label) {
             newData[index] = {
+              key: index,
               label: row.label,
               value: ''
             }
           }
-          setData([...newData, { label: '', value: '' }])
+          setData([...newData, { key: newData.length, label: '', value: '' }])
         }
 
         if (index === data.length - 1 || isCustomLabel) {
-          return <Input onBlur={blur} placeholder={index === data.length - 1 ? '自定义' : ''} onChange={change} value={value}></Input>
+          return <Input onBlur={blur} placeholder={index === data.length - 1 ? i18n('common.text.custom') : ''} onChange={change} value={value}></Input>
         } else {
           return <span>{value}</span>
         }
       }
     },
     {
-      title: '值',
+      title: i18n('connection.tableHeader.value'),
       dataIndex: 'value',
       width: '40%',
       render: (value: any, row: any, index: number) => {
         function change(e: any) {
           const newData = [...data]
           newData[index] = {
+            key: index,
             label: row.label,
             value: e.target.value
           }

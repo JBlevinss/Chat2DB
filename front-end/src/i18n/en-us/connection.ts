@@ -12,4 +12,9 @@ export default {
   'connection.label.advancedConfiguration': 'Advanced Configuration',
   'connection.label.sshConfiguration': 'SSH Configuration',
   'connection.button.addConnection': 'ADD Connection',
+  'connection.button.connect': 'Connect',
+  'connection.message.testConnectResult': 'Test connection is {1}',
+  'connection.message.testSshConnection': 'Test the ssh connection',
+  'connection.tableHeader.name': 'Name',
+  'connection.tableHeader.value': 'Value',
 };

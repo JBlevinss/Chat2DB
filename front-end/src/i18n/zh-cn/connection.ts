@@ -12,4 +12,9 @@ export default {
   'connection.label.advancedConfiguration': '高级配置',
   'connection.label.sshConfiguration': 'SSH',
   'connection.button.addConnection': '新增连接',
+  'connection.button.connect': '连接',
+  'connection.message.testConnectResult': '测试连接{1}',
+  'connection.message.testSshConnection': '测试ssh连接',
+  'connection.tableHeader.name': '名称',
+  'connection.tableHeader.value': '值',
 }

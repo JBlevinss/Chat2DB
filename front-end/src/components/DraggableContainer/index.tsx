@@ -5,12 +5,8 @@ import classnames from 'classnames';
 interface IProps {
   className?: string;
   children: React.ReactNode[];
-  volatileDom: {
-    volatileRef: any;
-    volatileIndex: 0 | 1;
-  };
   min?: number;
-  direction?: 'row' | 'line';
+  layout?: 'row' | 'column';
   callback?: Function;
   showLine?: boolean;
 }
@@ -21,18 +17,16 @@ export default memo<IProps>(function DraggableContainer({
   callback,
   min,
   className,
-  direction = 'line',
-  volatileDom,
+  layout = 'row',
 }) {
-  const { volatileRef, volatileIndex } = volatileDom;
+  const volatileRef = children[0]?.ref;
+  console.log(children[0])
 
   const DividerRef = useRef<HTMLDivElement | null>(null);
   const DividerLine = useRef<HTMLDivElement | null>(null);
   const [dragging, setDragging] = useState(false);
 
-  const isLineDirection = useMemo(() => {
-    return direction === 'line';
-  }, []);
+  const isRow = layout === 'row'
 
   useEffect(() => {
     if (!DividerRef.current) {
@@ -46,16 +40,16 @@ export default memo<IProps>(function DraggableContainer({
     };
 
     DividerRef.current.onmousedown = (e) => {
-      if (!volatileRef.current) return;
+      if (!volatileRef?.current) return;
       e.preventDefault();
       setDragging(true);
-      const clientStart = isLineDirection ? e.clientX : e.clientY;
-      const volatileBoxXY = isLineDirection
+      const clientStart = isRow ? e.clientX : e.clientY;
+      const volatileBoxXY = isRow
         ? volatileRef.current.offsetWidth
         : volatileRef.current.offsetHeight;
       document.onmousemove = (e) => {
         moveHandle(
-          isLineDirection ? e.clientX : e.clientY,
+          isRow ? e.clientX : e.clientY,
           volatileRef.current,
           clientStart,
           volatileBoxXY,
@@ -78,16 +72,12 @@ export default memo<IProps>(function DraggableContainer({
     let computedXY = nowClientXY - clientStart;
     let finalXY = 0;
 
-    if (volatileIndex === 1) {
-      finalXY = volatileBoxXY - computedXY;
-    } else {
-      finalXY = volatileBoxXY + computedXY;
-    }
+    finalXY = volatileBoxXY + computedXY;
 
     if (min && finalXY < min) {
       return;
     }
-    if (isLineDirection) {
+    if (isRow) {
       leftDom.style.width = finalXY + 'px';
     } else {
       leftDom.style.height = finalXY + 'px';
@@ -96,14 +86,14 @@ export default memo<IProps>(function DraggableContainer({
   };
 
   return (
-    <div className={classnames(styles.box, className)}>
+    <div className={classnames(styles.box, { [styles.box_column]: !isRow }, className)}>
       {children[0]}
       {
         <div
           style={{ display: showLine ? 'block' : 'none' }}
           ref={DividerLine}
           className={classnames(
-            isLineDirection ? styles.divider : styles.rowDivider,
+            styles.divider,
             { [styles.displayDivider]: !children[1] },
           )}
         >
@@ -112,7 +102,7 @@ export default memo<IProps>(function DraggableContainer({
             className={classnames(
               styles.dividerCenter,
               { [styles.dragging]: dragging },
-              { [styles.rowDragging]: dragging && !isLineDirection },
+              { [styles.rowDragging]: dragging && isRow },
             )}
           />
         </div>

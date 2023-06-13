@@ -58,14 +58,17 @@ export default memo<IProps>(function Connections(props) {
 
   function handleCreateConnections(database: IDatabase) {
     setCreateConnectionType(database.code);
+    setCheckedConnection(undefined);
   }
 
   function changeMenu(e: any) {
     setCheckedConnection(e.key);
+    setCreateConnectionType(undefined);
+
   }
 
   const menuItems: any = useMemo(() => connectionList?.map((t, i) => {
-    return getItem(t.alias, t.id!, <Iconfont code={databaseMap[t.type].icon} />)
+    return getItem(t.alias, t.id!, <Iconfont className={styles.menuItemIcon} code={databaseMap[t.type].icon} />)
   }), [connectionList]);
 
   return <div className={classnames(styles.box)}>
@@ -82,15 +85,13 @@ export default memo<IProps>(function Connections(props) {
           selectedKeys={[checkedConnection!]}
         />
       </div>
-      {
-        <Button
-          type="primary"
-          className={styles.addConnection}
-          onClick={() => { setCheckedConnection(undefined); setCreateConnectionType(undefined) }}
-        >
-          {i18n('connection.button.addConnection')}
-        </Button>
-      }
+      {/* <Button
+        type="primary"
+        className={styles.addConnection}
+        onClick={() => { setCheckedConnection(undefined); setCreateConnectionType(undefined) }}
+      >
+        {i18n('connection.button.addConnection')}
+      </Button> */}
     </div>
     <div className={styles.layoutRight}>
       {
@@ -99,7 +100,7 @@ export default memo<IProps>(function Connections(props) {
             <CreateConnection
               createType={createConnectionType}
               editId={checkedConnection}
-              closeCreateConnection={() => { setCreateConnectionType(undefined) }}
+              closeCreateConnection={() => { setCreateConnectionType(undefined); setCheckedConnection(undefined); }}
               submitCallback={getDataSource}
             />
           </div>

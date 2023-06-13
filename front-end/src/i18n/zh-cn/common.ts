@@ -19,6 +19,11 @@ export default {
   'common.text.column': '列',
   'common.text.indexes': '索引',
   'common.button.save': '保存',
-  'common.button.execute': '执行',
+  'common.button.取消execute': '执行',
   'common.message.successfulConfig': '配置成功',
+  'common.text.successful':'成功',
+  'common.text.failure':'失败',
+  'common.message.modifySuccessfully':'修改成功',
+  'common.message.addedSuccessfully': '添加成功',
+  'common.text.custom':'自定义',
 }
