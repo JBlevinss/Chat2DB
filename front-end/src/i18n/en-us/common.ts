@@ -21,4 +21,9 @@ export default {
   'common.button.save': 'Save',
   'common.button.execute': 'Run',
   'common.message.successfulConfig': 'Successful configuration',
+  'common.text.successful':'successful',
+  'common.text.failure': 'failure',
+  'common.message.modifySuccessfully':'modify successfully',
+  'common.message.addedSuccessfully':'successfully added',
+  'common.text.custom':'custom',
 }

@@ -41,7 +41,7 @@ const navConfig: INavItem[] = [
 const initPageIndex = navConfig.findIndex(t => `/${t.key}` === window.location.pathname) || 0;
 
 function MainPage() {
-  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[initPageIndex]);
+  const [activeNav, setActiveNav] = useState<INavItem>(navConfig[initPageIndex > 0 ? initPageIndex : 0]);
   function switchingNav(item: INavItem) {
     // change url，but no page refresh
     window.history.pushState({}, "", item.key);
