@@ -20,7 +20,6 @@ export default memo<IProps>(function DraggableContainer({
   layout = 'row',
 }) {
   const volatileRef = children[0]?.ref;
-  console.log(children[0])
 
   const DividerRef = useRef<HTMLDivElement | null>(null);
   const DividerLine = useRef<HTMLDivElement | null>(null);
@@ -32,12 +31,12 @@ export default memo<IProps>(function DraggableContainer({
     if (!DividerRef.current) {
       return;
     }
-    DividerRef.current.onmouseover = (e) => {
-      setDragging(true);
-    };
-    DividerRef.current.onmouseout = (e) => {
-      setDragging(false);
-    };
+    // DividerRef.current.onmouseover = (e) => {
+    //   setDragging(true);
+    // };
+    // DividerRef.current.onmouseout = (e) => {
+    //   setDragging(false);
+    // };
 
     DividerRef.current.onmousedown = (e) => {
       if (!volatileRef?.current) return;
@@ -102,7 +101,6 @@ export default memo<IProps>(function DraggableContainer({
             className={classnames(
               styles.dividerCenter,
               { [styles.dragging]: dragging },
-              { [styles.rowDragging]: dragging && isRow },
             )}
           />
         </div>

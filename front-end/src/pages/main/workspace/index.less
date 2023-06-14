@@ -7,13 +7,14 @@
 }
 
 .box_left {
-  width: 300px;
+  width: 260px;
   height: 100%;
   padding-top: 20px;
   background-color: var(--color-bg-medium);
+  border-left: 1px solid var(--color-border);
+  padding: 10px 20px 0px;
+  box-sizing: border-box;
 }
-
-
 
 .box_left_db {
   display: flex;
@@ -22,17 +23,21 @@
   margin-bottom: 40px;
 }
 
-.box_left_save {}
+.box_left_save {
+}
 
-.box_left_connection {}
+.box_left_connection {
+}
 
 .box_right {
-  width: 0px;
+  position: relative;
+  z-index: 1; //为了覆盖左侧 Cascader
   flex: 1;
+  width: 0px;
   background-color: var(--color-bg);
 }
 
-.box_right_center{
+.box_right_center {
   height: 100%;
 }
 
@@ -45,4 +50,45 @@
   border-top: 1px solid red;
   height: 0px;
   flex: 1;
+}
+
+.selete_database_box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  .current_database {
+    flex: 1;
+    width: 0px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    i {
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .name {
+      max-width: 90%;
+      .f-single-line();
+    }
+  }
+
+  .other_operations {
+    flex-shrink: 0;
+  }
+
+  .icon_box {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.cascader_popup {
+  :global {
+    .ant-cascader-menu-item-content {
+      font-weight: 400 !important;
+    }
+  }
 }

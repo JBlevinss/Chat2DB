@@ -1,48 +1,51 @@
 // @import '../../var.less';
 
-.box{
+.box {
   display: flex;
   .divider {
     width: 1px;
     position: relative;
-    .dividerCenter {
-      position: absolute;
-      width: 9px;
-      top: 0px;
-      bottom: 0px;
-      z-index: 100;
-      transform: translateX(-50%);
+  }
+
+  .dividerCenter {
+    position: absolute;
+    width: 9px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 100;
+    transform: translateX(-50%);
+    &:hover {
+      background-color: var(--color-primary-bg);
     }
   }
 
   .dragging {
     cursor: col-resize;
-    background-color: #c58af9;
+    background-color: var(--color-primary-active) !important;
+    opacity: 0.5;
   }
 }
 
-.box_column{
+.box_column {
   flex-direction: column;
   .divider {
     height: 10px;
     width: 100%;
     position: relative;
-    .dividerCenter {
-      height: 9px;
-      width: auto;
-      right: 0px;
-      top: 0;
-      left: 0;
-      z-index: 100;
-      transform: translateY(-3px);
-      &:hover {
-        background-color: red;
-      }
-    }
   }
+
+  .dividerCenter {
+    height: 9px;
+    width: auto;
+    right: 0px;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    transform: translateY(-3px);
+  }
+
   .dragging {
     cursor: row-resize;
-    background-color: #c58af9;
   }
 }
 
