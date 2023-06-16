@@ -5,6 +5,7 @@ import { DatabaseTypeCode } from '@/constants/database';
 export interface IGetListParams extends IPageParams  {
   dataSourceId: number;
   databaseName: string;
+  schemaName?: string;
 }
 
 export interface IExecuteSqlParams {
@@ -38,7 +39,8 @@ const connectConsole = createRequest<IConnectConsoleParams, void>('/api/connecti
 export interface ITableParams {
   tableName:string;
   dataSourceId:number;	
-  databaseName:string;
+  databaseName: string;
+  schemaName?: string;
 }
 
 export interface IExecuteTableParams {

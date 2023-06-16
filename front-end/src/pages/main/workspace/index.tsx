@@ -8,6 +8,9 @@ import Console from '@/components/Console';
 import connectionService from '@/service/connection';
 import lodash from 'lodash';
 import Iconfont from '@/components/Iconfont';
+import { getCurrentWorkspaceDatabase, setCurrentWorkspaceDatabase } from '@/utils/localStorage';
+import { treeConfig } from './components/Tree/treeConfig';
+import { TreeNodeType } from '@/constants/tree';
 interface IProps {
   className?: string;
 }
@@ -22,15 +25,6 @@ export default memo<IProps>(function workspace(props) {
       <>
         <div className={styles.box_left_db}>
           <RenderSeleteDatabase></RenderSeleteDatabase>
-          {/* <Cascader
-            options={options}
-            onChange={onChange}
-            loadData={loadData}
-            placeholder="Please select"
-            changeOnSelect
-            bordered={false}
-            allowClear={false}
-          /> */}
         </div>
 
         <div className={styles.box_left_save}>Save</div>
@@ -78,14 +72,14 @@ interface Option {
   children?: Option[];
 }
 
+export interface ICurrentWorkspaceDatabase {
+  labelArr: string[];
+  valueArr: number[];
+}
+
 export function RenderSeleteDatabase() {
   const [options, setOptions] = useState<Option[]>();
-  const [currentSeleted, setCurrentSeleted] = useState<{
-    labelArr: string[]; valueArr: number[];
-  }>({
-    labelArr: [],
-    valueArr: [],
-  });
+  const [currentSeleted, setCurrentSeleted] = useState<ICurrentWorkspaceDatabase>(getCurrentWorkspaceDatabase());
 
   useEffect(() => {
     getDataSource();
@@ -113,29 +107,59 @@ export function RenderSeleteDatabase() {
     labelArr = selectedOptions.map((t) => {
       return t.label;
     });
-    setCurrentSeleted({
+    const currentWorkspaceDatabase = {
       labelArr,
       valueArr,
-    });
+    }
+    setCurrentSeleted(currentWorkspaceDatabase);
+    setCurrentWorkspaceDatabase(currentWorkspaceDatabase);
   };
 
   const loadData = (selectedOptions: any) => {
-    const targetOption = selectedOptions[selectedOptions.length - 1];
-
-    let p = {
-      pageNo: 1,
-      pageSize: 999,
-    };
-    connectionService.getList(p).then((res) => {
-      let newOptions = res.data.map((t) => {
+    if (selectedOptions.length > 1) {
+      return
+    }
+    const targetOption = selectedOptions[0];
+    let secondList = [];
+    treeConfig[TreeNodeType.DATA_SOURCE]?.getChildren({
+      id: targetOption.value
+    }).then(res => {
+      secondList = res.map((t) => {
         return {
-          label: t.alias,
-          value: t.id,
+          label: t.name,
+          value: t.name,
         };
       });
+      treeConfig[TreeNodeType.DATABASE]?.getChildren({
+        id: targetOption.value
+      }).then(res => {
+        
+        let secondList = res.map((t) => {
+          return {
+            label: t.schemaName,
+            value: t.name,
+          };
+        });
+        targetOption.children = newOptions;
+        setOptions([...(options || [])]);
+      })
       targetOption.children = newOptions;
       setOptions([...(options || [])]);
-    });
+    })
+    // let p = {
+    //   pageNo: 1,
+    //   pageSize: 999,
+    // };
+    // connectionService.getList(p).then((res) => {
+    //   let newOptions = res.data.map((t) => {
+    //     return {
+    //       label: t.alias,
+    //       value: t.id,
+    //     };
+    //   });
+    //   targetOption.children = newOptions;
+    //   setOptions([...(options || [])]);
+    // });
   };
 
   return (

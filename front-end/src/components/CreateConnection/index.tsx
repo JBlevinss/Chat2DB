@@ -6,10 +6,10 @@ import classnames from 'classnames';
 import connectionService from '@/service/connection';
 
 import { DatabaseTypeCode, ConnectionEnvType, databaseMap } from '@/constants/database';
-import { dataSourceFormConfigs } from '@/config/dataSource';
-import { IConnectionConfig, IFormItem, ISelect } from '@/config/types';
+import { dataSourceFormConfigs } from './config/dataSource';
+import { IConnectionConfig, IFormItem, ISelect } from './config/types';
 import { IConnectionDetails } from '@/typings/connection'
-import { InputType } from '@/config/enum';
+import { InputType } from './config/enum';
 import { deepClone } from '@/utils';
 import {
   Select,
@@ -22,7 +22,7 @@ import {
 } from 'antd';
 import Iconfont from '@/components/Iconfont';
 import LoadingContent from '@/components/Loading/LoadingContent';
-import { useTheme } from '@/hooks/useTheme'
+import { useTheme } from '@/hooks/useTheme';
 
 const { Option } = Select;
 
@@ -412,7 +412,6 @@ function RenderForm(props: IRenderFormProps) {
     {dataSourceFormConfig[tab]!.items.map((t => renderFormItem(t)))}
   </Form>
 }
-
 interface IRenderExtendTableProps {
   databaseType: DatabaseTypeCode;
   backfillData: IConnectionDetails;
