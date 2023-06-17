@@ -16,11 +16,11 @@
     transform: translateX(-50%);
     &:hover {
       background-color: var(--color-primary-bg);
+      cursor: col-resize;
     }
   }
 
   .dragging {
-    cursor: col-resize;
     background-color: var(--color-primary-active) !important;
     opacity: 0.5;
   }
@@ -42,10 +42,9 @@
     left: 0;
     z-index: 100;
     transform: translateY(-3px);
-  }
-
-  .dragging {
-    cursor: row-resize;
+    &:hover {
+      cursor: row-resize;
+    }
   }
 }
 

@@ -25,7 +25,7 @@ export default memo<IProps>(function DraggableContainer({
   const DividerLine = useRef<HTMLDivElement | null>(null);
   const [dragging, setDragging] = useState(false);
 
-  const isRow = layout === 'row'
+  const isRow = layout === 'row';
 
   useEffect(() => {
     if (!DividerRef.current) {
@@ -40,6 +40,8 @@ export default memo<IProps>(function DraggableContainer({
 
     DividerRef.current.onmousedown = (e) => {
       if (!volatileRef?.current) return;
+      console.log(volatileRef?.curren);
+
       e.preventDefault();
       setDragging(true);
       const clientStart = isRow ? e.clientX : e.clientY;

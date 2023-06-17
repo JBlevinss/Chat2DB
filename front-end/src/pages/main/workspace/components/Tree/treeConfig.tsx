@@ -68,15 +68,9 @@ export const treeConfig: { [key in TreeNodeType]: ITreeConfigItem } = {
         connectionService.getList(p).then(res => {
           const data: ITreeNode[] = res.data.map(t => {
             return {
-              id: t.id,
+              key: t.id!,
               name: t.alias,
-              url: t.EnvType,
-              user: t.user,
-              key: t.id!.toString(),
               nodeType: TreeNodeType.DATA_SOURCE,
-              dataSourceId: t.id,
-              dataSourceName: t.alias,
-              dataType: t.type,
             }
           })
           r(data);

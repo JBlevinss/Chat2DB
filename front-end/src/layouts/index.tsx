@@ -1,19 +1,16 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { Outlet } from 'umi';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, theme } from 'antd';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  antdLightTheme,
-  antdDarkTheme,
-  antdPrimaryColor,
-} from '@/theme/antdTheme';
+import { getAntdThemeConfig } from '@/theme';
 
 import antdEnUS from 'antd/locale/en_US';
 import antdZhCN from 'antd/locale/zh_CN';
 import { useTheme } from '@/hooks';
 import { isEn } from '@/utils/check';
-import { ThemeType, PrimaryColorType } from '@/constants/common';
+import { ThemeType, PrimaryColorType, LangType } from '@/constants/common';
+import { InjectThemeVar } from '@/theme'
 import styles from './index.less';
 import {
   getLang,
@@ -21,6 +18,7 @@ import {
   getTheme,
   setLang,
 } from '@/utils/localStorage';
+
 declare global {
   interface Window {
     _Lang: string;
@@ -36,6 +34,8 @@ declare global {
 window._ENV = process.env.UMI_ENV! || 'local';
 window._Lang = getLang();
 
+const { getDesignToken, useToken } = theme;
+
 export const colorSchemeListeners: { [key: string]: Function } = {};
 
 export function addColorSchemeListener(callback: Function) {
@@ -44,26 +44,47 @@ export function addColorSchemeListener(callback: Function) {
   return uuid;
 }
 
-function Layout() {
-  const [appTheme, setAppTheme] = useTheme();
+export default function Layout() {
+  const [appTheme] = useTheme();
   const [antdTheme, setAntdTheme] = useState<any>({});
-  const [initEnd, setInitEnd] = useState(false);
 
   useLayoutEffect(() => {
-    const antdTheme =
-      appTheme.backgroundColor === ThemeType.Light
-        ? antdLightTheme
-        : antdDarkTheme;
-    antdTheme.token = {
-      ...antdTheme.token,
-      ...(antdPrimaryColor[appTheme.primaryColor as PrimaryColorType] || {}),
-    };
-    setAntdTheme({ ...antdTheme });
-    console.log({ ...antdTheme })
+    ;
+
+    setAntdTheme(getAntdThemeConfig(appTheme));
   }, [appTheme]);
 
-  // 监听系统(OS)主题变化
+  return (
+    <ConfigProvider locale={isEn ? antdEnUS : antdZhCN} theme={antdTheme}>
+      <AppContainer></AppContainer>
+    </ConfigProvider>
+  );
+}
+
+
+function AppContainer() {
+  const { token } = useToken();
+  const [initEnd, setInitEnd] = useState(false);
+  const [appTheme, setAppTheme] = useTheme();
+
+  useEffect(() => {
+    InjectThemeVar(token as any, appTheme.backgroundColor, appTheme.primaryColor);
+  }, [token])
+
   useLayoutEffect(() => {
+    collectInitApp();
+  }, []);
+
+  // 初始化app
+  function collectInitApp() {
+    monitorOsTheme();
+    initTheme();
+    initLang();
+    setInitEnd(true);
+  }
+
+  // 监听系统(OS)主题变化
+  function monitorOsTheme() {
     function change(e: any) {
       setAppTheme({
         ...appTheme,
@@ -76,18 +97,9 @@ function Layout() {
     return () => {
       themeMedia.removeListener(change);
     };
-  }, []);
-
-  useLayoutEffect(() => {
-    collectInitApp();
-  }, []);
-
-  function collectInitApp() {
-    initTheme();
-    initLang();
-    setInitEnd(true);
   }
 
+  // 初始化主题
   function initTheme() {
     let theme = getTheme();
     if (theme === ThemeType.FollowOs) {
@@ -101,23 +113,22 @@ function Layout() {
     document.documentElement.setAttribute('primary-color', getPrimaryColor());
   }
 
+  // 初始化语言
   function initLang() {
     if (!getLang()) {
-      setLang('en-us');
-      document.documentElement.setAttribute('lang', 'en-us');
+      setLang(LangType.EN_US);
+      document.documentElement.setAttribute('lang', LangType.EN_US);
     }
   }
 
-  return (
-    <ConfigProvider locale={isEn ? antdEnUS : antdZhCN} theme={antdTheme}>
-      {
-        initEnd &&
-        <div className={styles.app}>
-          <Outlet />
-        </div>
-      }
-    </ConfigProvider>
-  );
+  return <div className={styles.appContainer}>
+    {
+      initEnd &&
+      <div className={styles.app}>
+        <Outlet />
+      </div>
+    }
+  </div>
 }
 
-export default Layout;
+

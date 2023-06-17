@@ -1,36 +1,25 @@
-@import '../../../styles/var.less';
+@import '../../../../../styles/var.less';
 
 .box {
-  width: 100%;
   height: 100%;
+  background-color: var(--color-bg-elevated);
+  border-left: 1px solid var(--color-border);
+  padding: 10px 20px 0px;
+  box-sizing: border-box;
+  min-width: 200px;
 }
 
-.box_left {
-  width: 260px;
-  height: 100%;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
 }
 
-.box_right {
-  position: relative;
-  z-index: 1; //为了覆盖左侧 Cascader
-  flex: 1;
-  width: 0px;
-  background-color: var(--color-bg);
+.box_left_save {
 }
 
-.box_right_center {
-  height: 100%;
-}
-
-.box_right_console {
-  height: 300px;
-  overflow: hidden;
-}
-
-.box_right_result {
-  border-top: 1px solid red;
-  height: 0px;
-  flex: 1;
+.box_left_connection {
 }
 
 .select_database_box {
@@ -66,7 +55,7 @@
   }
 }
 
-.cascade_popup {
+.cascader_popup {
   :global {
     .ant-cascader-menu-item-content {
       font-weight: 400 !important;

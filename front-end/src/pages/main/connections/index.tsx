@@ -64,7 +64,6 @@ export default memo<IProps>(function Connections(props) {
   function changeMenu(e: any) {
     setCheckedConnection(e.key);
     setCreateConnectionType(undefined);
-
   }
 
   const menuItems: any = useMemo(() => connectionList?.map((t, i) => {

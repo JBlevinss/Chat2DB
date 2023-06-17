@@ -2,7 +2,7 @@ import { TreeNodeType } from '@/constants/tree';
 import { DatabaseTypeCode } from '@/constants/database';
 
 export interface ITreeNode {
-  key: string;
+  key: string | number;
   name: string;
   nodeType: TreeNodeType;
   databaseType?: DatabaseTypeCode;

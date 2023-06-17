@@ -4,6 +4,7 @@
     "ahooks",
     "antd",
     "asar",
+    "Cascader",
     "chatgpt",
     "CLICKHOUSE",
     "datas",
@@ -13,6 +14,7 @@
     "Dspring",
     "echart",
     "echarts",
+    "geekblue",
     "hexi",
     "icns",
     "iconfont",
@@ -27,6 +29,7 @@
     "SQLITE",
     "SQLSERVER",
     "truetype",
+    "uuidv",
     "wireframe"
   ]
 }
