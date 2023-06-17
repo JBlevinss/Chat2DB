@@ -24,7 +24,7 @@ export default memo<IProps>(function workspace(props) {
     return (
       <>
         <div className={styles.box_left_db}>
-          <RenderSeleteDatabase></RenderSeleteDatabase>
+          <RenderSelectDatabase />
         </div>
 
         <div className={styles.box_left_save}>Save</div>
@@ -77,9 +77,9 @@ export interface ICurrentWorkspaceDatabase {
   valueArr: number[];
 }
 
-export function RenderSeleteDatabase() {
+export function RenderSelectDatabase() {
   const [options, setOptions] = useState<Option[]>();
-  const [currentSeleted, setCurrentSeleted] = useState<ICurrentWorkspaceDatabase>(getCurrentWorkspaceDatabase());
+  const [currentSelected, setCurrentSelected] = useState<ICurrentWorkspaceDatabase>(getCurrentWorkspaceDatabase());
 
   useEffect(() => {
     getDataSource();
@@ -102,7 +102,7 @@ export function RenderSeleteDatabase() {
     });
   }
 
-  const onChange: any = (valueArr: (number)[], selectedOptions: Option[]) => {
+  const onChange: any = (valueArr: number[], selectedOptions: Option[]) => {
     let labelArr: string[] = [];
     labelArr = selectedOptions.map((t) => {
       return t.label;
@@ -110,42 +110,45 @@ export function RenderSeleteDatabase() {
     const currentWorkspaceDatabase = {
       labelArr,
       valueArr,
-    }
-    setCurrentSeleted(currentWorkspaceDatabase);
+    };
+    setCurrentSelected(currentWorkspaceDatabase);
     setCurrentWorkspaceDatabase(currentWorkspaceDatabase);
   };
 
   const loadData = (selectedOptions: any) => {
     if (selectedOptions.length > 1) {
-      return
+      return;
     }
     const targetOption = selectedOptions[0];
     let secondList = [];
-    treeConfig[TreeNodeType.DATA_SOURCE]?.getChildren({
-      id: targetOption.value
-    }).then(res => {
-      secondList = res.map((t) => {
-        return {
-          label: t.name,
-          value: t.name,
-        };
-      });
-      treeConfig[TreeNodeType.DATABASE]?.getChildren({
-        id: targetOption.value
-      }).then(res => {
-        
-        let secondList = res.map((t) => {
+    treeConfig[TreeNodeType.DATA_SOURCE]
+      ?.getChildren({
+        id: targetOption.value,
+      })
+      .then((res) => {
+        secondList = res.map((t) => {
           return {
-            label: t.schemaName,
+            label: t.name,
             value: t.name,
           };
         });
+        treeConfig[TreeNodeType.DATABASE]
+          ?.getChildren({
+            id: targetOption.value,
+          })
+          .then((res) => {
+            let secondList = res.map((t) => {
+              return {
+                label: t.schemaName,
+                value: t.name,
+              };
+            });
+            targetOption.children = newOptions;
+            setOptions([...(options || [])]);
+          });
         targetOption.children = newOptions;
         setOptions([...(options || [])]);
-      })
-      targetOption.children = newOptions;
-      setOptions([...(options || [])]);
-    })
+      });
     // let p = {
     //   pageNo: 1,
     //   pageSize: 999,
@@ -163,23 +166,23 @@ export function RenderSeleteDatabase() {
   };
 
   return (
-    <div className={styles.selete_database_box}>
+    <div className={styles.select_database_box}>
       <Cascader
-        popupClassName={styles.cascader_popup}
+        popupClassName={styles.cascade_popup}
         options={options}
         onChange={onChange}
         loadData={loadData}
         bordered={false}
       >
         <div className={styles.current_database}>
-          <div className={styles.name}>
-            {currentSeleted.labelArr.join('/') || '点我选择'}
-          </div>
+          <div className={styles.name}>{currentSelected.labelArr.join('/') || '点我选择'}</div>
           <Iconfont code="&#xe608;" />
         </div>
       </Cascader>
       <div className={styles.other_operations}>
-        <div className={styles.icon_box}><Iconfont code='&#xec08;' /></div>
+        <div className={styles.icon_box}>
+          <Iconfont code="&#xec08;" />
+        </div>
       </div>
     </div>
   );

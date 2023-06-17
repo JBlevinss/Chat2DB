@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import classnames from 'classnames';
+import React, { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import cs from 'classnames';
 import { useTheme } from '@/hooks';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { language } from 'monaco-editor/esm/vs/basic-languages/sql/sql';
@@ -24,15 +24,16 @@ interface IProps {
   needDestroy?: boolean;
 }
 
-function MonacoEditor(props: IProps) {
-  const {
-    id,
-    className,
-    value = '',
-    language = 'sql',
-    didMount,
-    options,
-  } = props;
+export interface IExportRefFunction{
+  getCurrentSelectContent: () => string;
+  getAllContent: () => string;
+}
+
+function MonacoEditor(
+  props: IProps,
+  ref: ForwardedRef<IExportRefFunction>,
+) {
+  const { id, className, value = '', language = 'sql', didMount, options } = props;
 
   const editorRef = useRef<IEditorIns>();
   const [editorVal, setEditorVal] = useState('');
@@ -40,25 +41,43 @@ function MonacoEditor(props: IProps) {
   // 受控暂存value
   const valRef = useRef<string>('');
 
-  // const;
-
   const [appTheme] = useTheme();
+
+  useImperativeHandle(ref, () => ({
+    getCurrentSelectContent,
+    getAllContent,
+  }));
+
+  /**
+   * 获取当前选中的内容
+   * @returns
+   */
+  const getCurrentSelectContent = () => {
+    let selection = editorRef.current?.getSelection();
+    if (!selection || selection.isEmpty()) {
+      return '';
+    } else {
+      var selectedText = editorRef.current?.getModel()?.getValueInRange(selection);
+      return selectedText || '';
+    }
+  };
+
+  /** 获取文本所有内容 */
+  const getAllContent = () => {
+    const model = editorRef.current?.getModel();
+    const value = model?.getValue();
+    return value || '';
+  };
 
   // init
   useEffect(() => {
-    const editorIns = monaco.editor.create(
-      document.getElementById(`monaco-editor-${id}`)!,
-      {
-        ...editorDefaultOptions,
-        ...options,
-        value,
-        language: 'sql',
-        theme:
-          appTheme.backgroundColor === ThemeType.Light
-            ? 'default'
-            : 'BlackTheme',
-      },
-    );
+    const editorIns = monaco.editor.create(document.getElementById(`monaco-editor-${id}`)!, {
+      ...editorDefaultOptions,
+      ...options,
+      value,
+      language: 'sql',
+      theme: appTheme.backgroundColor === ThemeType.Light ? 'default' : 'BlackTheme',
+    });
     editorRef.current = editorIns;
     didMount && didMount(editorIns); // incase parent component wanna handle editor
 
@@ -106,26 +125,31 @@ function MonacoEditor(props: IProps) {
   }, [props.onChange]);
 
   const updateEditor = (value: string) => {
-    if (value !== undefined && editorRef && editorRef.current) {
+    if (editorRef.current) {
+      if (value === editorRef.current.getValue()) {
+        return;
+      }
       const model = editorRef.current.getModel();
-      const range = model!.getFullModelRange();
-      model!.pushEditOperations(
+      if (!model) return;
+
+      editorRef.current.pushUndoStop();
+
+      model.pushEditOperations(
         [],
         [
           {
-            range,
+            range: model.getFullModelRange(),
             text: value,
           },
         ],
         () => [editorRef.current.getSelection()],
       );
+      editorRef.current.pushUndoStop();
     }
   };
 
   useEffect(() => {
-    monaco.editor.setTheme(
-      appTheme.backgroundColor === ThemeType.Dark ? 'BlackTheme' : 'Default',
-    );
+    monaco.editor.setTheme(appTheme.backgroundColor === ThemeType.Dark ? 'BlackTheme' : 'Default');
   }, [appTheme.backgroundColor]);
 
   const handleRegisterTigger = () => {
@@ -167,10 +191,7 @@ function MonacoEditor(props: IProps) {
     // };
     monaco.languages.registerCompletionItemProvider('sql', {
       triggerCharacters: [' ', ...SQLKeys],
-      provideCompletionItems: (
-        model: monaco.editor.ITextModel,
-        position: monaco.Position,
-      ) => {
+      provideCompletionItems: (model: monaco.editor.ITextModel, position: monaco.Position) => {
         let suggestions: any = [];
         const { lineNumber, column } = position;
         const textBeforePointer = model.getValueInRange({
@@ -200,10 +221,7 @@ function MonacoEditor(props: IProps) {
 
   const createAction = (editor: IEditorIns) => {
     // 用于控制切换该菜单键的显示
-    const shouldShowSqlRunnerAction = editor.createContextKey(
-      'shouldShowSqlRunnerAction',
-      true,
-    );
+    const shouldShowSqlRunnerAction = editor.createContextKey('shouldShowSqlRunnerAction', true);
 
     // 前面已经定义了 editor
     // 添加 action
@@ -224,11 +242,7 @@ function MonacoEditor(props: IProps) {
       },
     });
   };
-  return (
-    <div className={classnames(className, styles.box)}>
-      <div id={`monaco-editor-${id}`} className={styles.editorContainer} />
-    </div>
-  );
+  return <div ref={ref} id={`monaco-editor-${id}`} className={cs(className, styles.editorContainer)} />;
 }
 
-export default MonacoEditor;
+export default forwardRef(MonacoEditor);

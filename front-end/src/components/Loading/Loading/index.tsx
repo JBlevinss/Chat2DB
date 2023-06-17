@@ -8,8 +8,8 @@ interface IProps {
   className?: any;
 }
 
-// TODO： 首屏以及懒加载Lodding效果
-export default memo(function PageLoadinng(props: IProps) {
+// TODO： 首屏以及懒加载Loading效果
+export default memo(function PageLoading(props: IProps) {
   const { className } = props;
   return <div className={classnames('loading-components-box', className)}>
     <div className="load-container">

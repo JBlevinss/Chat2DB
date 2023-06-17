@@ -27,6 +27,7 @@
     "monaco-editor": "^0.34.0",
     "monaco-editor-esm-webpack-plugin": "^2.1.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
+    "react-monaco-editor": "^0.52.0",
     "sql-formatter": "^12.2.1",
     "umi": "^4.0.70",
     "umi-request": "^1.4.0",
